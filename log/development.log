@@ -1,0 +1,1537 @@
+  [1m[36m (209.6ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (322.8ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to InitSchema (20140824130901)
+  [1m[35m (120.8ms)[0m  CREATE TABLE `acquirer_org` (`id` int(11) auto_increment PRIMARY KEY, `acquirer_name` varchar(255), `acquirer_code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (210.3ms)[0m  [1mCREATE TABLE `activity_logs` (`id` int(11) auto_increment PRIMARY KEY, `user_name` varchar(255), `ip_address` varchar(255), `action` varchar(255), `note` varchar(255), `object` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (220.7ms)[0m  CREATE TABLE `card_bins` (`id` int(11) auto_increment PRIMARY KEY, `card_code` varchar(255), `bank_name` varchar(255), `length` int(11), `bank_bin` varchar(255), `organization` int(11), `card_type` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (350.8ms)[0m  [1mCREATE  INDEX `index_card_bins_on_bank_bin` USING btree ON `card_bins` (`bank_bin`) [0m
+  [1m[35m (148.2ms)[0m  CREATE  INDEX `index_card_bins_on_bank_name` USING btree ON `card_bins` (`bank_name`) 
+  [1m[36m (148.3ms)[0m  [1mCREATE TABLE `configurations` (`id` int(11) auto_increment PRIMARY KEY, `key` varchar(255), `value` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (154.1ms)[0m  CREATE TABLE `credit_accounts` (`id` int(11) auto_increment PRIMARY KEY, `account_type` varchar(255), `name` varchar(255), `address` varchar(255), `mobile` varchar(255), `external_id` varchar(255) NOT NULL, `total_credit` int(11) DEFAULT 0 NOT NULL, `usable_credit` int(11) DEFAULT 0 NOT NULL, `locked_credit` int(11) DEFAULT 0 NOT NULL, `cashed_credit` int(11) DEFAULT 0 NOT NULL, `referer_credit` int(11) DEFAULT 0 NOT NULL, `referee_credit` int(11) DEFAULT 0 NOT NULL, `consumption_credit` int(11) DEFAULT 0 NOT NULL, `consumption_times` int(11) DEFAULT 0 NOT NULL, `referer_account_id` int(11), `lock_version` int(11), `status` int(11) DEFAULT 1 NOT NULL, `created_at` datetime, `updated_at` datetime, `tag` varchar(255)) ENGINE=InnoDB
+  [1m[36m (146.5ms)[0m  [1mCREATE UNIQUE INDEX `credit_account_external_id` USING btree ON `credit_accounts` (`external_id`) [0m
+  [1m[35m (124.8ms)[0m  CREATE UNIQUE INDEX `index_credit_accounts_on_mobile` USING btree ON `credit_accounts` (`mobile`) 
+  [1m[36m (168.4ms)[0m  [1mCREATE  INDEX `index_credit_accounts_on_tag` USING btree ON `credit_accounts` (`tag`) [0m
+  [1m[35m (162.0ms)[0m  CREATE TABLE `credit_cashing_applications` (`id` int(11) auto_increment PRIMARY KEY, `bank_card` varchar(255), `bank_name` varchar(255), `real_name` varchar(255), `amount` int(11), `status` int(11) DEFAULT 101 NOT NULL, `comment` varchar(255), `credit_account_id` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (168.7ms)[0m  [1mCREATE  INDEX `fk_cashing_application_credit_accounts` USING btree ON `credit_cashing_applications` (`credit_account_id`) [0m
+  [1m[35m (143.0ms)[0m  CREATE TABLE `marketing_rules` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `merchant_store_id` int(11), `rule_type` varchar(255), `money_condition` int(11), `accumulated_money_condition` int(11), `accumulated_consumption_time_condition` int(11), `valid_from` datetime, `valid_till` datetime, `status` int(11)) ENGINE=InnoDB
+  [1m[36m (165.1ms)[0m  [1mCREATE TABLE `marketing_rules_payment_plans` (`id` int(11) auto_increment PRIMARY KEY, `marketing_rule_id` int(11), `payment_plan_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (148.1ms)[0m  CREATE  INDEX `index_marketing_rules_payment_plans_on_marketing_rule_id` USING btree ON `marketing_rules_payment_plans` (`marketing_rule_id`) 
+  [1m[36m (155.4ms)[0m  [1mCREATE  INDEX `index_marketing_rules_payment_plans_on_payment_plan_id` USING btree ON `marketing_rules_payment_plans` (`payment_plan_id`) [0m
+  [1m[35m (153.9ms)[0m  CREATE TABLE `member_ships` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `member_group_id` int(11), `member_group_type` varchar(255), `credit_account_id` int(11)) ENGINE=InnoDB
+  [1m[36m (156.6ms)[0m  [1mCREATE  INDEX `index_member_ships_on_credit_account_id` USING btree ON `member_ships` (`credit_account_id`) [0m
+  [1m[35m (136.1ms)[0m  CREATE  INDEX `index_member_ships_on_member_group_id_and_member_group_type` USING btree ON `member_ships` (`member_group_id`, `member_group_type`) 
+  [1m[36m (160.3ms)[0m  [1mCREATE TABLE `merchant_group_ships` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `merchant_store_id` int(11), `merchant_group_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (170.4ms)[0m  CREATE  INDEX `index_merchant_group_ships_on_merchant_group_id` USING btree ON `merchant_group_ships` (`merchant_group_id`) 
+  [1m[36m (158.1ms)[0m  [1mCREATE  INDEX `index_merchant_group_ships_on_merchant_store_id` USING btree ON `merchant_group_ships` (`merchant_store_id`) [0m
+  [1m[35m (164.7ms)[0m  CREATE TABLE `merchant_groups` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `name` varchar(255), `display_name` varchar(255)) ENGINE=InnoDB
+  [1m[36m (168.4ms)[0m  [1mCREATE UNIQUE INDEX `index_merchant_groups_on_name` USING btree ON `merchant_groups` (`name`) [0m
+  [1m[35m (141.5ms)[0m  CREATE TABLE `merchant_stores` (`id` int(11) auto_increment PRIMARY KEY, `name` varchar(255) NOT NULL, `merchant_number` varchar(255) NOT NULL, `license_name` varchar(255), `license_num` varchar(255), `license_expire_date` varchar(255), `tax_number` varchar(255), `organization_code` varchar(255), `legal_person` varchar(255), `legal_person_ic` varchar(255), `register_address` varchar(255), `real_address` varchar(255), `business_scope` varchar(255), `real_business_scope` varchar(255), `contract_num` varchar(255), `contract_active_date` datetime, `contractor` varchar(255), `file_num` varchar(255), `finance_contact_name` varchar(255), `finance_contact_phone` varchar(255), `public_account_name` varchar(255), `public_account_num` varchar(255), `public_account_bank` varchar(255), `clearance_account_name` varchar(255), `clearance_account_num` varchar(255), `clearance_account_bank` varchar(255), `deploy_contact_name` varchar(255), `deploy_contact_phone` varchar(255), `status` varchar(255), `standard_rate` decimal(12,9) NOT NULL, `credit_account_id` int(11), `created_at` datetime, `updated_at` datetime, `accquire_org_id` int(11), `tag` varchar(255), `accept_global_voucher` tinyint(1) NOT NULL, `accept_own_voucher` tinyint(1) DEFAULT 0 NOT NULL, `notification_mobile` varchar(255)) ENGINE=InnoDB
+  [1m[36m (157.5ms)[0m  [1mCREATE UNIQUE INDEX `index_merchant_stores_on_merchant_number` USING btree ON `merchant_stores` (`merchant_number`) [0m
+  [1m[35m (157.9ms)[0m  CREATE  INDEX `index_merchant_stores_on_tag` USING btree ON `merchant_stores` (`tag`) 
+  [1m[36m (161.2ms)[0m  [1mCREATE TABLE `payment_media` (`id` int(11) auto_increment PRIMARY KEY, `media_type` varchar(255), `media_num` varchar(255), `card_type` varchar(255), `bank_name` varchar(255), `cashing_card` tinyint(1) DEFAULT 0 NOT NULL, `credit_account_id` int(11), `credit_earned` int(11) DEFAULT 0 NOT NULL, `lock_version` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (169.7ms)[0m  CREATE  INDEX `fk_payment_media_accounts` USING btree ON `payment_media` (`credit_account_id`) 
+  [1m[36m (156.9ms)[0m  [1mCREATE UNIQUE INDEX `media_num` USING btree ON `payment_media` (`media_num`, `media_type`) [0m
+  [1m[35m (188.5ms)[0m  CREATE TABLE `payment_plans` (`id` int(11) auto_increment PRIMARY KEY, `plan_type` varchar(255), `merchant_rate` decimal(12,9), `customer_rate` decimal(12,9), `referer_rate` decimal(12,9), `discount_amount` int(11), `discount_rate` decimal(12,9), `card_bin_id` int(11), `merchant_store_id` int(11), `created_at` datetime, `updated_at` datetime, `status` int(11) DEFAULT 0 NOT NULL, `valid_from` datetime, `valid_till` datetime, `discount_type` varchar(255), `bank_name` varchar(255), `minimal_money_amount` int(11) DEFAULT 0 NOT NULL, `voucher_status` int(11), `user_tag` varchar(255), `user_type` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB
+  [1m[36m (165.4ms)[0m  [1mCREATE  INDEX `fk_store_payment_plan` USING btree ON `payment_plans` (`merchant_store_id`) [0m
+  [1m[35m (154.3ms)[0m  CREATE TABLE `platform_accounts` (`id` int(11) auto_increment PRIMARY KEY, `account_name` varchar(255) NOT NULL, `access_key` varchar(255) NOT NULL, `access_target` varchar(255) NOT NULL, `remark` varchar(255), `created_at` datetime, `updated_at` datetime, `status` varchar(255)) ENGINE=InnoDB
+  [1m[36m (169.3ms)[0m  [1mCREATE UNIQUE INDEX `platform_account_account_name` USING btree ON `platform_accounts` (`account_name`) [0m
+  [1m[35m (152.5ms)[0m  CREATE TABLE `post_actions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `marketing_rule_id` int(11), `voucher_meta_id` int(11), `action_type` varchar(255), `voucher_count` int(11)) ENGINE=InnoDB
+  [1m[36m (176.3ms)[0m  [1mCREATE TABLE `sequence_numbers` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `number` varchar(255), `used` tinyint(1) DEFAULT 0 NOT NULL, `sequence_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (161.3ms)[0m  CREATE UNIQUE INDEX `index_sequence_numbers_on_number_and_sequence_id` USING btree ON `sequence_numbers` (`number`, `sequence_id`) 
+  [1m[36m (150.5ms)[0m  [1mCREATE TABLE `sequences` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `name` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (153.2ms)[0m  CREATE TABLE `system_users` (`id` int(11) auto_increment PRIMARY KEY, `real_name` varchar(255), `name` varchar(255), `password_digest` varchar(255), `role_name` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (132.9ms)[0m  [1mCREATE TABLE `transaction_archives` (`id` int(11) auto_increment PRIMARY KEY, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `consumer_credit` int(11), `referer_credit` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `ref_id` varchar(255), `confirmed` tinyint(1) DEFAULT 0 NOT NULL, `sequence_num` varchar(255), `transaction_datetime` varchar(255), `terminal_num` varchar(255), `merchant_amount` int(11), `status` int(11), `reason` varchar(255), `roll_back_ref` varchar(255), `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `voucher_info` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (131.7ms)[0m  CREATE TABLE `transaction_logs` (`id` int(11) NOT NULL, `log_type` int(11), `transaction_datetime` datetime NOT NULL, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `credit_delta` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `terminal_num` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `sequence_number` varchar(255), `merchant_amount` int(11), `created_at` datetime, `updated_at` datetime, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `status` int(11) NOT NULL, `ref_id` varchar(255), `internal_seq_num` int(11) DEFAULT 0 NOT NULL, `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `checked` int(11) DEFAULT 0 NOT NULL, `voucher_used_count` int(11) DEFAULT 0 NOT NULL, `voucher_deducted_amount` int(11) DEFAULT 0 NOT NULL, `referer_external_id` varchar(255), `referer_mobile` varchar(255), `referer_id` int(11), `credit_account_external_id` varchar(255)) ENGINE=InnoDB
+  [1m[36m (139.1ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_acquirer_code` USING btree ON `transaction_logs` (`acquirer_code`) [0m
+  [1m[35m (142.5ms)[0m  CREATE  INDEX `index_transaction_logs_on_credit_account_id` USING btree ON `transaction_logs` (`credit_account_id`) 
+  [1m[36m (178.5ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_merchant_num` USING btree ON `transaction_logs` (`merchant_num`) [0m
+  [1m[35m (199.9ms)[0m  CREATE  INDEX `index_transaction_logs_on_merchant_store_id` USING btree ON `transaction_logs` (`merchant_store_id`) 
+  [1m[36m (181.2ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_merchant_tag` USING btree ON `transaction_logs` (`merchant_tag`) [0m
+  [1m[35m (177.6ms)[0m  CREATE UNIQUE INDEX `unique_log` USING btree ON `transaction_logs` (`ref_id`, `internal_seq_num`, `status`, `transaction_datetime`) 
+  [1m[36m (167.1ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_ref_id` USING btree ON `transaction_logs` (`ref_id`) [0m
+  [1m[35m (167.4ms)[0m  CREATE  INDEX `index_transaction_logs_on_terminal_num` USING btree ON `transaction_logs` (`terminal_num`) 
+  [1m[36m (164.5ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_transaction_datetime` USING btree ON `transaction_logs` (`transaction_datetime`) [0m
+  [1m[35m (179.4ms)[0m  CREATE  INDEX `index_transaction_logs_on_user_tag` USING btree ON `transaction_logs` (`user_tag`) 
+  [1m[36m (174.1ms)[0m  [1mCREATE TABLE `transaction_post_actions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `payment_plan_id` int(11), `voucher_meta_id` int(11), `action_type` varchar(255), `money_condition` int(11), `accumulated_money_condition` int(11), `accumulated_consumption_time_condition` int(11), `valid_from` datetime, `valid_till` datetime, `status` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (168.8ms)[0m  CREATE  INDEX `index_transaction_post_actions_on_payment_plan_id` USING btree ON `transaction_post_actions` (`payment_plan_id`) 
+  [1m[36m (156.7ms)[0m  [1mCREATE  INDEX `index_transaction_post_actions_on_voucher_meta_id` USING btree ON `transaction_post_actions` (`voucher_meta_id`) [0m
+  [1m[35m (173.6ms)[0m  CREATE TABLE `transactions` (`id` int(11) auto_increment PRIMARY KEY, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `consumer_credit` int(11), `referer_credit` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `created_at` datetime, `updated_at` datetime, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `ref_id` varchar(255), `confirmed` tinyint(1) DEFAULT 0 NOT NULL, `sequence_num` varchar(255), `transaction_datetime` datetime, `terminal_num` varchar(255), `merchant_amount` int(11), `status` int(11), `reason` varchar(255), `roll_back_ref` varchar(255), `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `voucher_info` varchar(255)) ENGINE=InnoDB
+  [1m[36m (179.9ms)[0m  [1mCREATE  INDEX `index_transactions_on_ref_id` USING btree ON `transactions` (`ref_id`) [0m
+  [1m[35m (154.4ms)[0m  CREATE TABLE `voucher_meta` (`id` int(11) auto_increment PRIMARY KEY, `valid_from` datetime, `valid_till` datetime, `issuer_identifier` varchar(255), `issuer_name` varchar(255), `issuer_type` int(11), `settler_identifier` varchar(255), `settler_name` varchar(255), `settler_type` int(11), `initial_amount` int(11) DEFAULT -1 NOT NULL, `amount_left` int(11) DEFAULT -1 NOT NULL, `denomination` int(11), `limit_per_account` int(11) DEFAULT -1 NOT NULL, `aliases` varchar(255) NOT NULL, `code` varchar(255) NOT NULL, `remark` varchar(255), `status` int(11), `created_at` datetime, `updated_at` datetime, `merchant_group_id` int(11), `merchant_store_id` int(11), `applicable_type` int(11), `sequence_id` int(11), `money_condition` int(11) DEFAULT 0 NOT NULL, `issued_count` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB
+  [1m[36m (190.4ms)[0m  [1mCREATE UNIQUE INDEX `index_voucher_meta_on_aliases` USING btree ON `voucher_meta` (`aliases`) [0m
+  [1m[35m (285.5ms)[0m  CREATE UNIQUE INDEX `index_voucher_meta_on_code` USING btree ON `voucher_meta` (`code`) 
+  [1m[36m (503.3ms)[0m  [1mCREATE  INDEX `index_voucher_meta_on_issuer_identifier` USING btree ON `voucher_meta` (`issuer_identifier`) [0m
+  [1m[35m (367.8ms)[0m  CREATE UNIQUE INDEX `index_voucher_meta_on_sequence_id` USING btree ON `voucher_meta` (`sequence_id`) 
+  [1m[36m (227.0ms)[0m  [1mCREATE  INDEX `index_voucher_meta_on_settler_identifier` USING btree ON `voucher_meta` (`settler_identifier`) [0m
+  [1m[35m (170.2ms)[0m  CREATE TABLE `voucher_stores` (`id` int(11) auto_increment PRIMARY KEY, `merchant_store_id` int(11), `voucher_meta_id` int(11)) ENGINE=InnoDB
+  [1m[36m (180.3ms)[0m  [1mCREATE  INDEX `index_voucher_stores_on_merchant_store_id` USING btree ON `voucher_stores` (`merchant_store_id`) [0m
+  [1m[35m (159.7ms)[0m  CREATE  INDEX `index_voucher_stores_on_voucher_meta_id` USING btree ON `voucher_stores` (`voucher_meta_id`) 
+  [1m[36m (170.7ms)[0m  [1mCREATE TABLE `voucher_transaction_logs` (`id` int(11) NOT NULL, `mobile` varchar(255), `credit_account_id` int(11), `transaction_type` varchar(255), `transaction_datetime` datetime NOT NULL, `issuer_identifier` varchar(255), `issuer_name` varchar(255), `issuer_type` int(11), `settler_identifier` varchar(255), `settler_name` varchar(255), `settler_type` int(11), `denomination` int(11), `deducted_amount` int(11), `voucher_meta_code` varchar(255), `voucher_unique_id` varchar(255), `ref_id` varchar(255), `primary_transaction_ref_id` varchar(255), `issue_event` varchar(255), `merchant_name` varchar(255), `merchant_store_id` int(11), `merchant_num` varchar(255), `created_at` datetime, `updated_at` datetime, `checked` int(11) DEFAULT 0 NOT NULL, `voucher_sequence_number` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (179.4ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_credit_account_id` USING btree ON `voucher_transaction_logs` (`credit_account_id`) 
+  [1m[36m (157.1ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_issuer_identifier` USING btree ON `voucher_transaction_logs` (`issuer_identifier`) [0m
+  [1m[35m (157.9ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_merchant_store_id` USING btree ON `voucher_transaction_logs` (`merchant_store_id`) 
+  [1m[36m (166.5ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_primary_transaction_ref_id` USING btree ON `voucher_transaction_logs` (`primary_transaction_ref_id`) [0m
+  [1m[35m (167.2ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_ref_id` USING btree ON `voucher_transaction_logs` (`ref_id`) 
+  [1m[36m (177.3ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_settler_identifier` USING btree ON `voucher_transaction_logs` (`settler_identifier`) [0m
+  [1m[35m (178.6ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_voucher_unique_id` USING btree ON `voucher_transaction_logs` (`voucher_unique_id`) 
+  [1m[36m (162.6ms)[0m  [1mCREATE TABLE `vouchers` (`id` int(11) auto_increment PRIMARY KEY, `credit_account_id` int(11), `voucher_meta_id` int(11), `unique_id` varchar(255), `status` int(11), `created_at` datetime, `updated_at` datetime, `used_datetime` datetime, `sequence_number` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (169.2ms)[0m  CREATE  INDEX `index_vouchers_on_credit_account_id` USING btree ON `vouchers` (`credit_account_id`) 
+  [1m[36m (155.7ms)[0m  [1mCREATE UNIQUE INDEX `index_vouchers_on_sequence_number_and_voucher_meta_id` USING btree ON `vouchers` (`sequence_number`, `voucher_meta_id`) [0m
+  [1m[35m (156.5ms)[0m  CREATE UNIQUE INDEX `index_vouchers_on_unique_id` USING btree ON `vouchers` (`unique_id`) 
+  [1m[36m (166.4ms)[0m  [1mCREATE  INDEX `index_vouchers_on_voucher_meta_id` USING btree ON `vouchers` (`voucher_meta_id`) [0m
+  [1m[35m (179.7ms)[0m  ALTER TABLE `credit_cashing_applications` ADD CONSTRAINT `fk_cashing_application_credit_accounts` FOREIGN KEY (`credit_account_id`) REFERENCES `credit_accounts`(id) ON DELETE CASCADE
+  [1m[36m (165.9ms)[0m  [1mALTER TABLE `payment_media` ADD CONSTRAINT `fk_payment_media_accounts` FOREIGN KEY (`credit_account_id`) REFERENCES `credit_accounts`(id) ON DELETE CASCADE[0m
+  [1m[35m (260.0ms)[0m  ALTER TABLE `payment_plans` ADD CONSTRAINT `fk_store_payment_plan` FOREIGN KEY (`merchant_store_id`) REFERENCES `merchant_stores`(id) ON DELETE CASCADE
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (16.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20140824130901')
+  [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.3ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'acquirer_org'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `acquirer_org`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'activity_logs'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `activity_logs`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'card_bins'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `card_bins`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'configurations'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `configurations`
+  [1m[36m (0.3ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_accounts'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `credit_accounts`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_cashing_applications'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `credit_cashing_applications`
+  [1m[36m (0.5ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `marketing_rules`
+  [1m[36m (0.3ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules_payment_plans'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `marketing_rules_payment_plans`
+  [1m[36m (0.3ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'member_ships'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `member_ships`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_group_ships'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `merchant_group_ships`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_groups'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `merchant_groups`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_stores'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `merchant_stores`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_media'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `payment_media`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_plans'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `payment_plans`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'platform_accounts'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `platform_accounts`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'post_actions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `post_actions`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequence_numbers'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `sequence_numbers`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequences'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `sequences`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'system_users'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `system_users`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_archives'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transaction_archives`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_logs'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `transaction_logs`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_post_actions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transaction_post_actions`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transactions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transactions`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_meta'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `voucher_meta`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_stores'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `voucher_stores`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_transaction_logs'
+        [0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `voucher_transaction_logs`
+  [1m[36m (0.3ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'vouchers'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `vouchers`
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[35m (0.5ms)[0m  alter table transaction_logs drop primary key, add primary key(id, transaction_datetime);
+Mysql2::Error: Can't DROP 'PRIMARY'; check that column/key exists: alter table transaction_logs drop primary key, add primary key(id, transaction_datetime);
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[35m (316.9ms)[0m          ALTER TABLE transaction_logs PARTITION BY RANGE COLUMNS (transaction_datetime)(
+           PARTITION p8 VALUES LESS THAN ('2014-08-01'),
+           PARTITION p9 VALUES LESS THAN ('2014-09-01'),
+           PARTITION p10 VALUES LESS THAN ('2014-10-01'),
+           PARTITION p11 VALUES LESS THAN ('2014-11-01'),
+           PARTITION p12 VALUES LESS THAN ('2014-12-01'),
+           PARTITION p13 VALUES LESS THAN ('2015-01-01'),
+           PARTITION p14 VALUES LESS THAN ('2015-02-01'),
+           PARTITION p15 VALUES LESS THAN ('2015-03-01'),
+           PARTITION p16 VALUES LESS THAN ('2015-04-01'),
+           PARTITION p17 VALUES LESS THAN ('2015-05-01'),
+           PARTITION p18 VALUES LESS THAN ('2015-06-01'),
+           PARTITION p19 VALUES LESS THAN ('2015-07-01'),
+           PARTITION p20 VALUES LESS THAN ('2015-08-01'),
+           PARTITION p21 VALUES LESS THAN ('2015-09-01'),
+           PARTITION p22 VALUES LESS THAN ('2015-10-01'),
+           PARTITION p23 VALUES LESS THAN ('2015-11-01'),
+           PARTITION p24 VALUES LESS THAN ('2015-12-01'),
+           PARTITION p25 VALUES LESS THAN ('2016-01-01'),
+           PARTITION p26 VALUES LESS THAN ('2016-02-01'),
+           PARTITION p27 VALUES LESS THAN ('2016-03-01'),
+           PARTITION p28 VALUES LESS THAN ('2016-04-01'),
+           PARTITION p29 VALUES LESS THAN ('2016-05-01'),
+           PARTITION p30 VALUES LESS THAN ('2016-06-01'),
+           PARTITION p31 VALUES LESS THAN ('2016-07-01'),
+           PARTITION p32 VALUES LESS THAN ('2016-08-01'),
+           PARTITION p33 VALUES LESS THAN ('2016-09-01'),
+           PARTITION p34 VALUES LESS THAN ('2016-10-01'),
+           PARTITION p35 VALUES LESS THAN ('2016-11-01'),
+           PARTITION p36 VALUES LESS THAN ('2016-12-01'),
+           PARTITION p37 VALUES LESS THAN ('2017-01-01'),
+           PARTITION p38 VALUES LESS THAN ('2017-02-01'),
+           PARTITION p39 VALUES LESS THAN ('2017-03-01'),
+           PARTITION p40 VALUES LESS THAN ('2017-04-01'),
+           PARTITION p41 VALUES LESS THAN ('2017-05-01'),
+           PARTITION p42 VALUES LESS THAN ('2017-06-01'),
+           PARTITION p43 VALUES LESS THAN ('2017-07-01'),
+           PARTITION p44 VALUES LESS THAN ('2017-08-01'),
+           PARTITION p45 VALUES LESS THAN ('2017-09-01'),
+           PARTITION p46 VALUES LESS THAN ('2017-10-01'),
+           PARTITION p47 VALUES LESS THAN ('2017-11-01'),
+           PARTITION p48 VALUES LESS THAN ('2017-12-01'),
+           PARTITION p49 VALUES LESS THAN MAXVALUE
+        );
+
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20140824130902')
+  [1m[36m (0.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'acquirer_org'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `acquirer_org`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'activity_logs'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `activity_logs`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'card_bins'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `card_bins`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'configurations'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `configurations`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_accounts'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `credit_accounts`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_cashing_applications'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `credit_cashing_applications`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `marketing_rules`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules_payment_plans'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `marketing_rules_payment_plans`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'member_ships'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `member_ships`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_group_ships'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `merchant_group_ships`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_groups'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `merchant_groups`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_stores'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `merchant_stores`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_media'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `payment_media`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_plans'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `payment_plans`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'platform_accounts'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `platform_accounts`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'post_actions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `post_actions`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequence_numbers'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `sequence_numbers`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequences'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `sequences`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'system_users'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `system_users`
+  [1m[36m (0.1ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_archives'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transaction_archives`
+  [1m[36m (1.6ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_logs'
+        [0m
+  [1m[35m (1.2ms)[0m  SHOW CREATE TABLE `transaction_logs`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_post_actions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transaction_post_actions`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transactions'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `transactions`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_meta'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `voucher_meta`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_stores'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `voucher_stores`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_transaction_logs'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `voucher_transaction_logs`
+  [1m[36m (0.2ms)[0m  [1m
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'vouchers'
+        [0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `vouchers`
+  [1m[36m (143.4ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (217.1ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to InitSchema (20140824130901)
+  [1m[35m (145.4ms)[0m  CREATE TABLE `acquirer_org` (`id` int(11) auto_increment PRIMARY KEY, `acquirer_name` varchar(255), `acquirer_code` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (164.6ms)[0m  [1mCREATE TABLE `activity_logs` (`id` int(11) auto_increment PRIMARY KEY, `user_name` varchar(255), `ip_address` varchar(255), `action` varchar(255), `note` varchar(255), `object` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (143.9ms)[0m  CREATE TABLE `card_bins` (`id` int(11) auto_increment PRIMARY KEY, `card_code` varchar(255), `bank_name` varchar(255), `length` int(11), `bank_bin` varchar(255), `organization` int(11), `card_type` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (149.1ms)[0m  [1mCREATE  INDEX `index_card_bins_on_bank_bin` USING btree ON `card_bins` (`bank_bin`) [0m
+  [1m[35m (144.1ms)[0m  CREATE  INDEX `index_card_bins_on_bank_name` USING btree ON `card_bins` (`bank_name`) 
+  [1m[36m (185.2ms)[0m  [1mCREATE TABLE `configurations` (`id` int(11) auto_increment PRIMARY KEY, `key` varchar(255), `value` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (186.8ms)[0m  CREATE TABLE `credit_accounts` (`id` int(11) auto_increment PRIMARY KEY, `account_type` varchar(255), `name` varchar(255), `address` varchar(255), `mobile` varchar(255), `external_id` varchar(255) NOT NULL, `total_credit` int(11) DEFAULT 0 NOT NULL, `usable_credit` int(11) DEFAULT 0 NOT NULL, `locked_credit` int(11) DEFAULT 0 NOT NULL, `cashed_credit` int(11) DEFAULT 0 NOT NULL, `referer_credit` int(11) DEFAULT 0 NOT NULL, `referee_credit` int(11) DEFAULT 0 NOT NULL, `consumption_credit` int(11) DEFAULT 0 NOT NULL, `consumption_times` int(11) DEFAULT 0 NOT NULL, `referer_account_id` int(11), `lock_version` int(11), `status` int(11) DEFAULT 1 NOT NULL, `created_at` datetime, `updated_at` datetime, `tag` varchar(255)) ENGINE=InnoDB
+  [1m[36m (170.8ms)[0m  [1mCREATE UNIQUE INDEX `credit_account_external_id` USING btree ON `credit_accounts` (`external_id`) [0m
+  [1m[35m (172.1ms)[0m  CREATE UNIQUE INDEX `index_credit_accounts_on_mobile` USING btree ON `credit_accounts` (`mobile`) 
+  [1m[36m (186.3ms)[0m  [1mCREATE  INDEX `index_credit_accounts_on_tag` USING btree ON `credit_accounts` (`tag`) [0m
+  [1m[35m (192.2ms)[0m  CREATE TABLE `credit_cashing_applications` (`id` int(11) auto_increment PRIMARY KEY, `bank_card` varchar(255), `bank_name` varchar(255), `real_name` varchar(255), `amount` int(11), `status` int(11) DEFAULT 101 NOT NULL, `comment` varchar(255), `credit_account_id` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (210.2ms)[0m  [1mCREATE  INDEX `fk_cashing_application_credit_accounts` USING btree ON `credit_cashing_applications` (`credit_account_id`) [0m
+  [1m[35m (135.8ms)[0m  CREATE TABLE `marketing_rules` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `merchant_store_id` int(11), `rule_type` varchar(255), `money_condition` int(11), `accumulated_money_condition` int(11), `accumulated_consumption_time_condition` int(11), `valid_from` datetime, `valid_till` datetime, `status` int(11)) ENGINE=InnoDB
+  [1m[36m (189.1ms)[0m  [1mCREATE TABLE `marketing_rules_payment_plans` (`id` int(11) auto_increment PRIMARY KEY, `marketing_rule_id` int(11), `payment_plan_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (170.3ms)[0m  CREATE  INDEX `index_marketing_rules_payment_plans_on_marketing_rule_id` USING btree ON `marketing_rules_payment_plans` (`marketing_rule_id`) 
+  [1m[36m (166.9ms)[0m  [1mCREATE  INDEX `index_marketing_rules_payment_plans_on_payment_plan_id` USING btree ON `marketing_rules_payment_plans` (`payment_plan_id`) [0m
+  [1m[35m (197.0ms)[0m  CREATE TABLE `member_ships` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `member_group_id` int(11), `member_group_type` varchar(255), `credit_account_id` int(11)) ENGINE=InnoDB
+  [1m[36m (191.1ms)[0m  [1mCREATE  INDEX `index_member_ships_on_credit_account_id` USING btree ON `member_ships` (`credit_account_id`) [0m
+  [1m[35m (168.3ms)[0m  CREATE  INDEX `index_member_ships_on_member_group_id_and_member_group_type` USING btree ON `member_ships` (`member_group_id`, `member_group_type`) 
+  [1m[36m (190.2ms)[0m  [1mCREATE TABLE `merchant_group_ships` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `merchant_store_id` int(11), `merchant_group_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (194.3ms)[0m  CREATE  INDEX `index_merchant_group_ships_on_merchant_group_id` USING btree ON `merchant_group_ships` (`merchant_group_id`) 
+  [1m[36m (137.2ms)[0m  [1mCREATE  INDEX `index_merchant_group_ships_on_merchant_store_id` USING btree ON `merchant_group_ships` (`merchant_store_id`) [0m
+  [1m[35m (184.9ms)[0m  CREATE TABLE `merchant_groups` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `name` varchar(255), `display_name` varchar(255)) ENGINE=InnoDB
+  [1m[36m (203.2ms)[0m  [1mCREATE UNIQUE INDEX `index_merchant_groups_on_name` USING btree ON `merchant_groups` (`name`) [0m
+  [1m[35m (162.1ms)[0m  CREATE TABLE `merchant_stores` (`id` int(11) auto_increment PRIMARY KEY, `name` varchar(255) NOT NULL, `merchant_number` varchar(255) NOT NULL, `license_name` varchar(255), `license_num` varchar(255), `license_expire_date` varchar(255), `tax_number` varchar(255), `organization_code` varchar(255), `legal_person` varchar(255), `legal_person_ic` varchar(255), `register_address` varchar(255), `real_address` varchar(255), `business_scope` varchar(255), `real_business_scope` varchar(255), `contract_num` varchar(255), `contract_active_date` datetime, `contractor` varchar(255), `file_num` varchar(255), `finance_contact_name` varchar(255), `finance_contact_phone` varchar(255), `public_account_name` varchar(255), `public_account_num` varchar(255), `public_account_bank` varchar(255), `clearance_account_name` varchar(255), `clearance_account_num` varchar(255), `clearance_account_bank` varchar(255), `deploy_contact_name` varchar(255), `deploy_contact_phone` varchar(255), `status` varchar(255), `standard_rate` decimal(12,9) NOT NULL, `credit_account_id` int(11), `created_at` datetime, `updated_at` datetime, `accquire_org_id` int(11), `tag` varchar(255), `accept_global_voucher` tinyint(1) NOT NULL, `accept_own_voucher` tinyint(1) DEFAULT 0 NOT NULL, `notification_mobile` varchar(255)) ENGINE=InnoDB
+  [1m[36m (161.8ms)[0m  [1mCREATE UNIQUE INDEX `index_merchant_stores_on_merchant_number` USING btree ON `merchant_stores` (`merchant_number`) [0m
+  [1m[35m (199.5ms)[0m  CREATE  INDEX `index_merchant_stores_on_tag` USING btree ON `merchant_stores` (`tag`) 
+  [1m[36m (178.1ms)[0m  [1mCREATE TABLE `payment_media` (`id` int(11) auto_increment PRIMARY KEY, `media_type` varchar(255), `media_num` varchar(255), `card_type` varchar(255), `bank_name` varchar(255), `cashing_card` tinyint(1) DEFAULT 0 NOT NULL, `credit_account_id` int(11), `credit_earned` int(11) DEFAULT 0 NOT NULL, `lock_version` int(11), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (187.4ms)[0m  CREATE  INDEX `fk_payment_media_accounts` USING btree ON `payment_media` (`credit_account_id`) 
+  [1m[36m (167.0ms)[0m  [1mCREATE UNIQUE INDEX `media_num` USING btree ON `payment_media` (`media_num`, `media_type`) [0m
+  [1m[35m (162.7ms)[0m  CREATE TABLE `payment_plans` (`id` int(11) auto_increment PRIMARY KEY, `plan_type` varchar(255), `merchant_rate` decimal(12,9), `customer_rate` decimal(12,9), `referer_rate` decimal(12,9), `discount_amount` int(11), `discount_rate` decimal(12,9), `card_bin_id` int(11), `merchant_store_id` int(11), `created_at` datetime, `updated_at` datetime, `status` int(11) DEFAULT 0 NOT NULL, `valid_from` datetime, `valid_till` datetime, `discount_type` varchar(255), `bank_name` varchar(255), `minimal_money_amount` int(11) DEFAULT 0 NOT NULL, `voucher_status` int(11), `user_tag` varchar(255), `user_type` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB
+  [1m[36m (180.3ms)[0m  [1mCREATE  INDEX `fk_store_payment_plan` USING btree ON `payment_plans` (`merchant_store_id`) [0m
+  [1m[35m (152.8ms)[0m  CREATE TABLE `platform_accounts` (`id` int(11) auto_increment PRIMARY KEY, `account_name` varchar(255) NOT NULL, `access_key` varchar(255) NOT NULL, `access_target` varchar(255) NOT NULL, `remark` varchar(255), `created_at` datetime, `updated_at` datetime, `status` varchar(255)) ENGINE=InnoDB
+  [1m[36m (181.7ms)[0m  [1mCREATE UNIQUE INDEX `platform_account_account_name` USING btree ON `platform_accounts` (`account_name`) [0m
+  [1m[35m (151.1ms)[0m  CREATE TABLE `post_actions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `marketing_rule_id` int(11), `voucher_meta_id` int(11), `action_type` varchar(255), `voucher_count` int(11)) ENGINE=InnoDB
+  [1m[36m (165.8ms)[0m  [1mCREATE TABLE `sequence_numbers` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `number` varchar(255), `used` tinyint(1) DEFAULT 0 NOT NULL, `sequence_id` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (147.3ms)[0m  CREATE UNIQUE INDEX `index_sequence_numbers_on_number_and_sequence_id` USING btree ON `sequence_numbers` (`number`, `sequence_id`) 
+  [1m[36m (166.0ms)[0m  [1mCREATE TABLE `sequences` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `name` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (231.1ms)[0m  CREATE TABLE `system_users` (`id` int(11) auto_increment PRIMARY KEY, `real_name` varchar(255), `name` varchar(255), `password_digest` varchar(255), `role_name` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB
+  [1m[36m (177.8ms)[0m  [1mCREATE TABLE `transaction_archives` (`id` int(11) auto_increment PRIMARY KEY, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `consumer_credit` int(11), `referer_credit` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `ref_id` varchar(255), `confirmed` tinyint(1) DEFAULT 0 NOT NULL, `sequence_num` varchar(255), `transaction_datetime` varchar(255), `terminal_num` varchar(255), `merchant_amount` int(11), `status` int(11), `reason` varchar(255), `roll_back_ref` varchar(255), `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `voucher_info` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (154.1ms)[0m  CREATE TABLE `transaction_logs` (`id` int(11) NOT NULL, `log_type` int(11), `transaction_datetime` datetime NOT NULL, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `credit_delta` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `terminal_num` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `sequence_number` varchar(255), `merchant_amount` int(11), `created_at` datetime, `updated_at` datetime, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `status` int(11) NOT NULL, `ref_id` varchar(255), `internal_seq_num` int(11) DEFAULT 0 NOT NULL, `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `checked` int(11) DEFAULT 0 NOT NULL, `voucher_used_count` int(11) DEFAULT 0 NOT NULL, `voucher_deducted_amount` int(11) DEFAULT 0 NOT NULL, `referer_external_id` varchar(255), `referer_mobile` varchar(255), `referer_id` int(11), `credit_account_external_id` varchar(255)) ENGINE=InnoDB
+  [1m[36m (170.2ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_acquirer_code` USING btree ON `transaction_logs` (`acquirer_code`) [0m
+  [1m[35m (189.5ms)[0m  CREATE  INDEX `index_transaction_logs_on_credit_account_id` USING btree ON `transaction_logs` (`credit_account_id`) 
+  [1m[36m (189.6ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_merchant_num` USING btree ON `transaction_logs` (`merchant_num`) [0m
+  [1m[35m (166.4ms)[0m  CREATE  INDEX `index_transaction_logs_on_merchant_store_id` USING btree ON `transaction_logs` (`merchant_store_id`) 
+  [1m[36m (167.7ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_merchant_tag` USING btree ON `transaction_logs` (`merchant_tag`) [0m
+  [1m[35m (177.6ms)[0m  CREATE UNIQUE INDEX `unique_log` USING btree ON `transaction_logs` (`ref_id`, `internal_seq_num`, `status`, `transaction_datetime`) 
+  [1m[36m (181.8ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_ref_id` USING btree ON `transaction_logs` (`ref_id`) [0m
+  [1m[35m (226.2ms)[0m  CREATE  INDEX `index_transaction_logs_on_terminal_num` USING btree ON `transaction_logs` (`terminal_num`) 
+  [1m[36m (171.0ms)[0m  [1mCREATE  INDEX `index_transaction_logs_on_transaction_datetime` USING btree ON `transaction_logs` (`transaction_datetime`) [0m
+  [1m[35m (178.4ms)[0m  CREATE  INDEX `index_transaction_logs_on_user_tag` USING btree ON `transaction_logs` (`user_tag`) 
+  [1m[36m (174.3ms)[0m  [1mCREATE TABLE `transaction_post_actions` (`id` int(11) auto_increment PRIMARY KEY, `created_at` datetime, `updated_at` datetime, `payment_plan_id` int(11), `voucher_meta_id` int(11), `action_type` varchar(255), `money_condition` int(11), `accumulated_money_condition` int(11), `accumulated_consumption_time_condition` int(11), `valid_from` datetime, `valid_till` datetime, `status` int(11)) ENGINE=InnoDB[0m
+  [1m[35m (180.0ms)[0m  CREATE  INDEX `index_transaction_post_actions_on_payment_plan_id` USING btree ON `transaction_post_actions` (`payment_plan_id`) 
+  [1m[36m (167.9ms)[0m  [1mCREATE  INDEX `index_transaction_post_actions_on_voucher_meta_id` USING btree ON `transaction_post_actions` (`voucher_meta_id`) [0m
+  [1m[35m (163.5ms)[0m  CREATE TABLE `transactions` (`id` int(11) auto_increment PRIMARY KEY, `transaction_type` varchar(255), `money_amount` int(11), `actual_money_amount` int(11), `payment_plan_id` int(11), `credit_account_id` int(11), `merchant_store_id` int(11), `consumer_credit` int(11), `referer_credit` int(11), `mobile` varchar(255), `customer_name` varchar(255), `merchant_name` varchar(255), `media_num` varchar(255), `media_type` varchar(255), `created_at` datetime, `updated_at` datetime, `merchant_num` varchar(255), `plan_type` varchar(255), `matched_bank` varchar(255), `ref_id` varchar(255), `confirmed` tinyint(1) DEFAULT 0 NOT NULL, `sequence_num` varchar(255), `transaction_datetime` datetime, `terminal_num` varchar(255), `merchant_amount` int(11), `status` int(11), `reason` varchar(255), `roll_back_ref` varchar(255), `acquirer_code` varchar(255), `merchant_tag` varchar(255), `user_tag` varchar(255), `merchant_rate` decimal(12,9), `voucher_info` varchar(255)) ENGINE=InnoDB
+  [1m[36m (427.1ms)[0m  [1mCREATE  INDEX `index_transactions_on_ref_id` USING btree ON `transactions` (`ref_id`) [0m
+  [1m[35m (404.9ms)[0m  CREATE TABLE `voucher_meta` (`id` int(11) auto_increment PRIMARY KEY, `valid_from` datetime, `valid_till` datetime, `issuer_identifier` varchar(255), `issuer_name` varchar(255), `issuer_type` int(11), `settler_identifier` varchar(255), `settler_name` varchar(255), `settler_type` int(11), `initial_amount` int(11) DEFAULT -1 NOT NULL, `amount_left` int(11) DEFAULT -1 NOT NULL, `denomination` int(11), `limit_per_account` int(11) DEFAULT -1 NOT NULL, `aliases` varchar(255) NOT NULL, `code` varchar(255) NOT NULL, `remark` varchar(255), `status` int(11), `created_at` datetime, `updated_at` datetime, `merchant_group_id` int(11), `merchant_store_id` int(11), `applicable_type` int(11), `sequence_id` int(11), `money_condition` int(11) DEFAULT 0 NOT NULL, `issued_count` int(11) DEFAULT 0 NOT NULL) ENGINE=InnoDB
+  [1m[36m (280.8ms)[0m  [1mCREATE UNIQUE INDEX `index_voucher_meta_on_aliases` USING btree ON `voucher_meta` (`aliases`) [0m
+  [1m[35m (178.7ms)[0m  CREATE UNIQUE INDEX `index_voucher_meta_on_code` USING btree ON `voucher_meta` (`code`) 
+  [1m[36m (178.0ms)[0m  [1mCREATE  INDEX `index_voucher_meta_on_issuer_identifier` USING btree ON `voucher_meta` (`issuer_identifier`) [0m
+  [1m[35m (179.8ms)[0m  CREATE UNIQUE INDEX `index_voucher_meta_on_sequence_id` USING btree ON `voucher_meta` (`sequence_id`) 
+  [1m[36m (187.9ms)[0m  [1mCREATE  INDEX `index_voucher_meta_on_settler_identifier` USING btree ON `voucher_meta` (`settler_identifier`) [0m
+  [1m[35m (175.0ms)[0m  CREATE TABLE `voucher_stores` (`id` int(11) auto_increment PRIMARY KEY, `merchant_store_id` int(11), `voucher_meta_id` int(11)) ENGINE=InnoDB
+  [1m[36m (253.8ms)[0m  [1mCREATE  INDEX `index_voucher_stores_on_merchant_store_id` USING btree ON `voucher_stores` (`merchant_store_id`) [0m
+  [1m[35m (161.1ms)[0m  CREATE  INDEX `index_voucher_stores_on_voucher_meta_id` USING btree ON `voucher_stores` (`voucher_meta_id`) 
+  [1m[36m (230.1ms)[0m  [1mCREATE TABLE `voucher_transaction_logs` (`id` int(11) NOT NULL, `mobile` varchar(255), `credit_account_id` int(11), `transaction_type` varchar(255), `transaction_datetime` datetime NOT NULL, `issuer_identifier` varchar(255), `issuer_name` varchar(255), `issuer_type` int(11), `settler_identifier` varchar(255), `settler_name` varchar(255), `settler_type` int(11), `denomination` int(11), `deducted_amount` int(11), `voucher_meta_code` varchar(255), `voucher_unique_id` varchar(255), `ref_id` varchar(255), `primary_transaction_ref_id` varchar(255), `issue_event` varchar(255), `merchant_name` varchar(255), `merchant_store_id` int(11), `merchant_num` varchar(255), `created_at` datetime, `updated_at` datetime, `checked` int(11) DEFAULT 0 NOT NULL, `voucher_sequence_number` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (214.9ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_credit_account_id` USING btree ON `voucher_transaction_logs` (`credit_account_id`) 
+  [1m[36m (155.4ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_issuer_identifier` USING btree ON `voucher_transaction_logs` (`issuer_identifier`) [0m
+  [1m[35m (177.0ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_merchant_store_id` USING btree ON `voucher_transaction_logs` (`merchant_store_id`) 
+  [1m[36m (178.7ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_primary_transaction_ref_id` USING btree ON `voucher_transaction_logs` (`primary_transaction_ref_id`) [0m
+  [1m[35m (178.1ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_ref_id` USING btree ON `voucher_transaction_logs` (`ref_id`) 
+  [1m[36m (179.9ms)[0m  [1mCREATE  INDEX `index_voucher_transaction_logs_on_settler_identifier` USING btree ON `voucher_transaction_logs` (`settler_identifier`) [0m
+  [1m[35m (191.9ms)[0m  CREATE  INDEX `index_voucher_transaction_logs_on_voucher_unique_id` USING btree ON `voucher_transaction_logs` (`voucher_unique_id`) 
+  [1m[36m (240.6ms)[0m  [1mCREATE TABLE `vouchers` (`id` int(11) auto_increment PRIMARY KEY, `credit_account_id` int(11), `voucher_meta_id` int(11), `unique_id` varchar(255), `status` int(11), `created_at` datetime, `updated_at` datetime, `used_datetime` datetime, `sequence_number` varchar(255)) ENGINE=InnoDB[0m
+  [1m[35m (224.1ms)[0m  CREATE  INDEX `index_vouchers_on_credit_account_id` USING btree ON `vouchers` (`credit_account_id`) 
+  [1m[36m (166.2ms)[0m  [1mCREATE UNIQUE INDEX `index_vouchers_on_sequence_number_and_voucher_meta_id` USING btree ON `vouchers` (`sequence_number`, `voucher_meta_id`) [0m
+  [1m[35m (177.4ms)[0m  CREATE UNIQUE INDEX `index_vouchers_on_unique_id` USING btree ON `vouchers` (`unique_id`) 
+  [1m[36m (178.9ms)[0m  [1mCREATE  INDEX `index_vouchers_on_voucher_meta_id` USING btree ON `vouchers` (`voucher_meta_id`) [0m
+  [1m[35m (177.0ms)[0m  ALTER TABLE `credit_cashing_applications` ADD CONSTRAINT `fk_cashing_application_credit_accounts` FOREIGN KEY (`credit_account_id`) REFERENCES `credit_accounts`(id) ON DELETE CASCADE
+  [1m[36m (188.1ms)[0m  [1mALTER TABLE `payment_media` ADD CONSTRAINT `fk_payment_media_accounts` FOREIGN KEY (`credit_account_id`) REFERENCES `credit_accounts`(id) ON DELETE CASCADE[0m
+  [1m[35m (178.8ms)[0m  ALTER TABLE `payment_plans` ADD CONSTRAINT `fk_store_payment_plan` FOREIGN KEY (`merchant_store_id`) REFERENCES `merchant_stores`(id) ON DELETE CASCADE
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20140824130901')
+  [1m[36m (0.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[35m (0.4ms)[0m  add primary key(id, transaction_datetime);
+Mysql2::Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add primary key(id, transaction_datetime)' at line 1: add primary key(id, transaction_datetime);
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[35m (0.5ms)[0m  alter table add primary key(id, transaction_datetime);
+Mysql2::Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add primary key(id, transaction_datetime)' at line 1: alter table add primary key(id, transaction_datetime);
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateTransactionLogPartitions (20140824130902)
+  [1m[35m (143.9ms)[0m  alter table transaction_logs add primary key(id, transaction_datetime);
+  [1m[36m (314.1ms)[0m  [1m        ALTER TABLE transaction_logs PARTITION BY RANGE COLUMNS (transaction_datetime)(
+           PARTITION p8 VALUES LESS THAN ('2014-08-01'),
+           PARTITION p9 VALUES LESS THAN ('2014-09-01'),
+           PARTITION p10 VALUES LESS THAN ('2014-10-01'),
+           PARTITION p11 VALUES LESS THAN ('2014-11-01'),
+           PARTITION p12 VALUES LESS THAN ('2014-12-01'),
+           PARTITION p13 VALUES LESS THAN ('2015-01-01'),
+           PARTITION p14 VALUES LESS THAN ('2015-02-01'),
+           PARTITION p15 VALUES LESS THAN ('2015-03-01'),
+           PARTITION p16 VALUES LESS THAN ('2015-04-01'),
+           PARTITION p17 VALUES LESS THAN ('2015-05-01'),
+           PARTITION p18 VALUES LESS THAN ('2015-06-01'),
+           PARTITION p19 VALUES LESS THAN ('2015-07-01'),
+           PARTITION p20 VALUES LESS THAN ('2015-08-01'),
+           PARTITION p21 VALUES LESS THAN ('2015-09-01'),
+           PARTITION p22 VALUES LESS THAN ('2015-10-01'),
+           PARTITION p23 VALUES LESS THAN ('2015-11-01'),
+           PARTITION p24 VALUES LESS THAN ('2015-12-01'),
+           PARTITION p25 VALUES LESS THAN ('2016-01-01'),
+           PARTITION p26 VALUES LESS THAN ('2016-02-01'),
+           PARTITION p27 VALUES LESS THAN ('2016-03-01'),
+           PARTITION p28 VALUES LESS THAN ('2016-04-01'),
+           PARTITION p29 VALUES LESS THAN ('2016-05-01'),
+           PARTITION p30 VALUES LESS THAN ('2016-06-01'),
+           PARTITION p31 VALUES LESS THAN ('2016-07-01'),
+           PARTITION p32 VALUES LESS THAN ('2016-08-01'),
+           PARTITION p33 VALUES LESS THAN ('2016-09-01'),
+           PARTITION p34 VALUES LESS THAN ('2016-10-01'),
+           PARTITION p35 VALUES LESS THAN ('2016-11-01'),
+           PARTITION p36 VALUES LESS THAN ('2016-12-01'),
+           PARTITION p37 VALUES LESS THAN ('2017-01-01'),
+           PARTITION p38 VALUES LESS THAN ('2017-02-01'),
+           PARTITION p39 VALUES LESS THAN ('2017-03-01'),
+           PARTITION p40 VALUES LESS THAN ('2017-04-01'),
+           PARTITION p41 VALUES LESS THAN ('2017-05-01'),
+           PARTITION p42 VALUES LESS THAN ('2017-06-01'),
+           PARTITION p43 VALUES LESS THAN ('2017-07-01'),
+           PARTITION p44 VALUES LESS THAN ('2017-08-01'),
+           PARTITION p45 VALUES LESS THAN ('2017-09-01'),
+           PARTITION p46 VALUES LESS THAN ('2017-10-01'),
+           PARTITION p47 VALUES LESS THAN ('2017-11-01'),
+           PARTITION p48 VALUES LESS THAN ('2017-12-01'),
+           PARTITION p49 VALUES LESS THAN MAXVALUE
+        );
+[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20140824130902')[0m
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'acquirer_org'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `acquirer_org`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'activity_logs'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `activity_logs`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'card_bins'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `card_bins`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'configurations'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `configurations`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_accounts'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `credit_accounts`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_cashing_applications'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `credit_cashing_applications`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `marketing_rules`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules_payment_plans'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `marketing_rules_payment_plans`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'member_ships'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `member_ships`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_group_ships'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_group_ships`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_groups'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_groups`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_stores'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_stores`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_media'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `payment_media`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_plans'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `payment_plans`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'platform_accounts'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `platform_accounts`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'post_actions'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `post_actions`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequence_numbers'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `sequence_numbers`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequences'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `sequences`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'system_users'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `system_users`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_archives'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `transaction_archives`[0m
+  [1m[35m (1.6ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_logs'
+        
+  [1m[36m (1.2ms)[0m  [1mSHOW CREATE TABLE `transaction_logs`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_post_actions'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `transaction_post_actions`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transactions'
+        
+  [1m[36m (0.2ms)[0m  [1mSHOW CREATE TABLE `transactions`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_meta'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `voucher_meta`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_stores'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `voucher_stores`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_transaction_logs'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `voucher_transaction_logs`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'vouchers'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `vouchers`[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateVoucherTransactionLogPartitions (20140824130903)
+  [1m[35m (164.5ms)[0m  alter table voucher_transaction_logs add primary key(id, transaction_datetime);
+  [1m[36m (485.9ms)[0m  [1m        ALTER TABLE voucher_transaction_logs PARTITION BY RANGE COLUMNS (transaction_datetime)(
+           PARTITION p8 VALUES LESS THAN ('2014-08-01'),
+           PARTITION p9 VALUES LESS THAN ('2014-09-01'),
+           PARTITION p10 VALUES LESS THAN ('2014-10-01'),
+           PARTITION p11 VALUES LESS THAN ('2014-11-01'),
+           PARTITION p12 VALUES LESS THAN ('2014-12-01'),
+           PARTITION p13 VALUES LESS THAN ('2015-01-01'),
+           PARTITION p14 VALUES LESS THAN ('2015-02-01'),
+           PARTITION p15 VALUES LESS THAN ('2015-03-01'),
+           PARTITION p16 VALUES LESS THAN ('2015-04-01'),
+           PARTITION p17 VALUES LESS THAN ('2015-05-01'),
+           PARTITION p18 VALUES LESS THAN ('2015-06-01'),
+           PARTITION p19 VALUES LESS THAN ('2015-07-01'),
+           PARTITION p20 VALUES LESS THAN ('2015-08-01'),
+           PARTITION p21 VALUES LESS THAN ('2015-09-01'),
+           PARTITION p22 VALUES LESS THAN ('2015-10-01'),
+           PARTITION p23 VALUES LESS THAN ('2015-11-01'),
+           PARTITION p24 VALUES LESS THAN ('2015-12-01'),
+           PARTITION p25 VALUES LESS THAN ('2016-01-01'),
+           PARTITION p26 VALUES LESS THAN ('2016-02-01'),
+           PARTITION p27 VALUES LESS THAN ('2016-03-01'),
+           PARTITION p28 VALUES LESS THAN ('2016-04-01'),
+           PARTITION p29 VALUES LESS THAN ('2016-05-01'),
+           PARTITION p30 VALUES LESS THAN ('2016-06-01'),
+           PARTITION p31 VALUES LESS THAN ('2016-07-01'),
+           PARTITION p32 VALUES LESS THAN ('2016-08-01'),
+           PARTITION p33 VALUES LESS THAN ('2016-09-01'),
+           PARTITION p34 VALUES LESS THAN ('2016-10-01'),
+           PARTITION p35 VALUES LESS THAN ('2016-11-01'),
+           PARTITION p36 VALUES LESS THAN ('2016-12-01'),
+           PARTITION p37 VALUES LESS THAN ('2017-01-01'),
+           PARTITION p38 VALUES LESS THAN ('2017-02-01'),
+           PARTITION p39 VALUES LESS THAN ('2017-03-01'),
+           PARTITION p40 VALUES LESS THAN ('2017-04-01'),
+           PARTITION p41 VALUES LESS THAN ('2017-05-01'),
+           PARTITION p42 VALUES LESS THAN ('2017-06-01'),
+           PARTITION p43 VALUES LESS THAN ('2017-07-01'),
+           PARTITION p44 VALUES LESS THAN ('2017-08-01'),
+           PARTITION p45 VALUES LESS THAN ('2017-09-01'),
+           PARTITION p46 VALUES LESS THAN ('2017-10-01'),
+           PARTITION p47 VALUES LESS THAN ('2017-11-01'),
+           PARTITION p48 VALUES LESS THAN ('2017-12-01'),
+           PARTITION p49 VALUES LESS THAN MAXVALUE
+        );
+[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20140824130903')[0m
+  [1m[35m (0.5ms)[0m  COMMIT
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'acquirer_org'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `acquirer_org`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'activity_logs'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `activity_logs`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'card_bins'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `card_bins`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'configurations'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `configurations`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_accounts'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `credit_accounts`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'credit_cashing_applications'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `credit_cashing_applications`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `marketing_rules`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'marketing_rules_payment_plans'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `marketing_rules_payment_plans`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'member_ships'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `member_ships`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_group_ships'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_group_ships`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_groups'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_groups`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'merchant_stores'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `merchant_stores`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_media'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `payment_media`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'payment_plans'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `payment_plans`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'platform_accounts'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `platform_accounts`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'post_actions'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `post_actions`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequence_numbers'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `sequence_numbers`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'sequences'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `sequences`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'system_users'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `system_users`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_archives'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `transaction_archives`[0m
+  [1m[35m (1.6ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_logs'
+        
+  [1m[36m (1.2ms)[0m  [1mSHOW CREATE TABLE `transaction_logs`[0m
+  [1m[35m (0.3ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transaction_post_actions'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `transaction_post_actions`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'transactions'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `transactions`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_meta'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `voucher_meta`[0m
+  [1m[35m (0.1ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_stores'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `voucher_stores`[0m
+  [1m[35m (1.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'voucher_transaction_logs'
+        
+  [1m[36m (1.1ms)[0m  [1mSHOW CREATE TABLE `voucher_transaction_logs`[0m
+  [1m[35m (0.2ms)[0m  
+          SELECT fk.referenced_table_name as 'to_table'
+                ,fk.referenced_column_name as 'primary_key'
+                ,fk.column_name as 'column'
+                ,fk.constraint_name as 'name'
+          FROM information_schema.key_column_usage fk
+          WHERE fk.referenced_column_name is not null
+            AND fk.table_schema = 'core_system_development'
+            AND fk.table_name = 'vouchers'
+        
+  [1m[36m (0.1ms)[0m  [1mSHOW CREATE TABLE `vouchers`[0m
