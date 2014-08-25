@@ -5,5 +5,9 @@ module Users
     has_secure_password
     validates_uniqueness_of :name
     validates_presence_of :role_name
+
+    def has_role?(role)
+      role_name == role
+    end
   end
 end

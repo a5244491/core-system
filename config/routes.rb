@@ -53,4 +53,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  captcha_route
+  root to: 'sessions#new'
+  resources :sessions, only: [:new, :create]
+  get '/logout', to: 'sessions#destroy'
 end

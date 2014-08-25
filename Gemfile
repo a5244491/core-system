@@ -29,6 +29,10 @@ gem 'foreigner'
 gem 'bcrypt-ruby', '~> 3.1.2', :require => 'bcrypt'
 gem 'composite_primary_keys', '7.0.10'
 gem 'aasm'
+gem 'foundation-rails'
+gem 'cancancan', '~> 1.8'
+gem 'easy_captcha'
+gem 'rmagick', require: false
 
 group :test do
   gem 'rspec', '2.14.1'

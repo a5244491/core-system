@@ -1,0 +1,2 @@
+class IllegalOperationException < StandardError
+end
