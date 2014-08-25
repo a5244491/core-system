@@ -1,11 +1,12 @@
-class SessionsController < ApplicationController
-  skip_authorize_resource
-  skip_before_filter :check_login
+class SessionsController < ActionController::Base
   layout :false
   include SessionManager
+  include ActivityManager
 
   def new
-
+    if logged_in?
+      redirect_to '/merchant/merchant_stores' and return
+    end
   end
 
   def create
@@ -17,7 +18,7 @@ class SessionsController < ApplicationController
     system_user = Users::SystemUser.where({:name => params[:username]}).first
     if system_user and system_user.authenticate(params[:password])
       create_session system_user
-      record_activities('登录','登录',"[#{params[:username]}]登录系统")
+      record_activities('登录', '登录', "[#{params[:username]}]登录系统")
       redirect_to '/merchant/merchant_stores'
     else
       flash[:error] = Tips::LOGIN_ERROR

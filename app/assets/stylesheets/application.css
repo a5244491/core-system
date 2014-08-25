@@ -14,6 +14,9 @@
  *= require_self
  *= require bootstrap
  *= require plugins/metisMenu/metisMenu
+ *= require plugins/timeline
  *= require sb-admin-2
- *= require font-awesome
+ *= require plugins/morris
+ *= require font-awesome-4.1.0/css/font-awesome
+ *= require plugins/dataTables.bootstrap
  */

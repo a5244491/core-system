@@ -14,5 +14,8 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require plugins/metisMenu/metisMenu
+//= require plugins/morris/raphael.min
+//= require plugins/morris/morris
+//= require plugins/morris/morris-data
 //= require sb-admin-2.js
 //= require_tree .
