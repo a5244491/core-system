@@ -19291,3 +19291,61 @@ Completed 200 OK in 334ms (Views: 324.9ms | ActiveRecord: 0.9ms)
   [1m[36m (0.2ms)[0m  [1mSELECT COUNT(*) FROM `payment_plans`  WHERE (status =0 or valid_from > '2014-08-26 12:18:53' or valid_till < '2014-08-26 12:18:53')[0m
   [1m[35mPay::PaymentPlan Load (0.1ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`   ORDER BY `payment_plans`.`id` ASC LIMIT 1
   [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.3ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE `merchant_stores`.`merchant_number` = BINARY '11' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `merchant_stores` (`accept_global_voucher`, `created_at`, `merchant_number`, `name`, `standard_rate`, `status`, `updated_at`) VALUES (0, '2014-08-26 13:08:51', '11', 'test', 0.01, 'editing', '2014-08-26 13:08:51')[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `credit_accounts` (`account_type`, `created_at`, `external_id`, `lock_version`, `updated_at`) VALUES ('merchant', '2014-08-26 13:08:51', '0c4920b1b5d2d60124c2598c059ec470', 0, '2014-08-26 13:08:51')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `payment_plans` (`created_at`, `plan_type`, `status`, `updated_at`, `valid_from`, `valid_till`, `voucher_status`) VALUES ('2014-08-26 13:08:51', 'none', 1, '2014-08-26 13:08:51', '1976-01-01 00:00:00', '2024-08-26 13:08:51', 0)[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE `payment_plans` SET `merchant_store_id` = 168, `updated_at` = '2014-08-26 13:08:51' WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 83
+  [1m[36mMerchant::MerchantStore Load (0.2ms)[0m  [1mSELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 168 LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 168 AND (voucher_status = 3 or  voucher_status = 2)  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36mPay::PaymentPlan Load (0.2ms)[0m  [1mSELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 168 AND (voucher_status = 3 or  voucher_status = 1)  ORDER BY `payment_plans`.`id` ASC LIMIT 1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.2ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '11' AND `merchant_stores`.`id` != 168) LIMIT 1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '11' AND `merchant_stores`.`id` != 168) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE `merchant_stores` SET `accept_global_voucher` = 0, `created_at` = '2014-08-26 13:08:51', `credit_account_id` = 664, `id` = 168, `merchant_number` = '11', `name` = 'test', `standard_rate` = 0.01, `status` = 'editing', `updated_at` = '2014-08-26 13:08:51' WHERE `merchant_stores`.`id` = 168
+  [1m[36m (0.2ms)[0m  [1mUPDATE `credit_accounts` SET `name` = 'test', `updated_at` = '2014-08-26 13:08:51', `lock_version` = 1 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 664 AND `credit_accounts`.`lock_version` = 0)[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mMerchant::MerchantStore Load (0.2ms)[0m  [1mSELECT  `merchant_stores`.* FROM `merchant_stores`   ORDER BY `merchant_stores`.`id` ASC LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 168
+  [1m[36mMerchant::MerchantStore Load (0.2ms)[0m  [1mSELECT  `merchant_stores`.* FROM `merchant_stores`   ORDER BY `merchant_stores`.`id` ASC LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 168  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM `credit_accounts` WHERE `credit_accounts`.`account_type` IN ('merchant') AND `credit_accounts`.`id` = 664 AND `credit_accounts`.`lock_version` = 1
+  [1m[36mPay::PaymentPlan Load (0.2ms)[0m  [1mSELECT `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 168[0m
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM `marketing_rules_payment_plans` WHERE `marketing_rules_payment_plans`.`payment_plan_id` = 83
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM `payment_plans` WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 83[0m
+  [1m[35mMerchant::MerchantGroupShip Load (0.3ms)[0m  SELECT `merchant_group_ships`.* FROM `merchant_group_ships`  WHERE `merchant_group_ships`.`merchant_store_id` = 168
+  [1m[36mMerchant::MarketingRule Load (0.2ms)[0m  [1mSELECT `marketing_rules`.* FROM `marketing_rules`  WHERE `marketing_rules`.`merchant_store_id` = 168[0m
+  [1m[35mSQL (0.2ms)[0m  DELETE FROM `merchant_stores` WHERE `merchant_stores`.`id` = 168
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM `merchant_stores`
+  [1m[36m (0.1ms)[0m  [1mSELECT COUNT(*) FROM `credit_accounts`  WHERE `credit_accounts`.`account_type` IN ('merchant')[0m
+  [1m[35m (0.1ms)[0m  SELECT COUNT(*) FROM `payment_plans`
+  [1m[36m (12.5ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.3ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE `merchant_stores`.`merchant_number` = BINARY '11' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `merchant_stores` (`accept_global_voucher`, `created_at`, `merchant_number`, `name`, `standard_rate`, `status`, `updated_at`) VALUES (0, '2014-08-26 13:12:31', '11', 'test', 0.01, 'editing', '2014-08-26 13:12:31')[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `credit_accounts` (`account_type`, `created_at`, `external_id`, `lock_version`, `updated_at`) VALUES ('merchant', '2014-08-26 13:12:31', 'd583e370f1ce3883fa1bda0217b2e4e1', 0, '2014-08-26 13:12:31')
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `payment_plans` (`created_at`, `plan_type`, `status`, `updated_at`, `valid_from`, `valid_till`, `voucher_status`) VALUES ('2014-08-26 13:12:31', 'none', 1, '2014-08-26 13:12:31', '1976-01-01 00:00:00', '2024-08-26 13:12:31', 0)[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE `payment_plans` SET `merchant_store_id` = 169, `updated_at` = '2014-08-26 13:12:31' WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 84
+  [1m[36mMerchant::MerchantStore Load (0.2ms)[0m  [1mSELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 169 LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 169 AND (voucher_status = 3 or  voucher_status = 2)  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36mPay::PaymentPlan Load (0.2ms)[0m  [1mSELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 169 AND (voucher_status = 3 or  voucher_status = 1)  ORDER BY `payment_plans`.`id` ASC LIMIT 1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.2ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '11' AND `merchant_stores`.`id` != 169) LIMIT 1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '11' AND `merchant_stores`.`id` != 169) LIMIT 1[0m
+  [1m[35mSQL (4.5ms)[0m  UPDATE `merchant_stores` SET `accept_global_voucher` = 0, `created_at` = '2014-08-26 13:12:31', `credit_account_id` = 665, `id` = 169, `merchant_number` = '11', `name` = 'test', `standard_rate` = 0.01, `status` = 'editing', `updated_at` = '2014-08-26 13:12:31' WHERE `merchant_stores`.`id` = 169
+  [1m[36m (0.3ms)[0m  [1mUPDATE `credit_accounts` SET `name` = 'test', `updated_at` = '2014-08-26 13:12:31', `lock_version` = 1 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 665 AND `credit_accounts`.`lock_version` = 0)[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.3ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '11' AND `merchant_stores`.`id` != 169) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE `merchant_stores` SET `name` = 'new_name', `updated_at` = '2014-08-26 13:12:31' WHERE `merchant_stores`.`id` = 169[0m
+  [1m[35m (0.2ms)[0m  UPDATE `credit_accounts` SET `name` = 'new_name', `updated_at` = '2014-08-26 13:12:31', `lock_version` = 2 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 665 AND `credit_accounts`.`lock_version` = 1)
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mMerchant::MerchantStore Load (0.2ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 169 LIMIT 1
+  [1m[36mMember::MerchantCreditAccount Load (0.2ms)[0m  [1mSELECT  `credit_accounts`.* FROM `credit_accounts`  WHERE `credit_accounts`.`account_type` IN ('merchant') AND `credit_accounts`.`id` = 665 LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 169
+  [1m[36m (11.5ms)[0m  [1mROLLBACK[0m

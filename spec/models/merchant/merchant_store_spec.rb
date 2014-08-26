@@ -3,14 +3,13 @@ require 'spec_helper'
 describe Merchant::MerchantStore do
   it 'should save and destroy properly' do
     store = Merchant::MerchantStore.create! name: 'test', standard_rate: 0.01, merchant_number: '11', status: 'editing'
-    store.credit_account.should be_nil
-    store.create_credit_account(mobile: 'test1').should be_true
-    Merchant::MerchantStore.first.payment_plans.count.should be ==0
     store.credit_account.should_not be_nil
-    Member::MerchantCreditAccount.count.should be ==1
+    Merchant::MerchantStore.first.payment_plans.count.should be == 1
+    Merchant::MerchantStore.first.payment_plans.first.should be_instance_of(Pay::NonePaymentPlan)
     store.destroy
-    Merchant::MerchantStore.count.should be ==0
-    Member::MerchantCreditAccount.count.should be ==0
+    Merchant::MerchantStore.count.should be == 0
+    Member::MerchantCreditAccount.count.should be == 0
+    Pay::PaymentPlan.count.should be == 0
   end
 
   it 'should save and persistence acquirer organization' do
@@ -22,5 +21,12 @@ describe Merchant::MerchantStore do
     store.save
     store.acquire_org.should_not be_nil
     store.acquire_org.id.should eq acquirer_org.id
+  end
+
+  it 'should update store and run all callbacks' do
+    store = Merchant::MerchantStore.create! name: 'test', standard_rate: 0.01, merchant_number: '11', status: 'editing'
+    store.update!(name: 'new_name')
+    store.reload.credit_account.name.should == 'new_name'
+    store.payment_plans.count.should == 1
   end
 end

@@ -40,5 +40,44 @@ module Merchant
       self.accept_own_voucher ||= false
       true
     end
+
+    after_save :syn_credit_account_name
+
+    after_create do
+      self.create_credit_account
+      self.payment_plans << Pay::NonePaymentPlan.create(status: Pay::NonePaymentPlan::VALID)
+      self.save!
+    end
+
+    def may_destroy?
+      editing?
+    end
+
+    def may_edit?
+      editing?
+    end
+
+    def total_transaction_count_of_day(now)
+      Trade::TransactionLog.where(merchant_store_id: id).where(transaction_datetime: now.beginning_of_day..now.end_of_day).count
+    end
+
+    def total_member_transaction_count_of_day(now)
+      Trade::TransactionLog.where.not(transaction_type: Trade::TransactionLog::NONE).where(merchant_store_id: id).where(transaction_datetime: now.beginning_of_day..now.end_of_day).count
+    end
+
+    def new_registered_members_count_of_day(now)
+      self.member_accounts.where(created_at: now.beginning_of_day..now.end_of_day).count
+    end
+
+    def total_transaction_amount_of_day(now)
+      Trade::TransactionLog.where(merchant_store_id: id).where(transaction_datetime: now.beginning_of_day..now.end_of_day).sum(:actual_money_amount)
+    end
+
+    private
+    def syn_credit_account_name
+      unless self.credit_account.nil?
+        self.credit_account.update(name: self.name)
+      end
+    end
   end
 end
