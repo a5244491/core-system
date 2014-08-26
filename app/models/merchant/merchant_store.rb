@@ -2,13 +2,28 @@ require 'aasm'
 module Merchant
   class MerchantStore < ActiveRecord::Base
     include AASM
+    # include Merchant::MerchantStoreEngineConcern
     aasm column: :status, requires_new_transaction:false do
        state :editing, initial: true
        state :auditing
        state :audit_passed
        state :active
+       event :submit_audit do
+         transitions from: :editing, to: :auditing
+       end
+       event :reject_audit do
+         transitions from: [:audit_passed, :auditing], to: :editing
+       end
+       event :approve_audit do
+         transitions from: :auditing, to: :audit_passed
+       end
+       event :enable do
+         transitions from: :audit_passed, to: :active
+       end
+       event :disable do
+         transitions from: :active, to: :audit_passed
+       end
     end
-    # STATUSES = [ENTERING = 0, AUDITING = 1, AUDITING_PASSED = 2, ACTIVE = 3, INACTIVE = 4]
     belongs_to :credit_account, class_name: 'Member::MerchantCreditAccount', :dependent => :destroy
     has_many :payment_plans, :dependent => :destroy, class_name: 'Pay::PaymentPlan'
     validates_presence_of :name, :merchant_number, :standard_rate

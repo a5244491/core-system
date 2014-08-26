@@ -15,4 +15,6 @@
 //= require bootstrap
 //= require plugins/metisMenu/metisMenu
 //= require sb-admin-2.js
+//= require bootstrap-datetimepicker/bootstrap-datetimepicker
+//= require bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js
 //= require_tree .

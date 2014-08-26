@@ -17,6 +17,7 @@ module Merchant
     # GET /merchant/merchant_stores/new
     def new
       @merchant_store = Merchant::MerchantStore.new
+      @acquire_orgs = Merchant::AcquirerOrg.all
     end
 
     # GET /merchant/merchant_stores/1/edit

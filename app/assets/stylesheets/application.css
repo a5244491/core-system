@@ -19,4 +19,5 @@
  *= require plugins/morris
  *= require font-awesome-4.1.0/css/font-awesome
  *= require plugins/dataTables.bootstrap
+ *= require bootstrap-datetimepicker
  */

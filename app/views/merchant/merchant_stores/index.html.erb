@@ -1,9 +1,4 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h3 class="page-header">商户管理</h3>
-    </div>
-    <!-- /.col-lg-12 -->
-</div>
+<%= render 'page_head' %>
 <div class="modal" id="search_form_modal" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -28,7 +23,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> 新增商户</button>
+                <a type="button" class="btn btn-success" href="<%= new_merchant_merchant_store_path %>"><i class="fa fa-plus"></i> 新增商户</a>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#search_form_modal"><i class="fa fa-search-plus"></i> 查找商户</button>
             </div>
             <!-- /.panel-heading -->

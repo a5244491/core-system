@@ -1,17 +1,170 @@
-<%= form_for(@merchant_merchant_store) do |f| %>
-  <% if @merchant_merchant_store.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@merchant_merchant_store.errors.count, "error") %> prohibited this merchant_merchant_store from being saved:</h2>
-
-      <ul>
-      <% @merchant_merchant_store.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_for(@merchant_store, html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :name, '商户名', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :name, class: 'form-control' %>
+        </div>
     </div>
-  <% end %>
+    <div class="form-group">
+        <%= f.label :merchant_number, '商户号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :merchant_number, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :license_name, '营业执照名称', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :license_name, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :license_num, '营业执照号码', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :license_num, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :tax_number, '税务登记证号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :tax_number, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :legal_person, '法定代表人', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :legal_person, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :legal_person_ic, '法定代表人身份证号码', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :legal_person_ic, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :register_address, '注册地址', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :register_address, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :real_address, '真实地址', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :real_address, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :business_scope, '工商注册经营范围', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :business_scope, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :real_business_scope, '实际经营范围', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :real_business_scope, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :contract_num, '协议编号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :contract_num, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :contract_active_date, '协议生效日期', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10 input-append date">
+            <%= f.text_field :contract_active_date, class: 'form-control datetimepicker' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :contractor, '订单所有人', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :contractor, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :file_num, '档案编号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :file_num, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :finance_contact_name, '财务联系人', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :finance_contact_name, class: 'form-control' %>
+        </div>
+    </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="form-group">
+        <%= f.label :finance_contact_phone, '财务联系电话', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :finance_contact_phone, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :public_account_name, '收单帐户名', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :public_account_name, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :public_account_num, '收单帐号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :public_account_num, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :public_account_bank, '收单帐户开户行', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :public_account_bank, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :clearance_account_name, '积分清算帐户帐户名', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :clearance_account_name, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :clearance_account_num, '积分清算帐户帐号', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :clearance_account_num, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :clearance_account_bank, '积分清算帐户开户行', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :clearance_account_bank, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :deploy_contact_name, '入网事务联系人', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :deploy_contact_name, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :deploy_contact_phone, '入网事务联系电话', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :deploy_contact_phone, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :standard_rate, '标准扣率', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :standard_rate, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :accquire_org_id, '收单机构', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.select :accquire_org_id, options_from_collection_for_select(@acquire_orgs, :id, :acquirer_name, @merchant_store.acquire_org.try(:id)), {}, class: 'form-control' %>
+        </div>
+    </div>
+    <div class="form_footer">
+        <a class="btn btn-default" href="<%= request.referrer %>">返回</a>
+        <button type="reset" class="btn btn-danger">重置表单</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 创建商户</button>
+    </div>
 <% end %>
