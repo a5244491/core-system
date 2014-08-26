@@ -25,7 +25,7 @@ describe SessionsController do
     post :create, :username => @system_user.name, :password => 'wrong wrong'
     response.code.should eq('302')
     session[:user].should be_nil
-    flash[:error].should == '验证码错误'
+    flash[:error].should be =='验证码错误'
   end
 
   it 'should logout' do

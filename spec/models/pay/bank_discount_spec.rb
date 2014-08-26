@@ -25,12 +25,12 @@ describe Pay::BankDiscount do
   it 'should save for discount_type rate' do
     Pay::BankDiscount.create!(discount_type: Pay::PaymentPlan::RATE, discount_rate: 0.1,
                                   status: Pay::PaymentPlan::VALID, minimal_money_amount: 1)
-    Pay::BankDiscount.count.should == 1
+    Pay::BankDiscount.count.should be ==1
   end
 
   it 'should save for discount_type cash' do
     Pay::BankDiscount.create!(discount_type: Pay::PaymentPlan::CASH, discount_amount: 1000,
                                   status: Pay::PaymentPlan::VALID, minimal_money_amount: 1)
-    Pay::BankDiscount.count.should == 1
+    Pay::BankDiscount.count.should be ==1
   end
 end

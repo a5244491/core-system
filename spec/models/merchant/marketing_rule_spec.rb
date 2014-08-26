@@ -13,17 +13,17 @@ describe Merchant::MarketingRule do
     end
 
     it 'should persist' do
-      Merchant::MarketingRule.on_transaction.count.should == 1
+      Merchant::MarketingRule.on_transaction.count.should be ==1
       Merchant::MarketingRule.on_transaction.first.should be_a(Merchant::TransactionRule)
 
-      Merchant::MarketingRule.on_register.count.should == 1
+      Merchant::MarketingRule.on_register.count.should be ==1
       Merchant::MarketingRule.on_register.first.should be_a(Merchant::RegisterRule)
 
-      Merchant::MarketingRule.on_bind_card.count.should == 1
+      Merchant::MarketingRule.on_bind_card.count.should be ==1
       Merchant::MarketingRule.on_bind_card.first.should be_a(Merchant::BindCardRule)
 
-      @store.marketing_rules.size.should == 3
-      @payment_plan.marketing_rules.size.should == 1
+      @store.marketing_rules.size.should be ==3
+      @payment_plan.marketing_rules.size.should be ==1
     end
   end
 end

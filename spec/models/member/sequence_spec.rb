@@ -7,9 +7,9 @@ describe Member::Sequence do
     end
 
     it 'should successfully allocate sequence number' do
-      @sequence.allocate_sequence_number.should == '1234'
+      @sequence.allocate_sequence_number.should be =='1234'
       Member::SequenceNumber.where(number: '1234').first.used.should be_true
-      @sequence.allocate_sequence_number.should == '1235'
+      @sequence.allocate_sequence_number.should be =='1235'
       Member::SequenceNumber.where(number: '1235').first.used.should be_true
       @sequence.allocate_sequence_number.should be_nil
     end

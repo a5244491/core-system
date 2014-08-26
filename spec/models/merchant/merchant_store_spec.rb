@@ -5,12 +5,12 @@ describe Merchant::MerchantStore do
     store = Merchant::MerchantStore.create! name: 'test', standard_rate: 0.01, merchant_number: '11', status: 'editing'
     store.credit_account.should be_nil
     store.create_credit_account(mobile: 'test1').should be_true
-    Merchant::MerchantStore.first.payment_plans.count.should == 0
+    Merchant::MerchantStore.first.payment_plans.count.should be ==0
     store.credit_account.should_not be_nil
-    Member::MerchantCreditAccount.count.should == 1
+    Member::MerchantCreditAccount.count.should be ==1
     store.destroy
-    Merchant::MerchantStore.count.should == 0
-    Member::MerchantCreditAccount.count.should == 0
+    Merchant::MerchantStore.count.should be ==0
+    Member::MerchantCreditAccount.count.should be ==0
   end
 
   it 'should save and persistence acquirer organization' do

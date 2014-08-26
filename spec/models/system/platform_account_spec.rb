@@ -11,7 +11,7 @@ describe System::PlatformAccount do
     System::PlatformAccount.validate('wrong', @account.access_key, System::PlatformAccount::CORE_ENGINE).should be_nil
     account = System::PlatformAccount.validate(@account.account_name, @account.access_key, System::PlatformAccount::CORE_ENGINE)
     account.should_not be_nil
-    account.account_name.should == @account.account_name
+    account.account_name.should be ==@account.account_name
   end
 
   it 'should fail for validation of inactive account' do

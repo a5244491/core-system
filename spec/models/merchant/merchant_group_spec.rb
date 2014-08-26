@@ -10,9 +10,9 @@ describe Merchant::MerchantGroup do
       group = Merchant::MerchantGroup.create!(name: 'test_group')
       group.merchant_stores << @store
       group.save!
-      group.reload.merchant_stores.count.should == 1
-      @store.reload.merchant_groups.count.should == 1
-      @store.merchant_groups.first.should == group
+      group.reload.merchant_stores.count.should be ==1
+      @store.reload.merchant_groups.count.should be ==1
+      @store.merchant_groups.first.should be ==group
     end
   end
 end

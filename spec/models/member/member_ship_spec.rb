@@ -10,14 +10,14 @@ describe Member::MemberShip do
   it 'should add member to store' do
     @credit_account.merchant_stores << @store
     @credit_account.save!
-    @credit_account.merchant_stores.count.should == 1
-    @store.member_accounts.size.should == 1
+    @credit_account.merchant_stores.count.should be ==1
+    @store.member_accounts.size.should be ==1
   end
 
   it 'should add member to merchant group' do
     @credit_account.merchant_groups << @group
     @credit_account.save!
-    @credit_account.merchant_groups.count.should == 1
-    @group.member_accounts.size.should == 1
+    @credit_account.merchant_groups.count.should be ==1
+    @group.member_accounts.size.should be ==1
   end
 end

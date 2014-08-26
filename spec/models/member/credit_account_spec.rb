@@ -6,14 +6,14 @@ describe Member::CreditAccount do
       account = Member::IndividualCreditAccount.create!(name: 'test', address: 'testa', mobile: '123456')
       account.should_not be_nil
       account.external_id.should_not be_nil
-      account.total_credit.should == 0
-      account.usable_credit.should == 0
-      account.referer_credit.should == 0
-      account.referee_credit.should == 0
-      account.locked_credit.should == 0
-      account.cashed_credit.should == 0
-      account.consumption_credit.should == 0
-      account.consumption_times.should == 0
+      account.total_credit.should be ==0
+      account.usable_credit.should be ==0
+      account.referer_credit.should be ==0
+      account.referee_credit.should be ==0
+      account.locked_credit.should be ==0
+      account.cashed_credit.should be ==0
+      account.consumption_credit.should be ==0
+      account.consumption_times.should be ==0
       account.referer_account.should be_nil
       account.create_referer_account(mobile: '12345611').should_not be_false
 
@@ -28,7 +28,7 @@ describe Member::CreditAccount do
       account2.save!
       account1.total_credit = 50
       expect { account1.save! }.to raise_error ActiveRecord::StaleObjectError
-      Member::CreditAccount.first.total_credit.should == 100
+      Member::CreditAccount.first.total_credit.should be ==100
     end
 
     it 'should not save when mobile has been taken' do
@@ -52,7 +52,7 @@ describe Member::CreditAccount do
 
     it 'should add bank card' do
       @account.add_bank_card('1111111111111111111111', Member::BankCard::DEBIT_CARD)
-      @account.bank_cards.count.should == 1
+      @account.bank_cards.count.should be ==1
     end
 
     it 'should not add bank card if card is taken' do
@@ -76,25 +76,25 @@ describe Member::CreditAccount do
     it 'should apply credit cashing' do
       @account.apply_credit_cashing!(400)
       @account = Member::IndividualCreditAccount.find(@account.id)
-      @account.usable_credit.should == 600
-      @account.locked_credit.should == 400
+      @account.usable_credit.should be ==600
+      @account.locked_credit.should be ==400
     end
 
     it 'should reject credit cashing' do
       @account.apply_credit_cashing!(400)
       @account.reject_credit_cashing!(400)
       @account = Member::IndividualCreditAccount.find(@account.id)
-      @account.usable_credit.should == 1000
-      @account.locked_credit.should == 0
+      @account.usable_credit.should be ==1000
+      @account.locked_credit.should be ==0
     end
 
     it 'should approve credit cashing' do
       @account.apply_credit_cashing!(400)
       @account.approve_credit_cashing!(400)
       @account = Member::IndividualCreditAccount.find(@account.id)
-      @account.usable_credit.should == 600
-      @account.locked_credit.should == 0
-      @account.cashed_credit.should == 400
+      @account.usable_credit.should be ==600
+      @account.locked_credit.should be ==0
+      @account.cashed_credit.should be ==400
     end
   end
 

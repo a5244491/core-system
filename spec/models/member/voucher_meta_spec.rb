@@ -6,8 +6,8 @@ describe Member::VoucherMeta do
       voucher_meta = Member::VoucherMeta.create!
       voucher_meta.global?.should be_true
       voucher_meta.aliases.should_not be_nil
-      voucher_meta.amount_left.should == -1
-      voucher_meta.initial_amount.should == -1
+      voucher_meta.amount_left.should be ==-1
+      voucher_meta.initial_amount.should be ==-1
     end
 
     it 'should check usable correctly' do
@@ -19,11 +19,11 @@ describe Member::VoucherMeta do
 
     it 'should sync initial amount and amount left' do
       voucher_meta = Member::VoucherMeta.create!(initial_amount: 100)
-      voucher_meta.amount_left.should == 100
+      voucher_meta.amount_left.should be ==100
       voucher_meta.update(initial_amount: 50)
-      voucher_meta.amount_left.should == 50
+      voucher_meta.amount_left.should be ==50
       voucher_meta.update(initial_amount: -1)
-      voucher_meta.amount_left.should == -1
+      voucher_meta.amount_left.should be ==-1
     end
   end
 
@@ -37,13 +37,13 @@ describe Member::VoucherMeta do
     it 'should assign store to voucher meta' do
       @voucher_meta.merchant_store = @store
       @voucher_meta.save!
-      @voucher_meta.reload.merchant_store.id.should == @store.id
+      @voucher_meta.reload.merchant_store.id.should be ==@store.id
     end
 
     it 'should assign store to voucher meta' do
       @voucher_meta.merchant_group = @group
       @voucher_meta.save!
-      @voucher_meta.reload.merchant_group.id.should == @group.id
+      @voucher_meta.reload.merchant_group.id.should be ==@group.id
     end
   end
 
@@ -56,7 +56,7 @@ describe Member::VoucherMeta do
     it 'should add vouchers to credit account' do
       @credit_account.vouchers << @voucher_meta.issue_voucher
       @credit_account.save!
-      @credit_account.vouchers.first.denomination.should == 10000
+      @credit_account.vouchers.first.denomination.should be ==10000
     end
   end
 
@@ -67,8 +67,8 @@ describe Member::VoucherMeta do
 
     it 'should issue voucher' do
       voucher = @voucher_meta.issue_voucher
-      voucher.denomination.should == @voucher_meta.denomination
-      @voucher_meta.reload.amount_left.should == 0
+      voucher.denomination.should be ==@voucher_meta.denomination
+      @voucher_meta.reload.amount_left.should be ==0
       expect{@voucher_meta.issue_voucher}.to raise_error Member::VoucherMeta::VoucherAmountExceeded
     end
   end
@@ -80,11 +80,11 @@ describe Member::VoucherMeta do
     end
     it 'should show correct applicable store name' do
       voucher_meta = create(:voucher_meta)
-      voucher_meta.applicable_store_name.should == '联盟商户'
+      voucher_meta.applicable_store_name.should be =='联盟商户'
       voucher_meta = create(:voucher_meta, store: @store)
-      voucher_meta.applicable_store_name.should == @store.name
+      voucher_meta.applicable_store_name.should be ==@store.name
       voucher_meta = create(:voucher_meta, group: @group)
-      voucher_meta.applicable_store_name.should == @group.display_name
+      voucher_meta.applicable_store_name.should be ==@group.display_name
     end
   end
 end

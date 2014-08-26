@@ -9,8 +9,8 @@ describe Merchant::PostAction do
 
     it 'should persist with relations' do
       post_action = Merchant::VoucherAction.create!(voucher_meta: @voucher_meta, marketing_rule: @marketing_rule)
-      @marketing_rule.post_actions.count.should == 1
-      @marketing_rule.post_actions.first.id.should == post_action.id
+      @marketing_rule.post_actions.count.should be ==1
+      @marketing_rule.post_actions.first.id.should be ==post_action.id
       @marketing_rule.post_actions.first.should be_a(Merchant::VoucherAction)
     end
 

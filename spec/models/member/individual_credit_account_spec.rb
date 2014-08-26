@@ -20,14 +20,14 @@ describe Member::IndividualCreditAccount do
       end
       it 'should apply credit cashing' do
         @account.submit_credit_cashing_application!(5000)
-        @account.usable_credit.should == 3000
-        @account.locked_credit.should == 5000
-        Member::CreditCashingApplication.count.should == 1
+        @account.usable_credit.should be ==3000
+        @account.locked_credit.should be ==5000
+        Member::CreditCashingApplication.count.should be ==1
         application = Member::CreditCashingApplication.first
-        application.bank_card.should == @account.bank_cards.first.card_num
-        application.bank_name.should == @account.bank_cards.first.bank_name
-        application.amount.should == 5000
-        application.status.should == Member::CreditCashingApplication::PROCESSING
+        application.bank_card.should be ==@account.bank_cards.first.card_num
+        application.bank_name.should be ==@account.bank_cards.first.bank_name
+        application.amount.should be ==5000
+        application.status.should be ==Member::CreditCashingApplication::PROCESSING
       end
 
       it 'should not apply credit cashing if amount is not valid' do
@@ -46,26 +46,26 @@ describe Member::IndividualCreditAccount do
 
     it 'should issues voucher by meta code' do
       @account.issue_voucher(@voucher_meta.code)
-      @account.vouchers.size.should == 1
+      @account.vouchers.size.should be ==1
       voucher_log = Trade::VoucherTransactionLog.first
       voucher_log.should_not be_nil
-      voucher_log.transaction_type.should == Trade::VoucherTransactionLog::ISSUE
-      voucher_log.issue_event.should == Trade::VoucherTransactionLog::SYSTEM
-      voucher_log.voucher_meta_code.should == @voucher_meta.code
-      voucher_log.voucher_unique_id.should == @account.vouchers.first.unique_id
-      @voucher_meta.reload.issued_count.should == 1
+      voucher_log.transaction_type.should be ==Trade::VoucherTransactionLog::ISSUE
+      voucher_log.issue_event.should be ==Trade::VoucherTransactionLog::SYSTEM
+      voucher_log.voucher_meta_code.should be ==@voucher_meta.code
+      voucher_log.voucher_unique_id.should be ==@account.vouchers.first.unique_id
+      @voucher_meta.reload.issued_count.should be ==1
     end
 
     it 'should issues voucher by meta object' do
       @account.issue_voucher(@voucher_meta)
-      @account.vouchers.size.should == 1
+      @account.vouchers.size.should be ==1
       voucher_log = Trade::VoucherTransactionLog.first
       voucher_log.should_not be_nil
-      voucher_log.transaction_type.should == Trade::VoucherTransactionLog::ISSUE
-      voucher_log.issue_event.should == Trade::VoucherTransactionLog::SYSTEM
-      voucher_log.voucher_meta_code.should == @voucher_meta.code
-      voucher_log.voucher_unique_id.should == @account.vouchers.first.unique_id
-      @voucher_meta.reload.issued_count.should == 1
+      voucher_log.transaction_type.should be ==Trade::VoucherTransactionLog::ISSUE
+      voucher_log.issue_event.should be ==Trade::VoucherTransactionLog::SYSTEM
+      voucher_log.voucher_meta_code.should be ==@voucher_meta.code
+      voucher_log.voucher_unique_id.should be ==@account.vouchers.first.unique_id
+      @voucher_meta.reload.issued_count.should be ==1
     end
 
 
@@ -84,8 +84,8 @@ describe Member::IndividualCreditAccount do
       @account.issue_voucher(@voucher_meta_no_limit.code)
       @account.issue_voucher(@voucher_meta_no_limit.code)
       @account.issue_voucher(@voucher_meta_no_limit.code)
-      @account.vouchers.size.should == 3
-      @voucher_meta_no_limit.reload.issued_count.should == 3
+      @account.vouchers.size.should be ==3
+      @voucher_meta_no_limit.reload.issued_count.should be ==3
     end
 
     it 'should not issue voucher if per account limit reached' do
@@ -97,8 +97,8 @@ describe Member::IndividualCreditAccount do
       @account1 = Member::IndividualCreditAccount.create!(name: 'test1', address: 'testa', mobile: '1234561', usable_credit: 8000)
       @account.issue_voucher(@voucher_meta_account_limit.code)
       @account1.issue_voucher(@voucher_meta_account_limit.code)
-      @account.vouchers.size.should == 1
-      @account1.vouchers.size.should == 1
+      @account.vouchers.size.should be ==1
+      @account1.vouchers.size.should be ==1
     end
 
     describe 'issue voucher with sequence number' do
@@ -108,9 +108,9 @@ describe Member::IndividualCreditAccount do
       end
 
       it 'should issue voucher' do
-        @account.issue_voucher(@voucher_meta).sequence_number.should == '1234'
-        Trade::VoucherTransactionLog.first.voucher_sequence_number.should == '1234'
-        @account.issue_voucher(@voucher_meta).sequence_number.should == '1235'
+        @account.issue_voucher(@voucher_meta).sequence_number.should be =='1234'
+        Trade::VoucherTransactionLog.first.voucher_sequence_number.should be =='1234'
+        @account.issue_voucher(@voucher_meta).sequence_number.should be =='1235'
         expect { @account.issue_voucher(@voucher_meta) }.to raise_error Member::VoucherMeta::VoucherAmountExceeded
       end
     end
@@ -125,11 +125,11 @@ describe Member::IndividualCreditAccount do
       it 'should becomes member of a store' do
         @account.becomes_member_of(@store)
         @account.reload
-        @account.merchant_stores.count.should == 1
-        @account.merchant_stores.first.should == @store
+        @account.merchant_stores.count.should be ==1
+        @account.merchant_stores.first.should be ==@store
         @store.reload
-        @store.member_accounts.count.should == 1
-        @store.member_accounts.first.should == @account
+        @store.member_accounts.count.should be ==1
+        @store.member_accounts.first.should be ==@account
       end
 
       it 'should not duplicate memeber of a store' do
@@ -137,21 +137,21 @@ describe Member::IndividualCreditAccount do
         @account.becomes_member_of(@store)
 
         @account.reload
-        @account.merchant_stores.count.should == 1
-        @account.merchant_stores.first.should == @store
+        @account.merchant_stores.count.should be ==1
+        @account.merchant_stores.first.should be ==@store
         @store.reload
-        @store.member_accounts.count.should == 1
-        @store.member_accounts.first.should == @account
+        @store.member_accounts.count.should be ==1
+        @store.member_accounts.first.should be ==@account
       end
 
       it 'should becomes member of a group' do
         @account.becomes_member_of(@group)
         @account.reload
-        @account.merchant_groups.count.should == 1
-        @account.merchant_groups.first.should == @group
+        @account.merchant_groups.count.should be ==1
+        @account.merchant_groups.first.should be ==@group
         @group.reload
-        @group.member_accounts.count.should == 1
-        @group.member_accounts.first.should == @account
+        @group.member_accounts.count.should be ==1
+        @group.member_accounts.first.should be ==@account
       end
 
       it 'should duplicate member of a group' do
@@ -159,11 +159,11 @@ describe Member::IndividualCreditAccount do
         @account.becomes_member_of(@group)
 
         @account.reload
-        @account.merchant_groups.count.should == 1
-        @account.merchant_groups.first.should == @group
+        @account.merchant_groups.count.should be ==1
+        @account.merchant_groups.first.should be ==@group
         @group.reload
-        @group.member_accounts.count.should == 1
-        @group.member_accounts.first.should == @account
+        @group.member_accounts.count.should be ==1
+        @group.member_accounts.first.should be ==@account
       end
     end
   end
