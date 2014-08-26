@@ -5,7 +5,7 @@ class SessionsController < ActionController::Base
 
   def new
     if logged_in?
-      redirect_to '/merchant/merchant_stores' and return
+      redirect_to merchant_merchant_stores_path and return
     end
   end
 
@@ -19,7 +19,7 @@ class SessionsController < ActionController::Base
     if system_user and system_user.authenticate(params[:password])
       create_session system_user
       record_activities('登录', '登录', "[#{params[:username]}]登录系统")
-      redirect_to '/merchant/merchant_stores'
+      redirect_to merchant_merchant_stores_path
     else
       flash[:error] = Tips::LOGIN_ERROR
       redirect_to :root

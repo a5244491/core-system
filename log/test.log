@@ -9028,3 +9028,5 @@ Processing by SessionsController#destroy as HTML
 Redirected to http://test.host/
 Completed 302 Found in 0ms (ActiveRecord: 0.0ms)
   [1m[36m (15.9ms)[0m  [1mROLLBACK[0m
+DEPRECATION WARNING: set the 'will_paginate.previous_label' key in your i18n locale instead of editing pagination_options (called from /project/didikon/core-system/config/initializers/will_paginate.rb:2:in `<top (required)>')
+DEPRECATION WARNING: set the 'will_paginate.next_label' key in your i18n locale instead of editing pagination_options (called from /project/didikon/core-system/config/initializers/will_paginate.rb:3:in `<top (required)>')

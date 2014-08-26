@@ -13,7 +13,7 @@ module SessionManager
   end
 
   def current_user
-    @current_user ||= session[:user] & (Users::SystemUser.where(id: session[:user][:id])).first!
+    @current_user ||= session[:user] && (Users::SystemUser.where(id: session[:user]['id'])).first!
   end
 
   def logged_in?

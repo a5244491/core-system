@@ -128,11 +128,11 @@ class Ability
   end
 
   def define_credit_account_abilities(user, params)
-    can [:index, :merchant, :payment_media, :referer_account, :referee_accounts, :vouchers], CoreLib::CreditAccount
+    can [:index, :merchant, :payment_media, :referer_account, :referee_accounts, :vouchers], Member::CreditAccount
   end
 
   def define_vouchers_abilities(user, params)
-    if user.has_role? Member::SystemUser::NORMAL_USER
+    if user.has_role? Users::SystemUser::NORMAL_USER
       can :read, Member::Voucher
     elsif user.has_role? Users::SystemUser::DEPT_MANAGER
       can :manage, Member::Voucher

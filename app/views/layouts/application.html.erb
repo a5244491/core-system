@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>核心系统 - 登录</title>
+    <title>核心系统</title>
 
     <!-- Bootstrap Core CSS -->
     <%= stylesheet_link_tag 'application', media: 'all' %>
@@ -27,6 +27,7 @@
         <%= render 'sidebar' %>
     </nav>
     <div id="page-wrapper">
+        <%= render 'shared/notice' %>
         <%= yield %>
     </div>
 </div>

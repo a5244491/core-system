@@ -1,0 +1,8 @@
+<tr class="odd gradeX">
+    <td>action</td>
+    <td><%= merchant_store.name %></td>
+    <td><%= merchant_store.merchant_number %></td>
+    <td class="center"> <%= merchant_store.standard_rate %></td>
+    <td class="center"> <%= store_status_text(merchant_store) %></td>
+    <td><%= merchant_store.accept_global_voucher ? '接受' : '不接受' %></td>
+</tr>

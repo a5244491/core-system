@@ -1,11 +1,11 @@
 module Merchant
   class MerchantStoresController < ApplicationController
     before_action :set_merchant_merchant_store, only: [:show, :edit, :update, :destroy]
-
+    authorize_resource class: 'Merchant::MerchantStore'
     # GET /merchant/merchant_stores
     # GET /merchant/merchant_stores.json
     def index
-      @merchant_merchant_stores = Merchant::MerchantStore.all
+      @merchant_stores = Merchant::MerchantStore.order(created_at: :desc).paginate(page: @page, per_page: @limit)
     end
 
     # GET /merchant/merchant_stores/1
@@ -15,7 +15,7 @@ module Merchant
 
     # GET /merchant/merchant_stores/new
     def new
-      @merchant_merchant_store = Merchant::MerchantStore.new
+      @merchant_store = Merchant::MerchantStore.new
     end
 
     # GET /merchant/merchant_stores/1/edit

@@ -1,0 +1,23 @@
+cn:
+  will_paginate:
+    previous_label: "&#8592; 上一页"
+    next_label: "下一页 &#8594;"
+    page_gap: "&hellip;"
+    models:
+      merchant_store:
+        zero: '家商户'
+        one: '家商户'
+        few: '家商户'
+        other: '家商户'
+    page_entries_info:
+      single_page:
+        zero:  "无符合条件的记录"
+        one:   "共1%{model}"
+        other: "共%{count}%{model}"
+      single_page_html:
+        zero:  "无符合条件的记录"
+        one:   "共<b>1</b> %{model}"
+        other: "共<b>all&nbsp;%{count}</b> %{model}"
+
+      multi_page: "共%{count}%{model}, 当前展示 %{from} - %{to}%{model}"
+      multi_page_html: "共%{count}%{model}, 当前展示 <b>%{from}</b>&nbsp; - &nbsp;<b>%{to}</b>&nbsp;%{model}</b>"
