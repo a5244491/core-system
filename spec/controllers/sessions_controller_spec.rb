@@ -16,13 +16,12 @@ describe SessionsController do
   end
 
   it 'should login success' do
-    post :create, :username => @system_user.name, :password => @system_user.password, image_captcha: @image_captcha
+    post :create, :username => @system_user.name, :password => @system_user.password, captcha: @image_captcha
     response.code.should eq('302')
     session[:user].should_not be_nil
   end
 
   it 'should login failed' do
-
     post :create, :username => @system_user.name, :password => 'wrong wrong'
     response.code.should eq('302')
     session[:user].should be_nil
@@ -30,7 +29,7 @@ describe SessionsController do
   end
 
   it 'should logout' do
-    login(@system_user.name, @system_user.password)
+    login(@system_user)
     get :destroy
     response.code.should eq('302')
     session[:user].should be_nil

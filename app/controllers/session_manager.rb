@@ -1,10 +1,11 @@
 module SessionManager
-  def create_session(user)
-    session[:user] = {
-        :id => user.id,
-        :username => user.name,
-        :real_name => user.real_name,
-        :role_name => user.role_name
+  def create_session(user, session_store = nil)
+    selected_session = session_store || session
+    selected_session[:user] = {
+        'id' => user.id,
+        'username' => user.name,
+        'real_name' => user.real_name,
+        'role_name' => user.role_name
     }
   end
 

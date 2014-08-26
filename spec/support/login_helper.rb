@@ -1,12 +1,12 @@
 module LoginHelper
-  def login(name, password)
-    session[:captcha] = 'fake one'
-    post :create, username: name, password: password, image_captcha: session[:captcha]
+  include SessionManager
+  def login(user)
+     create_session(user, request.session)
   end
 
-  def create_and_login_user(name, password, role_name = Users::SystemUser::ADMIN)
-    user = create(:system_user, role_name: role_name, name: name, password: password, password_confirmation: password)
-    login(user.name, user.password)
+  def create_and_login_user(name, role_name = Users::SystemUser::ADMIN)
+    user = create(:system_user, role_name: role_name, name: name, password: 'test', password_confirmation: 'test')
+    login(user)
     user
   end
 

@@ -5,7 +5,8 @@ module Merchant
     # GET /merchant/merchant_stores
     # GET /merchant/merchant_stores.json
     def index
-      @merchant_stores = Merchant::MerchantStore.order(created_at: :desc).paginate(page: @page, per_page: @limit)
+      @q = Merchant::MerchantStore.search(params[:q])
+      @merchant_stores = @q.result.order(created_at: :desc).paginate(page: @page, per_page: @limit)
     end
 
     # GET /merchant/merchant_stores/1

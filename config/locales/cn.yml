@@ -17,7 +17,7 @@ cn:
       single_page_html:
         zero:  "无符合条件的记录"
         one:   "共<b>1</b> %{model}"
-        other: "共<b>all&nbsp;%{count}</b> %{model}"
+        other: "共<b>&nbsp;%{count}</b>%{model}"
 
       multi_page: "共%{count}%{model}, 当前展示 %{from} - %{to}%{model}"
       multi_page_html: "共%{count}%{model}, 当前展示 <b>%{from}</b>&nbsp; - &nbsp;<b>%{to}</b>&nbsp;%{model}</b>"
