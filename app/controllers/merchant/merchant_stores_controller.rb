@@ -22,6 +22,7 @@ module Merchant
       @merchant_store = Merchant::MerchantStore.new(merchant_merchant_store_params)
       if @merchant_store.save
         flash[:success] = '商户创建成功'
+        record_activities('新增', '商户管理', "新增商户[#{@merchant_store.name}]")
         redirect_to @merchant_store
       else
         flash[:error] = "商户创建失败: #{@merchant_store.errors.full_messages}"
@@ -30,14 +31,18 @@ module Merchant
     end
 
     def update
-      respond_to do |format|
-        if @merchant_merchant_store.update(merchant_merchant_store_params)
-          format.html { redirect_to @merchant_merchant_store, notice: 'Merchant store was successfully updated.' }
-          format.json { render :show, status: :ok, location: @merchant_merchant_store }
+      if @merchant_store.may_edit?
+        if @merchant_store.update(merchant_merchant_store_params)
+          record_activities('修改', '商户管理', "修改商户[#{merchant_merchant_store_params[:name]}]")
+          flash[:success] = '修改商户资料成功'
+          redirect_to @merchant_store
         else
-          format.html { render :edit }
-          format.json { render json: @merchant_merchant_store.errors, status: :unprocessable_entity }
+          flash[:error] = "修改商户资料失败: #{@merchant_store.errors.full_messages}"
+          render :edit
         end
+      else
+        flash[:error] = '只有录入中的商户才能编辑'
+        render 'merchant/merchant_stores/edit'
       end
     end
 

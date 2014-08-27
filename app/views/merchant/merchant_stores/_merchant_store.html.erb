@@ -2,7 +2,7 @@
     <td>
         <%= render partial: 'merchant_store_status_operation_panel', locals: {merchant_store: merchant_store} %>
     </td>
-    <td><%= merchant_store.name %> <span style="float: right"><a class="btn btn-default btn-xs" href="<%= merchant_merchant_store_path(merchant_store)%>">商户管理</a> </span></td>
+    <td><%= merchant_store.name %> <span style="float: right"><a class="btn btn-default btn-xs" href="<%= merchant_merchant_store_path(merchant_store, return_url: request.original_fullpath)%>">商户管理</a> </span></td>
     <td><%= merchant_store.merchant_number %></td>
     <td> <%= merchant_store.standard_rate %></td>
     <td> <span><%= store_status_text(merchant_store) %></span> <span style="float: right"><%= render partial: 'merchant_store_audit_operation_panel', locals: {merchant_store: merchant_store} %> </span></td>

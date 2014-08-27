@@ -6,14 +6,115 @@
                 <%= render partial: 'merchant_store_status_operation_panel', locals: {merchant_store: @merchant_store, button_class: 'btn btn-success'} %>
                 <%= render partial: 'merchant_store_audit_operation_panel', locals: {merchant_store: @merchant_store, button_class: 'btn btn-primary'} %>
                 <% if @merchant_store.may_destroy? && can?(:destroy, Merchant::MerchantStore) %>
-                    <%= link_to '删除商户', merchant_merchant_store_path(@merchant_store), method: :delete, class: 'btn btn-danger', data:{
+                    <%= link_to '删除商户', merchant_merchant_store_path(@merchant_store), method: :delete, class: 'btn btn-danger', data: {
                             confirm: "你确认要删除#{@merchant_store.name}吗"
                     } %>
                 <% end %>
+                <a class="btn btn-default" href="<%= params[:return_url] || merchant_merchant_stores_path%>">返回</a>
             </div>
 
             <!-- /.panel-heading -->
             <div class="panel-body">
+                <%= render partial: 'merchant_show_tab_header', locals: {index: 0} %>
+                <br>
+                <% unless @merchant_store.credit_account.nil? %>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            可用积分: <%= @merchant_store.credit_account.usable_credit %>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>历史积分</th>
+                                    <th>冻结积分</th>
+                                    <th>可用积分</th>
+                                    <th>已兑现积分</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <td><%= @merchant_store.credit_account.total_credit %></td>
+                                <td><%= @merchant_store.credit_account.locked_credit %></td>
+                                <td><%= @merchant_store.credit_account.usable_credit %></td>
+                                <td><%= @merchant_store.credit_account.cashed_credit %></td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <% end %>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        基本资料
+                        <% if @merchant_store.may_edit? && can?(:update, Merchant::MerchantStore)%>
+                            <a class="btn btn-warning" href="<%= edit_merchant_merchant_store_path(@merchant_store)%>">修改</a>
+                        <% end %>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><label>商户名称:</label> <%= @merchant_store.name %></li>
+                                    <li class="list-group-item">
+                                        <label>商户号:</label> <%= @merchant_store.merchant_number %></li>
+                                    <li class="list-group-item">
+                                        <label>营业执照名称:</label> <%= @merchant_store.license_name %></li>
+                                    <li class="list-group-item">
+                                        <label>营业执照号码:</label> <%= @merchant_store.license_num %></li>
+                                    <li class="list-group-item"><label>税务登记证号:</label> <%= @merchant_store.tax_number %>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label>法定代表人:</label> <%= @merchant_store.legal_person %></li>
+                                    <li class="list-group-item">
+                                        <label>法定代表人身份证号码:</label> <%= @merchant_store.legal_person_ic %></li>
+                                    <li class="list-group-item">
+                                        <label>注册地址:</label> <%= @merchant_store.register_address %></li>
+                                    <li class="list-group-item"><label>真实地址:</label> <%= @merchant_store.real_address %>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label>工商注册经营范围:</label> <%= @merchant_store.business_scope %></li>
+                                    <li class="list-group-item">
+                                        <label>实际经营范围:</label> <%= @merchant_store.real_business_scope %></li>
+                                    <li class="list-group-item"><label>协议编号:</label> <%= @merchant_store.contract_num %>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <label>协议生效日期:</label> <%= @merchant_store.contract_active_date %></li>
+                                    <li class="list-group-item"><label>订单所有人:</label> <%= @merchant_store.contractor %>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-6">
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <label>财务联系人:</label> <%= @merchant_store.finance_contact_name %></li>
+                                    <li class="list-group-item">
+                                        <label>财务联系电话:</label> <%= @merchant_store.finance_contact_phone %></li>
+                                    <li class="list-group-item">
+                                        <label>营业执照号码:</label> <%= @merchant_store.license_num %></li>
+                                    <li class="list-group-item">
+                                        <label>收单帐户名:</label> <%= @merchant_store.public_account_name %></li>
+                                    <li class="list-group-item">
+                                        <label>收单帐号:</label> <%= @merchant_store.public_account_num %></li>
+                                    <li class="list-group-item">
+                                        <label>收单帐户开户行:</label> <%= @merchant_store.public_account_bank %></li>
+                                    <li class="list-group-item">
+                                        <label>积分清算帐户帐户名:</label> <%= @merchant_store.clearance_account_name %></li>
+                                    <li class="list-group-item">
+                                        <label>积分清算帐户帐号:</label> <%= @merchant_store.clearance_account_num %></li>
+                                    <li class="list-group-item">
+                                        <label>积分清算帐户开户行:</label> <%= @merchant_store.clearance_account_bank %></li>
+                                    <li class="list-group-item">
+                                        <label>入网事务联系人:</label> <%= @merchant_store.deploy_contact_name %></li>
+                                    <li class="list-group-item">
+                                        <label>入网事务联系电话:</label> <%= @merchant_store.deploy_contact_phone %></li>
+                                    <li class="list-group-item">
+                                        <label>标准扣率:</label> <%= @merchant_store.standard_rate %></li>
+                                    <li class="list-group-item">
+                                        <label>收单机构:</label> <%= @merchant_store.acquire_org.try(:acquirer_name) %></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.panel-body -->
         </div>
