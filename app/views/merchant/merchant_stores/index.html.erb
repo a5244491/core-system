@@ -1,4 +1,4 @@
-<%= render 'page_head' %>
+<% content_for(:page_title, '商户管理') %>
 <div class="modal" id="search_form_modal" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -35,8 +35,7 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-6"><%= page_entries_info(@merchant_stores, model: 'merchant_store') %></div>
-                    <div class="col-sm-6" style="text-align: right"><%= will_paginate @merchant_stores, container: false %></div>
+                    <%= render 'index_table_entries_info' %>
                 </div>
                 <br>
 
@@ -59,7 +58,9 @@
 
                 </div>
                 <!-- /.table-responsive -->
-
+                <div class="row">
+                    <%= render 'index_table_entries_info' %>
+                </div>
             </div>
             <!-- /.panel-body -->
         </div>

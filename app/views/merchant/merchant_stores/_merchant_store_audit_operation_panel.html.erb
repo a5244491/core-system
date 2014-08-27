@@ -1,8 +1,8 @@
 <% button_class ||= 'btn btn-xs btn-primary' %>
 <% if merchant_store.may_submit_audit? && can?(:submit_audit, Merchant::MerchantStore) %>
-    <%= button_to('提交审核', merchant_merchant_store_submit_audit_path(merchant_store), class: button_class, method: :patch) %>
+    <%= link_to('提交审核', merchant_merchant_store_submit_audit_path(merchant_store), class: button_class, method: :patch) %>
 <% elsif merchant_store.may_approve_audit? && can?(:approve_audit, Merchant::MerchantStore) %>
-    <%= button_to('通过审核', merchant_merchant_store_approve_audit_path(merchant_store), class: button_class, method: :patch) %>
+    <%= link_to('通过审核', merchant_merchant_store_approve_audit_path(merchant_store), class: button_class, method: :patch) %>
 <% elsif merchant_store.may_reject_audit? && can?(:reject_audit, Merchant::MerchantStore) %>
-    <%= button_to('拒绝审核', merchant_merchant_store_reject_audit_path(merchant_store), class: button_class, method: :patch) %>
+    <%= link_to('拒绝审核', merchant_merchant_store_reject_audit_path(merchant_store), class: button_class, method: :patch) %>
 <% end %>

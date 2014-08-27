@@ -2,6 +2,7 @@ module Merchant
   class MerchantStoresController < ApplicationController
     before_action :set_merchant_merchant_store, except: [:new, :create, :index]
     authorize_resource class: 'Merchant::MerchantStore'
+
     def index
       @q = Merchant::MerchantStore.search(params[:q])
       @merchant_stores = @q.result.order(created_at: :desc).paginate(page: @page, per_page: @limit)
@@ -41,10 +42,18 @@ module Merchant
     end
 
     def destroy
-      @merchant_store.destroy
-      respond_to do |format|
-        format.html { redirect_to merchant_merchant_stores_url, notice: 'Merchant store was successfully destroyed.' }
-        format.json { head :no_content }
+      unless @merchant_store.may_destroy?
+        flash[:error] = Tips::MERCHANT_CAN_NOT_DELETE
+        redirect_to request.referrer and return
+      end
+
+      if @merchant_store.destroy
+        record_activities('修改', '商户管理', "删除商户[#{@merchant_store.name}]")
+        flash[:success] = Tips::DELETE_SUCCESS
+        redirect_to merchant_merchant_stores_path
+      else
+        flash[:error] = Tips::DELETE_ERROR
+        redirect_to request.referrer and return
       end
     end
 
