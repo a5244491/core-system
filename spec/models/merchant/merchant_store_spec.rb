@@ -26,7 +26,7 @@ describe Merchant::MerchantStore do
   it 'should update store and run all callbacks' do
     store = Merchant::MerchantStore.create! name: 'test', standard_rate: 0.01, merchant_number: '11', status: 'editing'
     store.update!(name: 'new_name')
-    store.reload.credit_account.name.should == 'new_name'
-    store.payment_plans.count.should == 1
+    store.reload.credit_account.name.should be == 'new_name'
+    store.payment_plans.count.should be == 1
   end
 end

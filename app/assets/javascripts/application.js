@@ -17,4 +17,6 @@
 //= require sb-admin-2.js
 //= require bootstrap-datetimepicker/bootstrap-datetimepicker
 //= require bootstrap-datetimepicker/bootstrap-datetimepicker.zh-CN.js
+//= require bootstrap-validator/bootstrapValidator
+//= require bootstrap-validator/language/zh_CN
 //= require_tree .

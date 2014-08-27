@@ -1,14 +1,14 @@
-<%= form_for(@merchant_store, html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+<%= form_for(@merchant_store, html: {class: 'form-horizontal', role: 'form', id: 'merchant_store_form'}) do |f| %>
     <div class="form-group">
-        <%= f.label :name, '商户名', class: 'col-sm-2 control-label' %>
+        <%= f.label :name, '商户名 *', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= f.text_field :name, class: 'form-control' %>
+            <%= f.text_field :name, class: 'form-control', 'data-bv-notempty' => true %>
         </div>
     </div>
     <div class="form-group">
-        <%= f.label :merchant_number, '商户号', class: 'col-sm-2 control-label' %>
+        <%= f.label :merchant_number, '商户号 *', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= f.text_field :merchant_number, class: 'form-control' %>
+            <%= f.text_field :merchant_number, class: 'form-control', 'data-bv-notempty' => true %>
         </div>
     </div>
     <div class="form-group">
@@ -151,20 +151,20 @@
         </div>
     </div>
     <div class="form-group">
-        <%= f.label :standard_rate, '标准扣率', class: 'col-sm-2 control-label' %>
+        <%= f.label :standard_rate, '标准扣率 *', class: 'col-sm-2 control-label'%>
         <div class="col-sm-10">
-            <%= f.text_field :standard_rate, class: 'form-control' %>
+            <%= f.text_field :standard_rate, class: 'form-control', 'data-bv-numeric' => true, 'data-bv-notempty' => true, max: 100, min: 0 %>
         </div>
     </div>
     <div class="form-group">
-        <%= f.label :accquire_org_id, '收单机构', class: 'col-sm-2 control-label' %>
+        <%= f.label :accquire_org_id, '收单机构 *', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= f.select :accquire_org_id, options_from_collection_for_select(@acquire_orgs, :id, :acquirer_name, @merchant_store.acquire_org.try(:id)), {}, class: 'form-control' %>
+            <%= f.select :accquire_org_id, options_from_collection_for_select(Merchant::AcquirerOrg.all, :id, :acquirer_name, @merchant_store.acquire_org.try(:id)), {}, class: 'form-control', 'data-bv-notempty' => true %>
         </div>
     </div>
     <div class="form_footer">
         <a class="btn btn-default" href="<%= request.referrer %>">返回</a>
-        <button type="reset" class="btn btn-danger">重置表单</button>
-        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 创建商户</button>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
     </div>
 <% end %>

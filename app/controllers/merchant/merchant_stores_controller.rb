@@ -17,7 +17,6 @@ module Merchant
     # GET /merchant/merchant_stores/new
     def new
       @merchant_store = Merchant::MerchantStore.new
-      @acquire_orgs = Merchant::AcquirerOrg.all
     end
 
     # GET /merchant/merchant_stores/1/edit
@@ -27,16 +26,13 @@ module Merchant
     # POST /merchant/merchant_stores
     # POST /merchant/merchant_stores.json
     def create
-      @merchant_merchant_store = Merchant::MerchantStore.new(merchant_merchant_store_params)
-
-      respond_to do |format|
-        if @merchant_merchant_store.save
-          format.html { redirect_to @merchant_merchant_store, notice: 'Merchant store was successfully created.' }
-          format.json { render :show, status: :created, location: @merchant_merchant_store }
-        else
-          format.html { render :new }
-          format.json { render json: @merchant_merchant_store.errors, status: :unprocessable_entity }
-        end
+      @merchant_store = Merchant::MerchantStore.new(merchant_merchant_store_params)
+      if @merchant_store.save
+        flash[:success] = '商户创建成功'
+        redirect_to @merchant_store
+      else
+        flash[:error] = "商户创建失败: #{@merchant_store.errors.full_messages}"
+        render :new
       end
     end
 
@@ -72,7 +68,10 @@ module Merchant
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def merchant_merchant_store_params
-      params[:merchant_merchant_store]
+      params[:merchant_merchant_store].require(:name)
+      params[:merchant_merchant_store].require(:standard_rate)
+      params[:merchant_merchant_store].require(:merchant_number)
+      params[:merchant_merchant_store].except(:id, :status).permit!
     end
   end
 end

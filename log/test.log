@@ -19349,3 +19349,147 @@ Completed 200 OK in 334ms (Views: 324.9ms | ActiveRecord: 0.9ms)
   [1m[36mMember::MerchantCreditAccount Load (0.2ms)[0m  [1mSELECT  `credit_accounts`.* FROM `credit_accounts`  WHERE `credit_accounts`.`account_type` IN ('merchant') AND `credit_accounts`.`id` = 665 LIMIT 1[0m
   [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 169
   [1m[36m (11.5ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.4ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 03:59:21', 'test', '$2a$04$Lmdf9xW5i8jNS9ymCI3aSuqu.CVg9kuGBq35ncPq3jyqPzUYbeTy6', 'tester', 'dept_manager', '2014-08-27 03:59:21')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_store"=>{"name"=>"111", "merchant_number"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 70  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+Completed 500 Internal Server Error in 174ms
+  [1m[35m (21.2ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 04:00:12', 'test', '$2a$04$6QP1z/0b5SI5QE0zCgOy8eKHUwjWZLpZCT60inWRiJKWQ8.PMUU22', 'tester', 'dept_manager', '2014-08-27 04:00:12')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_store"=>{"name"=>"111", "merchant_number"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 71  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+Completed 500 Internal Server Error in 21ms
+  [1m[35m (0.7ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:05:59', 'test', '$2a$04$k9TI98MsVU15j5zSOtYbf.C5er6/onWaQLvLbmmFgPQcNsazCdCkC', 'tester', 'dept_manager', '2014-08-27 07:05:59')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_merchant_store"=>{"name"=>"111", "merchant_number"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 72  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+  [1m[35m (6.8ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMerchant::MerchantStore Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE `merchant_stores`.`merchant_number` = BINARY '111' LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `merchant_stores` (`accept_global_voucher`, `created_at`, `merchant_number`, `name`, `standard_rate`, `status`, `updated_at`) VALUES (0, '2014-08-27 07:05:59', '111', '111', 1.1, 'editing', '2014-08-27 07:05:59')
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `credit_accounts` (`account_type`, `created_at`, `external_id`, `lock_version`, `updated_at`) VALUES ('merchant', '2014-08-27 07:05:59', '28354198006148fce99bf0279eff9a03', 0, '2014-08-27 07:05:59')[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `payment_plans` (`created_at`, `plan_type`, `status`, `updated_at`, `valid_from`, `valid_till`, `voucher_status`) VALUES ('2014-08-27 07:06:00', 'none', 1, '2014-08-27 07:06:00', '1976-01-01 00:00:00', '2024-08-27 07:06:00', 0)
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `payment_plans` SET `merchant_store_id` = 170, `updated_at` = '2014-08-27 07:06:00' WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 85[0m
+  [1m[35mMerchant::MerchantStore Load (0.3ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 170 LIMIT 1
+  [1m[36mPay::PaymentPlan Load (0.3ms)[0m  [1mSELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 170 AND (voucher_status = 3 or  voucher_status = 2)  ORDER BY `payment_plans`.`id` ASC LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 170 AND (voucher_status = 3 or  voucher_status = 1)  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 170) LIMIT 1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.2ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 170) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `merchant_stores` SET `accept_global_voucher` = 0, `created_at` = '2014-08-27 07:05:59', `credit_account_id` = 666, `id` = 170, `merchant_number` = '111', `name` = '111', `standard_rate` = 1.1, `status` = 'editing', `updated_at` = '2014-08-27 07:05:59' WHERE `merchant_stores`.`id` = 170[0m
+  [1m[35m (0.2ms)[0m  UPDATE `credit_accounts` SET `name` = '111', `updated_at` = '2014-08-27 07:06:00', `lock_version` = 1 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 666 AND `credit_accounts`.`lock_version` = 0)
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://test.host/merchant/merchant_stores/170
+Completed 302 Found in 932ms (ActiveRecord: 519.8ms)
+  [1m[35mMerchant::MerchantStore Load (0.3ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`name` IS NULL  ORDER BY `merchant_stores`.`id` ASC LIMIT 1
+  [1m[36m (0.9ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:08:25', 'test', '$2a$04$JpDhx1buDBtibwTlPmi2VutF1u657F1u.LS.NhBJuepA01aQA7rdW', 'tester', 'dept_manager', '2014-08-27 07:08:25')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_merchant_store"=>{"name"=>"111", "merchant_number"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 73  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMerchant::MerchantStore Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE `merchant_stores`.`merchant_number` = BINARY '111' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `merchant_stores` (`accept_global_voucher`, `created_at`, `merchant_number`, `name`, `standard_rate`, `status`, `updated_at`) VALUES (0, '2014-08-27 07:08:25', '111', '111', 1.1, 'editing', '2014-08-27 07:08:25')
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `credit_accounts` (`account_type`, `created_at`, `external_id`, `lock_version`, `updated_at`) VALUES ('merchant', '2014-08-27 07:08:25', 'd912264550a88ace783f0cb8a2a85bcc', 0, '2014-08-27 07:08:25')[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `payment_plans` (`created_at`, `plan_type`, `status`, `updated_at`, `valid_from`, `valid_till`, `voucher_status`) VALUES ('2014-08-27 07:08:25', 'none', 1, '2014-08-27 07:08:25', '1976-01-01 00:00:00', '2024-08-27 07:08:25', 0)
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `payment_plans` SET `merchant_store_id` = 171, `updated_at` = '2014-08-27 07:08:25' WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 86[0m
+  [1m[35mMerchant::MerchantStore Load (0.3ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 171 LIMIT 1
+  [1m[36mPay::PaymentPlan Load (0.2ms)[0m  [1mSELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 171 AND (voucher_status = 3 or  voucher_status = 2)  ORDER BY `payment_plans`.`id` ASC LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 171 AND (voucher_status = 3 or  voucher_status = 1)  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 171) LIMIT 1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.3ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 171) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `merchant_stores` SET `accept_global_voucher` = 0, `created_at` = '2014-08-27 07:08:25', `credit_account_id` = 667, `id` = 171, `merchant_number` = '111', `name` = '111', `standard_rate` = 1.1, `status` = 'editing', `updated_at` = '2014-08-27 07:08:25' WHERE `merchant_stores`.`id` = 171[0m
+  [1m[35m (0.3ms)[0m  UPDATE `credit_accounts` SET `name` = '111', `updated_at` = '2014-08-27 07:08:25', `lock_version` = 1 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 667 AND `credit_accounts`.`lock_version` = 0)
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://test.host/merchant/merchant_stores/171
+Completed 302 Found in 451ms (ActiveRecord: 99.5ms)
+  [1m[35mMerchant::MerchantStore Load (0.4ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`name` = '111'  ORDER BY `merchant_stores`.`id` ASC LIMIT 1
+  [1m[36m (15.9ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:08:49', 'test', '$2a$04$ffjSw1qlc.2VvbXY.KFAb.4AYbeSw9R7kHMjSiki4eLFOrQDXa1i2', 'tester', 'dept_manager', '2014-08-27 07:08:49')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#index as HTML
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 74  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+  Rendered merchant/merchant_stores/_page_head.html.erb (0.4ms)
+  Rendered merchant/merchant_stores/_search_form.html.erb (107.9ms)
+  [1m[35m (0.2ms)[0m  SELECT COUNT(*) FROM `merchant_stores`
+  [1m[36m (0.2ms)[0m  [1mSELECT COUNT(*) FROM `merchant_stores`[0m
+  [1m[35mMerchant::MerchantStore Load (0.2ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`   ORDER BY `merchant_stores`.`created_at` DESC LIMIT 20 OFFSET 0
+  Rendered merchant/merchant_stores/_merchant_store.html.erb (0.0ms)
+  Rendered merchant/merchant_stores/index.html.erb within layouts/application (185.4ms)
+  Rendered application/_header.html.erb (0.7ms)
+  Rendered application/_sidebar.html.erb (0.4ms)
+  Rendered shared/_notice.html.erb (0.6ms)
+Completed 200 OK in 3649ms (Views: 3441.5ms | ActiveRecord: 33.8ms)
+  [1m[36m (28.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:08:53', 'test', '$2a$04$oUNnWFZLHi7KE0tkF2hUeOn36FzUambw6RmqcMK4nSf/lF6GgXUbO', 'tester', 'dept_manager', '2014-08-27 07:08:53')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_merchant_store"=>{"name"=>"111", "merchant_number"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.4ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 75  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE `merchant_stores`.`merchant_number` = BINARY '111' LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `merchant_stores` (`accept_global_voucher`, `created_at`, `merchant_number`, `name`, `standard_rate`, `status`, `updated_at`) VALUES (0, '2014-08-27 07:08:53', '111', '111', 1.1, 'editing', '2014-08-27 07:08:53')
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `credit_accounts` (`account_type`, `created_at`, `external_id`, `lock_version`, `updated_at`) VALUES ('merchant', '2014-08-27 07:08:53', 'c352b32a82e5e6e49afd24cbaeb968e0', 0, '2014-08-27 07:08:53')[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `payment_plans` (`created_at`, `plan_type`, `status`, `updated_at`, `valid_from`, `valid_till`, `voucher_status`) VALUES ('2014-08-27 07:08:53', 'none', 1, '2014-08-27 07:08:53', '1976-01-01 00:00:00', '2024-08-27 07:08:53', 0)
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE `payment_plans` SET `merchant_store_id` = 172, `updated_at` = '2014-08-27 07:08:53' WHERE `payment_plans`.`plan_type` IN ('none') AND `payment_plans`.`id` = 87[0m
+  [1m[35mMerchant::MerchantStore Load (0.2ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`id` = 172 LIMIT 1
+  [1m[36mPay::PaymentPlan Load (0.3ms)[0m  [1mSELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 172 AND (voucher_status = 3 or  voucher_status = 2)  ORDER BY `payment_plans`.`id` ASC LIMIT 1[0m
+  [1m[35mPay::PaymentPlan Load (0.2ms)[0m  SELECT  `payment_plans`.* FROM `payment_plans`  WHERE `payment_plans`.`merchant_store_id` = 172 AND (voucher_status = 3 or  voucher_status = 1)  ORDER BY `payment_plans`.`id` ASC LIMIT 1
+  [1m[36mMerchant::MerchantStore Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 172) LIMIT 1[0m
+  [1m[35mMerchant::MerchantStore Exists (0.2ms)[0m  SELECT  1 AS one FROM `merchant_stores`  WHERE (`merchant_stores`.`merchant_number` = BINARY '111' AND `merchant_stores`.`id` != 172) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE `merchant_stores` SET `accept_global_voucher` = 0, `created_at` = '2014-08-27 07:08:53', `credit_account_id` = 668, `id` = 172, `merchant_number` = '111', `name` = '111', `standard_rate` = 1.1, `status` = 'editing', `updated_at` = '2014-08-27 07:08:53' WHERE `merchant_stores`.`id` = 172[0m
+  [1m[35m (0.2ms)[0m  UPDATE `credit_accounts` SET `name` = '111', `updated_at` = '2014-08-27 07:08:53', `lock_version` = 1 WHERE `credit_accounts`.`account_type` IN ('merchant') AND (`credit_accounts`.`id` = 668 AND `credit_accounts`.`lock_version` = 0)
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://test.host/merchant/merchant_stores/172
+Completed 302 Found in 177ms (ActiveRecord: 56.4ms)
+  [1m[35mMerchant::MerchantStore Load (0.2ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`name` = '111'  ORDER BY `merchant_stores`.`id` ASC LIMIT 1
+  [1m[36m (63.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.2ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:08:53', 'test', '$2a$04$ZUbVH73pfQzfhqPMCmdmXO0Rw.mcuMBs64tE4mhxzZ4QeVy9ZWjE2', 'tester', 'dept_manager', '2014-08-27 07:08:53')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_merchant_store"=>{"name"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 76  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+Completed 400 Bad Request in 4ms
+  [1m[35m (34.5ms)[0m  ROLLBACK
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUsers::SystemUser Exists (0.3ms)[0m  SELECT  1 AS one FROM `system_users`  WHERE `system_users`.`name` = BINARY 'test' LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `system_users` (`created_at`, `name`, `password_digest`, `real_name`, `role_name`, `updated_at`) VALUES ('2014-08-27 07:10:05', 'test', '$2a$04$3PibwSlMrBpxEdRII6Kcxum0EYQB8HypJoQzS5sPD8hzNGvur9yf2', 'tester', 'dept_manager', '2014-08-27 07:10:05')[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by Merchant::MerchantStoresController#create as HTML
+  Parameters: {"merchant_merchant_store"=>{"name"=>"111", "standard_rate"=>"1.1"}}
+  [1m[36mUsers::SystemUser Load (0.3ms)[0m  [1mSELECT  `system_users`.* FROM `system_users`  WHERE `system_users`.`id` = 77  ORDER BY `system_users`.`id` ASC LIMIT 1[0m
+Completed 400 Bad Request in 184ms
+  [1m[35mMerchant::MerchantStore Load (0.3ms)[0m  SELECT  `merchant_stores`.* FROM `merchant_stores`  WHERE `merchant_stores`.`name` = '111'  ORDER BY `merchant_stores`.`id` ASC LIMIT 1
+  [1m[36m (51.2ms)[0m  [1mROLLBACK[0m
