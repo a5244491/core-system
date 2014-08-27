@@ -1,3 +1,3 @@
 $(document).ready ->
-  $('.modal_submit').click ->
-    $(this).parents().find('form').submit()
+  $('.modal [type=submit]').click ->
+    $(this).closest('.modal').find('form').submit()

@@ -58,6 +58,12 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create]
   get '/logout', to: 'sessions#destroy'
   namespace :merchant do
-    resources :merchant_stores
+    resources :merchant_stores do
+      patch 'submit_audit', to: 'merchant_stores#submit_audit'
+      patch 'reject_audit', to: 'merchant_stores#reject_audit'
+      patch 'approve_audit', to: 'merchant_stores#approve_audit'
+      patch 'enable', to: 'merchant_stores#enable'
+      patch 'disable', to: 'merchant_stores#disable'
+    end
   end
 end

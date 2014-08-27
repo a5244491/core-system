@@ -1,0 +1,6 @@
+<% button_class ||= 'btn btn-xs btn-primary' %>
+<% if merchant_store.may_enable? && can?(:enable, Merchant::MerchantStore) %>
+    <%= button_to('上线商户', merchant_merchant_store_enable_path(merchant_store), class: button_class, method: :patch) %>
+<% elsif merchant_store.may_disable? && can?(:disable, Merchant::MerchantStore) %>
+    <%= button_to('下线商户', merchant_merchant_store_disable_path(merchant_store), class: button_class, method: :patch) %>
+<% end %>

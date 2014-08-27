@@ -14,7 +14,7 @@
     <div class="form-group">
         <%= f.label :status_eq, '状态', class: 'col-sm-2 control-label' %>
         <div class="col-sm-10">
-            <%= f.select(:status_eq, options_for_select(store_status_text_hash.invert), {},  class: 'form-control')%>
+            <%= f.select(:status_eq, options_for_select(store_status_text_hash.invert.merge('所有状态' => nil), @q.status_eq.to_s), {},  class: 'form-control')%>
         </div>
     </div>
 <% end %>
