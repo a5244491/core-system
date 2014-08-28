@@ -77,7 +77,7 @@
                                     <li class="list-group-item"><label>协议编号:</label> <%= @merchant_store.contract_num %>
                                     </li>
                                     <li class="list-group-item">
-                                        <label>协议生效日期:</label> <%= @merchant_store.contract_active_date %></li>
+                                        <label>协议生效日期:</label> <%= datetime_text(@merchant_store.contract_active_date) %></li>
                                     <li class="list-group-item"><label>订单所有人:</label> <%= @merchant_store.contractor %>
                                     </li>
                                 </ul>

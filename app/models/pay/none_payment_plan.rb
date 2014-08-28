@@ -16,5 +16,9 @@ module Pay
       self.customer_rate = nil
       self.referer_rate = nil
     end
+
+    def may_destroy?
+      false
+    end
   end
 end
