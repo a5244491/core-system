@@ -6,4 +6,9 @@
   <% if payment_plan.may_disable? && can?(:disable, Pay::PaymentPlan) %>
         <%= link_to('失效', merchant_merchant_store_payment_plan_disable_path(@merchant_store, payment_plan), class: 'btn btn-xs btn-primary', method: :patch) %>
   <% end %>
+  <% if payment_plan.may_destroy? && can?(:destroy, Pay::PaymentPlan) %>
+        <%= link_to('删除', merchant_merchant_store_payment_plan_path(@merchant_store, payment_plan), class: 'btn btn-xs btn-danger', method: :delete, data: {
+                confirm: '确认要删除该条支付计划吗'
+        }) %>
+  <% end %>
 </span>

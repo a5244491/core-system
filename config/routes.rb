@@ -64,10 +64,11 @@ Rails.application.routes.draw do
       patch 'approve_audit', to: 'merchant_stores#approve_audit'
       patch 'enable', to: 'merchant_stores#enable'
       patch 'disable', to: 'merchant_stores#disable'
-      resources :payment_plans, only: [:index] do
+      resources :payment_plans, only: [:index, :destroy] do
         patch 'disable', to: 'payment_plans#disable'
         patch 'enable', to: 'payment_plans#enable'
       end
+      resources :bank_discounts, only:[:new, :create, :edit, :update]
     end
   end
 end

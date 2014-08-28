@@ -1,6 +1,6 @@
 class Merchant::PaymentPlansController < ApplicationController
-  before_action :set_merchant_store, only: [:index, :disable, :enable]
-  before_action :set_payment_plan, only: [:disable, :enable]
+  before_action :set_merchant_store, only: [:index, :disable, :enable, :destroy]
+  before_action :set_payment_plan, only: [:disable, :enable, :destroy]
   authorize_resource class: 'Pay::PaymentPlan'
 
   # GET /merchant/payment_plans
@@ -40,12 +40,26 @@ class Merchant::PaymentPlansController < ApplicationController
     redirect_to request.referrer
   end
 
+  def destroy
+    unless @payment_plan.may_destroy?
+      flash[:error] = Tips::MERCHANT_CAN_NOT_DELETE
+    else
+      if @payment_plan.destroy
+        record_activities('删除', '支付计划',  "#{@merchant_store.name} - ##{@payment_plan.id}")
+        flash[:success] = Tips::DELETE_SUCCESS
+      else
+        flash[:error] = Tips::DELETE_ERROR
+      end
+    end
+    redirect_to request.referrer
+  end
+
   private
   def set_merchant_store
     @merchant_store = Merchant::MerchantStore.find(params[:merchant_store_id])
   end
 
   def set_payment_plan
-    @payment_plan = @merchant_store.payment_plans.find(params[:payment_plan_id])
+    @payment_plan = @merchant_store.payment_plans.find(params[:payment_plan_id] || params[:id])
   end
 end

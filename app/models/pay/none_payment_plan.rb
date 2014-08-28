@@ -20,5 +20,9 @@ module Pay
     def may_destroy?
       false
     end
+
+    def may_edit?
+      false
+    end
   end
 end

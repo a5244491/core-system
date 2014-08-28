@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  after_action :reset_last_captcha_code!
-  after_action :check_login, :set_paging
+  before_action :reset_last_captcha_code!
+  before_action :check_login, :set_paging
   include SessionManager
   include ActivityManager
   rescue_from CanCan::AccessDenied do |exception|

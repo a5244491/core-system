@@ -51,13 +51,6 @@ module Pay
         now = DateTime.now
         where('status =? or valid_from > ? or valid_till < ?', INVALID, now, now)
       end
-
-      def discount_type_text_hash
-        {
-            CoreLib::PaymentPlan::RATE => '打折',
-            CoreLib::PaymentPlan::CASH => '抵现',
-        }
-      end
     end
 
     def is_valid?
@@ -148,7 +141,7 @@ module Pay
     private
     def fill_up_date
       self.valid_from ||= DateTime.new(1976)
-      self.valid_till ||= 10.years.from_now
+      self.valid_till ||= 100.years.from_now
     end
   end
 end

@@ -44,4 +44,25 @@ describe Merchant::PaymentPlansController do
       p.status.should == Pay::PaymentPlan::INVALID
     end
   end
+
+  describe 'destroy action' do
+    before :each do
+      @payment_plan = create(:bank_discount_rate, :invalid, merchant_store: @merchant_store)
+    end
+    it 'should payment plan' do
+      delete :destroy, :merchant_store_id => @merchant_store.id, :id => @payment_plan.id
+      response.code.should eq('302')
+      flash[:success].should be == Tips::DELETE_SUCCESS
+      flash[:error].should be_nil
+      Pay::PaymentPlan.where(id: @payment_plan.id).first.should be_nil
+    end
+
+    it 'should not destroy valid plan' do
+      @payment_plan.enable
+      delete :destroy, :merchant_store_id => @merchant_store.id, :id => @payment_plan.id
+      response.code.should eq('302')
+      flash[:error].should_not be_nil
+      Pay::PaymentPlan.where(id: @payment_plan.id).first.should_not be_nil
+    end
+  end
 end
