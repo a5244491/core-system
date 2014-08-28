@@ -1,5 +1,6 @@
 module Pay
   class PaymentPlan < ActiveRecord::Base
+    include BankDiscountFormModule
     STATUSES = [VALID = 1, INVALID = 0]
     PLAN_TYPES = [CREDIT_BACK = 'credit_back', NONE = 'none', BANK_DISCOUNT = 'bank_discount']
     VOUCHER_STATUS = [ACCEPT_NONE = 0, ACCEPT_SELF = 1, ACCEPT_GLOBAL = 2, ACCEPT_ALL = 3]
@@ -25,8 +26,14 @@ module Pay
 
     before_validation do
       fill_up_date
+    end
+
+    after_initialize do
       self.voucher_status ||= ACCEPT_NONE
       self.user_type ||= ALL_USERS
+      self.discount_rate ||= 0
+      self.discount_amount ||= 0
+      self.minimal_money_amount ||= 0
     end
 
     after_save do
@@ -69,57 +76,12 @@ module Pay
       self.user_type != ALL_USERS
     end
 
-    def plan_type_text
-      CoreLib::PaymentPlan.plan_type_text_hash[self.plan_type].nil? ? '' : CoreLib::PaymentPlan.plan_type_text_hash[self.plan_type]
-    end
-
-    def discount_type_text
-      CoreLib::PaymentPlan.discount_type_text_hash[self.discount_type].nil? ? '' : CoreLib::PaymentPlan.discount_type_text_hash[self.discount_type]
-    end
-
     def enable
       update!(status: Pay::PaymentPlan::VALID)
     end
 
     def disable
       update!(status: Pay::PaymentPlan::INVALID)
-    end
-
-    def update_with_params!(params)
-      case params[:plan_type]
-        when CoreLib::PaymentPlan::CREDIT_BACK
-          self.merchant_rate = (params[:merchant_rate].to_f)/100.to_f
-          self.customer_rate = (params[:customer_rate].to_f)/100.to_f
-        when CoreLib::PaymentPlan::BANK_DISCOUNT
-          self.merchant_rate = (params[:merchant_rate].to_f)/100.to_f unless params[:merchant_rate].blank?
-          self.discount_type = params[:discount_type]
-          self.discount_rate = (params[:discount_rate].to_f)/100.to_f
-          self.discount_amount = params[:discount_amount].to_i*100
-          unless params[:all_bank] == 'true'
-            raise IllegalOperationException, Tips::BANK_NAME_NOT_EXIST if  !params[:bank_name].blank? && CoreLib::CardBin.where('bank_name = ?', params[:bank_name]).first.nil?
-            self.bank_name = params[:bank_name]
-          else
-            self.bank_name = nil
-          end
-      end
-      if params[:referer_rate].blank?
-        self.referer_rate = nil
-      else
-        self.referer_rate = (params[:referer_rate].to_f)/100.to_f
-      end
-
-      self.user_type = params[:user_type]
-      if self.user_type == CoreLib::PaymentPlan::REFEREE
-        self.user_tag = params[:user_tag].blank? ? self.merchant_store.credit_account.external_id : params[:user_tag]
-      else
-        self.user_tag = nil
-      end
-      self.minimal_money_amount = params[:minimal_money_amount].to_i*100
-      self.status = CoreLib::PaymentPlan::INVALID
-      self.valid_from = Time.zone.parse(params[:valid_from]) unless params[:valid_from].blank?
-      self.valid_till = Time.zone.parse(params[:valid_till]) unless params[:valid_till].blank?
-      self.voucher_status = params[:voucher_status]
-      self.save!
     end
 
     def may_destroy?

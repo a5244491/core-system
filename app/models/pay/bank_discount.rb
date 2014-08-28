@@ -1,7 +1,5 @@
 module Pay
   class BankDiscount < PaymentPlan
-    validates_inclusion_of :discount_type, in: DISCOUNT_TYPES
-    validates_with DiscountValidator
     before_validation :fill_minimal_money_amount
 
     class << self

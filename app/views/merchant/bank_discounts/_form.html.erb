@@ -1,0 +1,73 @@
+<%= form_for(@bank_discount, url: merchant_merchant_store_bank_discounts_path, html: {class: 'form-horizontal', role: 'form', id: 'bank_discount_form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :discount_type, '适用用户', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.select(:discount_type, options_for_select(user_type_text_hash.invert, @bank_discount.user_type), {}, class: 'form-control', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :merchant_rate, '适用银行', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= check_box_tag('for_all_banks', '1', @bank_discount.bank_name.blank?) %>
+                所有银行
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:bank_name, class: 'form-control', placeholder: '请输入银行名称') %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :discount_rate_in_decimal, '折扣比例%', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:discount_rate_in_decimal, class: 'form-control', placeholder: '请输入折扣比例', 'data-bv-notempty' => true, 'data-bv-numeric' => true, max: 100, min: 0) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :discount_amount_in_yuan, '抵扣金额(元)', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:discount_amount_in_yuan, class: 'form-control', placeholder: '请输入抵扣金额', 'data-bv-notempty' => true, 'data-bv-numeric' => true, min: 0) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :minimal_money_amount_in_yuan, '最低消费金额(元)', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:minimal_money_amount_in_yuan, class: 'form-control', placeholder: '请输入最低消费金额', 'data-bv-notempty' => true, 'data-bv-numeric' => true, min: 0) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :merchant_rate_in_decimal, '商户扣率％', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= check_box_tag('use_merchant_standard_rate', '1', @bank_discount.merchant_rate.blank?) %>
+                使用标准扣率
+            </div>
+            <div class="col-xs-5 ">
+                <%= f.text_field(:merchant_rate_in_decimal, class: 'form-control', placeholder: '请输入商户扣率', 'data-bv-numeric' => true, min: 0, max: 100) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :referer_rate_in_decimal, '推荐人返利比例％', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= check_box_tag('use_default_referer_rate', '1', @bank_discount.referer_rate.blank?) %>
+                <%= "使用系统默认值(#{System::Configuration.get(System::Configuration::REFERER_RATE).to_f * 100}%)" %>
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:referer_rate_in_decimal, class: 'form-control', placeholder: '请输入推荐人返利比例', 'data-bv-numeric' => true, min: 0, max: 100) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :voucher_status, '是否接受红包', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.select(:voucher_status, options_for_select(voucher_status_text_hash.invert, @bank_discount.voucher_status), {}, class: 'form-control') %>
+        </div>
+    </div>
+    <div class="form_footer">
+        <a class="btn btn-default" href="<%= merchant_merchant_store_payment_plans_path %>">返回</a>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
+    </div>
+<% end %>
