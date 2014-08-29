@@ -1,0 +1,15 @@
+<tr class="odd gradeX">
+    <td><%= acquirer.acquirer_name %></td>
+    <td><%= acquirer.acquirer_code %></td>
+    <td><%= datetime_text(acquirer.created_at) %></td>
+    <td>
+        <% if can?(:update, Merchant::AcquirerOrg) %>
+            <%= link_to('修改', edit_merchant_acquirer_org_path(acquirer), class: 'btn btn-xs btn-primary') %>
+        <% end %>
+        <% if can?(:delete, Merchant::AcquirerOrg) %>
+            <%= link_to('删除', merchant_acquirer_org_path(acquirer), class: 'btn btn-xs btn-primary', method: :delete, data: {
+                    confirm: "确认删除 #{acquirer.acquirer_name} 吗?"
+            }) %>
+        <% end %>
+    </td>
+</tr>

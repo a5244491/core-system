@@ -53,7 +53,7 @@ module Merchant
       end
 
       if @merchant_store.destroy
-        record_activities('修改', '商户管理', "删除商户[#{@merchant_store.name}]")
+        record_activities('删除', '商户管理', "删除商户[#{@merchant_store.name}]")
         flash[:success] = Tips::DELETE_SUCCESS
         redirect_to merchant_merchant_stores_path
       else

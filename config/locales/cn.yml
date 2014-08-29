@@ -14,6 +14,11 @@ cn:
         one: '个会员'
         few: '个会员'
         other: '个会员'
+      acquirer:
+        zero: '个收单机构'
+        one: '个收单机构'
+        few: '个收单机构'
+        other: '个收单机构'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"
@@ -21,7 +26,7 @@ cn:
         other: "共%{count}%{model}"
       single_page_html:
         zero:  "无符合条件的记录"
-        one:   "共<b>1</b> %{model}"
+        one:   "共<b>1</b>%{model}"
         other: "共<b>&nbsp;%{count}</b>%{model}"
 
       multi_page: "共%{count}%{model}, 当前展示 %{from} - %{to}%{model}"

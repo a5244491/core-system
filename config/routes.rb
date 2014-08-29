@@ -73,5 +73,6 @@ Rails.application.routes.draw do
       resources :none_payment_plans, only: [:edit, :update], as: :merchant_none_payment_plans
       resources :credit_backs, only: [:new, :create, :edit, :update], as: :merchant_credit_backs
     end
+    resources :acquirer_orgs, except: [:show]
   end
 end
