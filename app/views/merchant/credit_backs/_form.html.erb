@@ -1,0 +1,55 @@
+<%= form_for([@merchant_store, @form], html: {class: 'form-horizontal', role: 'form', id: 'credit_back_form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :valid_from, '有效期起', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_from, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :valid_till, '有效期至', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_till, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :customer_rate, '返利比例%', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:customer_rate, class: 'form-control', placeholder: '请输入折扣比例', 'data-bv-notempty' => true, 'data-bv-numeric' => true, max: 100, min: 0) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :merchant_rate, '商户扣率％', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= check_box_tag('use_merchant_standard_rate', '1', @form.merchant_rate.blank?) %>
+                使用标准扣率
+            </div>
+            <div class="col-xs-5 ">
+                <%= f.text_field(:merchant_rate, class: 'form-control', placeholder: '请输入商户扣率', 'data-bv-numeric' => true, min: 0, max: 100) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :referer_rate, '推荐人返利比例％', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= check_box_tag('use_default_referer_rate', '1', @form.referer_rate.blank?) %>
+                <%= "使用系统默认值(#{System::Configuration.get(System::Configuration::REFERER_RATE).to_f * 100}%)" %>
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:referer_rate, class: 'form-control', placeholder: '请输入推荐人返利比例', 'data-bv-numeric' => true, min: 0, max: 100) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :voucher_status, '是否接受红包', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.select(:voucher_status, options_for_select(voucher_status_text_hash.invert, @form.voucher_status), {}, class: 'form-control') %>
+        </div>
+    </div>
+    <div class="form_footer">
+        <a class="btn btn-default" href="<%= merchant_merchant_store_payment_plans_path %>">返回</a>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
+    </div>
+<% end %>

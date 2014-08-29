@@ -1,0 +1,2 @@
+module Merchant::NonePaymentPlansHelper
+end
