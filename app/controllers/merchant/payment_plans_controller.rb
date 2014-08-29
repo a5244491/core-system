@@ -1,5 +1,4 @@
-class Merchant::PaymentPlansController < ApplicationController
-  before_action :set_merchant_store, only: [:index, :disable, :enable, :destroy]
+class Merchant::PaymentPlansController < Merchant::MerchantStoreResourcesBasicController
   before_action :set_payment_plan, only: [:disable, :enable, :destroy]
   authorize_resource class: 'Pay::PaymentPlan'
 
@@ -55,10 +54,6 @@ class Merchant::PaymentPlansController < ApplicationController
   end
 
   private
-  def set_merchant_store
-    @merchant_store = Merchant::MerchantStore.find(params[:merchant_store_id])
-  end
-
   def set_payment_plan
     @payment_plan = @merchant_store.payment_plans.find(params[:payment_plan_id] || params[:id])
   end

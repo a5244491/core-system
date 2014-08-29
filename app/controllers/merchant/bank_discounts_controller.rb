@@ -1,5 +1,4 @@
-class Merchant::BankDiscountsController < ApplicationController
-  before_action :set_merchant_store
+class Merchant::BankDiscountsController < Merchant::MerchantStoreResourcesBasicController
   before_action :set_merchant_bank_discount, only: [:edit, :update]
 
   # GET /merchant/bank_discounts/new
@@ -57,10 +56,6 @@ class Merchant::BankDiscountsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_merchant_bank_discount
     @bank_discount = Pay::BankDiscount.where(merchant_store: @merchant_store, id: params[:id]).first
-  end
-
-  def set_merchant_store
-    @merchant_store = Merchant::MerchantStore.find(params[:merchant_store_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

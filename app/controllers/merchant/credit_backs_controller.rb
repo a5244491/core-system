@@ -1,5 +1,4 @@
-class Merchant::CreditBacksController < ApplicationController
-  before_action :set_merchant_store
+class Merchant::CreditBacksController < Merchant::MerchantStoreResourcesBasicController
   before_action :set_merchant_credit_back
 
   # GET /merchant/credit_backs/new
@@ -58,10 +57,6 @@ class Merchant::CreditBacksController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_merchant_credit_back
     @merchant_credit_back = Pay::CreditBack.where(merchant_store: @merchant_store, id: params[:id]).first
-  end
-
-  def set_merchant_store
-    @merchant_store = Merchant::MerchantStore.find(params[:merchant_store_id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

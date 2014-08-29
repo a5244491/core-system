@@ -9,6 +9,11 @@ cn:
         one: '家商户'
         few: '家商户'
         other: '家商户'
+      member:
+        zero: '个会员'
+        one: '个会员'
+        few: '个会员'
+        other: '个会员'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

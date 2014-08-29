@@ -1,0 +1,13 @@
+<%= search_form_for(@q, url: merchant_merchant_store_members_path, class: 'form-inline', role: 'form') do |f| %>
+    <div class="form-group">
+        <%= f.label :mobile_eq, '会员手机号', class: 'control-label' %>
+        <%= f.search_field :mobile_eq, class: 'form-control', placeholder: '手机号'%>
+    </div>
+    <div class="form-group">
+        <%= f.label :referer_account_id_eq, '类型', class: 'control-label' %>
+        <%= f.select(:referer_account_id_eq, options_for_select({'所有状态' => nil, '推荐会员' => @merchant_store.credit_account.id}, @q.referer_account_id_eq.to_s), {},  class: 'form-control')%>
+    </div>
+    <a type="button" class="btn btn-danger" href="<%= merchant_merchant_store_members_path %>"><i class="fa fa-exclamation-circle"></i>
+        重置查询</a>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-fighter-jet"></i> 执行查询</button>
+<% end %>

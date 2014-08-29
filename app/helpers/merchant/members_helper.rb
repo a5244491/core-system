@@ -1,0 +1,2 @@
+module Merchant::MembersHelper
+end

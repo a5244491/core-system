@@ -77,5 +77,10 @@ module Member
       end
       save!
     end
+
+    def referee_of?(referer)
+      referer = referer.credit_account if referer.kind_of?(Merchant::MerchantStore)
+      self.referer_account == referer
+    end
   end
 end

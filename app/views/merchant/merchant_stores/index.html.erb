@@ -35,12 +35,11 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="row">
-                    <%= render 'index_table_entries_info' %>
+                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'merchant_store'} %>
                 </div>
                 <br>
 
                 <div class="table-responsive">
-
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
                         <tr>
@@ -55,11 +54,10 @@
                         <%= render partial: 'merchant_store', collection: @merchant_stores %>
                         </tbody>
                     </table>
-
                 </div>
                 <!-- /.table-responsive -->
                 <div class="row">
-                    <%= render 'index_table_entries_info' %>
+                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'merchant_store'} %>
                 </div>
             </div>
             <!-- /.panel-body -->

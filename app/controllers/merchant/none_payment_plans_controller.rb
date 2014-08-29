@@ -1,5 +1,4 @@
-class Merchant::NonePaymentPlansController < ApplicationController
-  before_action :set_merchant_store
+class Merchant::NonePaymentPlansController < Merchant::MerchantStoreResourcesBasicController
   before_action :set_merchant_bank_discount
 
   def edit
@@ -30,10 +29,6 @@ class Merchant::NonePaymentPlansController < ApplicationController
   private
   def set_merchant_bank_discount
     @none_payment_plan = Pay::NonePaymentPlan.where(merchant_store: @merchant_store, id: params[:id]).first
-  end
-
-  def set_merchant_store
-    @merchant_store = Merchant::MerchantStore.find(params[:merchant_store_id])
   end
 
   def merchant_none_payment_plan_params

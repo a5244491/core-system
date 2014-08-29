@@ -1,0 +1,6 @@
+<tr class="odd gradeX">
+    <td><%= member_account.mobile %> <% if member_account.referee_of?(@merchant_store) %><span class="badge">推荐会员</span><% end%></td>
+    <td><%= datetime_text(member_account.created_at) %></td>
+    <td><%= member_account.consumption_times.to_i %></td>
+    <td><%= member_account.usable_credit.to_i %></td>
+</tr>
