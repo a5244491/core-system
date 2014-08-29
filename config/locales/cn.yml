@@ -19,6 +19,11 @@ cn:
         one: '个收单机构'
         few: '个收单机构'
         other: '个收单机构'
+      transaction_log:
+        zero: '条交易'
+        one: '条交易'
+        few: '条交易'
+        other: '条交易'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

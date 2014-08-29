@@ -25,5 +25,9 @@ module Trade
     scope :recent, ->(duration = 1.week) { where(transaction_datetime: duration.ago..duration.from_now) }
     scope :primary_log, -> { where(log_type: PRIMARY) }
     scope :vice_log, -> { where(log_type: VICE) }
+
+    def member_transaction?
+      !self.credit_account_id.nil?
+    end
   end
 end

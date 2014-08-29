@@ -75,4 +75,8 @@ Rails.application.routes.draw do
     end
     resources :acquirer_orgs, except: [:show]
   end
+
+  namespace :trade do
+    resources :transaction_logs, only: [:index]
+  end
 end

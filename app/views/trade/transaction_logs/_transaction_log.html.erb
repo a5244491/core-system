@@ -1,0 +1,15 @@
+<tr class="odd gradeX">
+    <td><%= transaction_status_text(transaction_log) %></td>
+    <td><%= transaction_log.matched_bank %><br><%= transaction_log.media_num %></td>
+    <td>
+        <%= transaction_type_hash[transaction_log.transaction_type] %> <br>
+        (<%= transaction_log.member_transaction? ? '会员' : '非会员'%>)
+    </td>
+    <td><%= datetime_text(transaction_log.transaction_datetime) %></td>
+    <td>
+        应付: <%= money_in_yuan(transaction_log.money_amount) %> <br>
+        实付: <%= money_in_yuan(transaction_log.actual_money_amount) %>
+    </td>
+    <td><%= transaction_log.merchant_name %></td>
+    <td><%= money_in_yuan(transaction_log.merchant_amount) %><br>(<%= merchant_rate_text(transaction_log) %>)</td>
+</tr>
