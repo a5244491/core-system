@@ -34,6 +34,8 @@ gem 'rmagick', require: false
 gem 'will_paginate'
 gem 'cancancan', '~> 1.8'
 gem 'ransack'
+gem 'reform'
+gem 'virtus'
 
 group :development do
   gem 'spring'

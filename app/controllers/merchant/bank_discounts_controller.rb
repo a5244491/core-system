@@ -4,7 +4,7 @@ class Merchant::BankDiscountsController < ApplicationController
 
   # GET /merchant/bank_discounts/new
   def new
-    @bank_discount = Pay::BankDiscount.new
+    @form = Merchant::BankDiscountForm.new(Pay::BankDiscount.new)
   end
 
   # GET /merchant/bank_discounts/1/edit
@@ -13,13 +13,18 @@ class Merchant::BankDiscountsController < ApplicationController
 
   # POST /merchant/bank_discounts
   def create
-    @merchant_bank_discount = Pay::BankDiscount.new(merchant_bank_discount_params.merge(merchant_store: @merchant_store))
-    if @merchant_bank_discount.save
-      flash[:success] = '创建成功'
-      record_activities("创建", "支付计划", "#{@merchant_store.name}")
-      redirect_to merchant_merchant_store_payment_plans_path
+    @form = Merchant::BankDiscountForm.new(Pay::BankDiscount.new)
+    if @form.validate(merchant_bank_discount_params.merge(merchant_store: @merchant_store))
+      if @form.save
+        flash[:success] = '创建成功'
+        record_activities('创建', '支付计划', "#{@merchant_store.name}")
+        redirect_to merchant_merchant_store_payment_plans_path
+      else
+        flash[:error] = "创建失败: #{@form.model.errors.full_messages}"
+        render :new
+      end
     else
-      flash[:success] = "创建失败: #{@merchant_bank_discount.errors.full_messages}"
+      flash[:error] = "创建失败: #{@form.errors.full_messages}"
       render :new
     end
   end
@@ -50,6 +55,6 @@ class Merchant::BankDiscountsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def merchant_bank_discount_params
-    params[:pay_bank_discount].except(:status, :plan_type, :id).permit!
+    params[:merchant_bank_discount].except(:status, :plan_type, :id).permit!
   end
 end

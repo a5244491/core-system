@@ -1,6 +1,5 @@
 module Pay
   class PaymentPlan < ActiveRecord::Base
-    include BankDiscountFormModule
     STATUSES = [VALID = 1, INVALID = 0]
     PLAN_TYPES = [CREDIT_BACK = 'credit_back', NONE = 'none', BANK_DISCOUNT = 'bank_discount']
     VOUCHER_STATUS = [ACCEPT_NONE = 0, ACCEPT_SELF = 1, ACCEPT_GLOBAL = 2, ACCEPT_ALL = 3]
@@ -26,9 +25,6 @@ module Pay
 
     before_validation do
       fill_up_date
-    end
-
-    after_initialize do
       self.voucher_status ||= ACCEPT_NONE
       self.user_type ||= ALL_USERS
       self.discount_rate ||= 0
