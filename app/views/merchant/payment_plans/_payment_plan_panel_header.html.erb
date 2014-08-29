@@ -1,3 +1,4 @@
+<% edit_path ||= '' %>
 <%= plan_type_text(payment_plan) %>#<%= payment_plan.try(:id) %>(<%= plan_status_text(payment_plan) %>) - 有效期: <%= datetime_text(payment_plan.valid_from) %> 至 <%= datetime_text(payment_plan.valid_till) %>
 <span class="panel_header_buttons">
   <% if payment_plan.may_enable? && can?(:enable, Pay::PaymentPlan) %>
@@ -5,6 +6,9 @@
   <% end %>
   <% if payment_plan.may_disable? && can?(:disable, Pay::PaymentPlan) %>
         <%= link_to('失效', merchant_merchant_store_payment_plan_disable_path(@merchant_store, payment_plan), class: 'btn btn-xs btn-primary', method: :patch) %>
+  <% end %>
+    <% if payment_plan.may_edit? && can?(:update, Pay::PaymentPlan) %>
+        <%= link_to('修改', edit_path, class: 'btn btn-xs btn-warning') %>
   <% end %>
   <% if payment_plan.may_destroy? && can?(:destroy, Pay::PaymentPlan) %>
         <%= link_to('删除', merchant_merchant_store_payment_plan_path(@merchant_store, payment_plan), class: 'btn btn-xs btn-danger', method: :delete, data: {

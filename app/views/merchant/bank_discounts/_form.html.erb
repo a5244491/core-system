@@ -1,16 +1,4 @@
-<%= form_for(@form, url: merchant_merchant_store_bank_discounts_path, html: {class: 'form-horizontal', role: 'form', id: 'bank_discount_form'}) do |f| %>
-    <div class="form-group">
-        <%= f.label :valid_from, '有效期起', class: 'col-sm-2 control-label' %>
-        <div class="col-xs-6">
-            <%= f.text_field(:valid_from, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
-        </div>
-    </div>
-    <div class="form-group">
-        <%= f.label :valid_till, '有效期至', class: 'col-sm-2 control-label' %>
-        <div class="col-xs-6">
-            <%= f.text_field(:valid_till, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
-        </div>
-    </div>
+<%= form_for([@merchant_store, @form], html: {class: 'form-horizontal', role: 'form', id: 'bank_discount_form'}) do |f| %>
     <div class="form-group">
         <%= f.label :user_type, '适用用户', class: 'col-sm-2 control-label' %>
         <div class="col-xs-6">
@@ -75,6 +63,18 @@
         <%= f.label :voucher_status, '是否接受红包', class: 'col-sm-2 control-label' %>
         <div class="col-xs-6">
             <%= f.select(:voucher_status, options_for_select(voucher_status_text_hash.invert, @form.voucher_status), {}, class: 'form-control') %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :valid_from, '有效期起', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_from, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :valid_till, '有效期至', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_till, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
         </div>
     </div>
     <div class="form_footer">

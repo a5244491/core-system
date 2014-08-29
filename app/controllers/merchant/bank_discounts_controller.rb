@@ -1,5 +1,5 @@
 class Merchant::BankDiscountsController < ApplicationController
-  before_action :set_merchant_store, only: [:update, :edit, :new, :create]
+  before_action :set_merchant_store
   before_action :set_merchant_bank_discount, only: [:edit, :update]
 
   # GET /merchant/bank_discounts/new
@@ -9,6 +9,7 @@ class Merchant::BankDiscountsController < ApplicationController
 
   # GET /merchant/bank_discounts/1/edit
   def edit
+    @form = Merchant::BankDiscountForm.new(@bank_discount)
   end
 
   # POST /merchant/bank_discounts
@@ -32,21 +33,30 @@ class Merchant::BankDiscountsController < ApplicationController
   # PATCH/PUT /merchant/bank_discounts/1
   # PATCH/PUT /merchant/bank_discounts/1.json
   def update
-    respond_to do |format|
-      if @merchant_bank_discount.update(merchant_bank_discount_params)
-        format.html { redirect_to @merchant_bank_discount, notice: 'Bank discount was successfully updated.' }
-        format.json { render :show, status: :ok, location: @merchant_bank_discount }
+    unless @bank_discount.may_edit?
+      flash[:error] = '当前支付计划不可修改'
+      render :edit and return
+    end
+    @form = Merchant::BankDiscountForm.new(@bank_discount)
+    if @form.validate(merchant_bank_discount_params)
+      if @form.save
+        flash[:success] = '修改成功'
+        record_activities('修改', '支付计划', "#{@merchant_store.name} - #{@form.model.id}")
+        redirect_to merchant_merchant_store_payment_plans_path
       else
-        format.html { render :edit }
-        format.json { render json: @merchant_bank_discount.errors, status: :unprocessable_entity }
+        flash[:error] = "创建失败: #{@form.model.errors.full_messages}"
+        render :edit
       end
+    else
+      flash[:error] = "创建失败: #{@form.errors.full_messages}"
+      render :edit
     end
   end
 
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_merchant_bank_discount
-    @bank_discount = Pay::BankDiscount.where(merchant_store: @merchant_store).first
+    @bank_discount = Pay::BankDiscount.where(merchant_store: @merchant_store, id: params[:id]).first
   end
 
   def set_merchant_store

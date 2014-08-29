@@ -1,0 +1,11 @@
+<% content_for(:page_title, "#{@merchant_store.name} - #{store_status_text(@merchant_store)}") %>
+<div class="panel-heading">
+    <%= render partial: 'merchant/merchant_stores/merchant_store_status_operation_panel', locals: {merchant_store: @merchant_store, button_class: 'btn btn-success'} %>
+    <%= render partial: 'merchant/merchant_stores/merchant_store_audit_operation_panel', locals: {merchant_store: @merchant_store, button_class: 'btn btn-primary'} %>
+    <% if @merchant_store.may_destroy? && can?(:destroy, Merchant::MerchantStore) %>
+        <%= link_to '删除商户', merchant_merchant_store_path(@merchant_store), method: :delete, class: 'btn btn-danger', data: {
+                confirm: "你确认要删除#{@merchant_store.name}吗"
+        } %>
+    <% end %>
+    <a class="btn btn-default" href="<%= params[:return_url] || merchant_merchant_stores_path%>">返回</a>
+</div>

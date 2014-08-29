@@ -8,7 +8,7 @@ FactoryGirl.define do
     end
     trait :rule_for_referee do
       user_type Pay::PaymentPlan::REFEREE
-      user_tag  {merchant_store.credit_account.external_id unless merchant_store.nil?}
+      user_tag { merchant_store.credit_account.external_id unless merchant_store.nil? }
     end
     trait :not_accept_voucher do
       voucher_status Pay::PaymentPlan::ACCEPT_NONE
@@ -18,13 +18,7 @@ FactoryGirl.define do
       user_type Pay::PaymentPlan::MEMBERS
     end
     factory :bank_discount, class: Pay::BankDiscount do
-      factory :bank_discount_cash do
-        discount_type Pay::PaymentPlan::CASH
-      end
-      factory :bank_discount_rate do
-        discount_rate 0.1
-        discount_type Pay::PaymentPlan::RATE
-      end
+      discount_rate 0.1
     end
     factory :credit_back, class: Pay::CreditBack, traits: [:only_members] do
       customer_rate 0.01

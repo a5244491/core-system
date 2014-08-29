@@ -1,6 +1,15 @@
-<h1>Editing merchant_bank_discount</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @merchant_bank_discount %> |
-<%= link_to 'Back', merchant_bank_discounts_path %>
+<% content_for(:page_title, "修改刷卡打折支付计划 － #{@merchant_store.name} - #{@form.model.id}") %>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-lg-10 ">
+                    <%= render 'form' %>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

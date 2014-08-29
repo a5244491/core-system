@@ -68,7 +68,7 @@ Rails.application.routes.draw do
         patch 'disable', to: 'payment_plans#disable'
         patch 'enable', to: 'payment_plans#enable'
       end
-      resources :bank_discounts, only:[:new, :create, :edit, :update]
+      resources :bank_discounts, only:[:new, :create, :edit, :update], as: :merchant_bank_discounts
     end
   end
 end
