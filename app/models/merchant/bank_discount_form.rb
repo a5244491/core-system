@@ -11,7 +11,10 @@ class Merchant::BankDiscountForm < Reform::Form
   property :minimal_money_amount, default: 0
   property :discount_amount, default: 0
   property :merchant_store
+  property :valid_from, default: Time.now
+  property :valid_till, default: 10.years.from_now
 
   percentage_to_decimal_fields :merchant_rate, :referer_rate, :discount_rate
   cent_to_yuan_fields :discount_amount, :minimal_money_amount
+  utc_to_local_fields :valid_from, :valid_till
 end

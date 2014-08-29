@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def datetime_text(datetime)
-    datetime.localtime.strftime('%Y年%-m月%-d日%H时%M分%S秒') unless datetime.nil?
+    datetime.localtime.strftime(FormFieldsConversion::DATE_TIME_FORMAT) unless datetime.nil?
   end
 
   def money_in_yuan(money_in_cent)
