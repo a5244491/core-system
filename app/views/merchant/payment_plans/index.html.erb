@@ -6,15 +6,18 @@
                 <%= render partial: 'merchant/merchant_stores/merchant_show_tab_header', locals: {index: 1} %>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <b>普通刷卡</b>
+                        <b>普通刷卡</b><a name="none_payment_plan"></a>
                     </div>
                     <!-- .panel-heading -->
                     <div class="panel-body">
                         <div class="panel panel-default">
-                            <div class="panel-heading"><%= render partial: 'payment_plan_panel_header', locals: {payment_plan: @none_payment_plan} %></div>
+                            <div class="panel-heading">
+                                <%= render partial: 'payment_plan_panel_header', locals: {payment_plan: @none_payment_plan, edit_path: edit_merchant_merchant_store_merchant_none_payment_plan_path(@merchant_store, @none_payment_plan)} %>
+                            </div>
                             <!-- .panel-heading -->
                             <div class="panel-body">
-                                默认的普通刷卡规则，商户适用扣率为<%= @merchant_store.standard_rate %>%
+                                默认的普通刷卡规则，<%= voucher_status_text_hash[@none_payment_plan.voucher_status] %>,
+                                商户适用扣率为<%= @merchant_store.standard_rate %>%
                             </div>
                             <!-- .panel-body -->
                         </div>
@@ -25,12 +28,12 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <b>刷卡打折</b>
+                        <b>刷卡打折</b><a name="bank_discount"></a>
                         <%= link_to('创建', new_merchant_merchant_store_merchant_bank_discount_path(@merchant_store), class: 'btn btn-success') %>
                     </div>
                     <!-- .panel-heading -->
                     <div class="panel-body">
-                        <%= render partial: 'payment_plan', collection: @bank_discount_plans, as: :payment_plan %>
+                        <%= render partial: 'payment_plan', collection: @bank_discount_plans, as: :payment_plan, locals: {edit_path_function: :edit_merchant_merchant_store_merchant_bank_discount_path} %>
                     </div>
                     <!-- .panel-body -->
                 </div>
@@ -38,10 +41,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <b>积分返利</b>
+                        <%= link_to('创建', new_merchant_merchant_store_merchant_credit_back_path(@merchant_store), class: 'btn btn-success') %>
                     </div>
                     <!-- .panel-heading -->
                     <div class="panel-body">
-                        <%= render partial: 'payment_plan', collection: @credit_back_plans, as: :payment_plan %>
+                        <%= render partial: 'payment_plan', collection: @credit_back_plans, as: :payment_plan, locals: {edit_path_function: :edit_merchant_merchant_store_merchant_credit_back_path} %>
                     </div>
                     <!-- .panel-body -->
                 </div>

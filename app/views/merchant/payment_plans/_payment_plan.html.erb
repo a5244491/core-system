@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><%= render partial: 'payment_plan_panel_header', locals: {payment_plan: payment_plan, edit_path: edit_merchant_merchant_store_merchant_bank_discount_path(@merchant_store, payment_plan)} %></div>
+    <div class="panel-heading"><%= render partial: 'payment_plan_panel_header', locals: {payment_plan: payment_plan, edit_path: send(edit_path_function, @merchant_store, payment_plan)} %></div>
     <!-- .panel-heading -->
     <div class="panel-body">
         <%= plan_description(payment_plan)%>

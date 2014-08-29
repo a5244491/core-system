@@ -64,7 +64,7 @@ module Merchant::PaymentPlansHelper
     if plan.actual_referer_rate.to_f > 0
       main += "其推荐人可获得其实际交易金额<b>#{plan.actual_referer_rate * 100}%</b>的积分奖励, "
     end
-    main += "#{voucher_status_text_hash.fetch(plan.voucher_status)},"
+    main += "#{voucher_status_text_hash[plan.voucher_status]},"
     main += "商户适用扣率:<b>#{plan.merchant_rate.blank? ? '标准扣率' : %Q{#{plan.merchant_rate * 100}%} }</b>"
     main.html_safe
   end
