@@ -1,0 +1,11 @@
+<tr class="odd gradeX">
+    <td>
+        <%= link_to('查看', member_individual_credit_account_path(credit_account), class: 'btn btn-xs btn-default') %>
+    </td>
+    <td><%= datetime_text(credit_account.created_at) %></td>
+    <td><%= credit_account.mobile %></td>
+    <td>
+        <%= credit_account.usable_credit %>
+    </td>
+    <td><%= credit_account.consumption_times %></td>
+</tr>

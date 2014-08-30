@@ -82,4 +82,8 @@ Rails.application.routes.draw do
     resources :transaction_archives, only: [:index, :show]
     resources :voucher_transaction_logs, only: [:index, :show]
   end
+
+  namespace :member do
+    resources :individual_credit_accounts, only: [:index, :show]
+  end
 end

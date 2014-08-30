@@ -1,0 +1,48 @@
+<%= search_form_for(@q, class: 'form', role: 'form') do |f| %>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :created_at_gteq, '注册时间起', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :created_at_gteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :created_at_lteq, '注册时间止', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :created_at_lteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :name_eq, '姓名', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :name_eq, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :mobile_eq, '手机号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :mobile_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :bank_cards_media_num_eq, '银行卡号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :bank_cards_media_num_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+<% end %>
