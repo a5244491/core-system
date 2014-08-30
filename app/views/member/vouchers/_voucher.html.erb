@@ -1,0 +1,8 @@
+<tr>
+    <td><%= voucher.aliases %></td>
+    <td><%= datetime_text(voucher.created_at) %></td>
+    <td><%= datetime_text(voucher.used_datetime) %></td>
+    <td><%= money_in_yuan(voucher.denomination) %></td>
+    <td><%= credit_applicable_store_text(voucher) %></td>
+    <td><%= voucher_status_text(voucher) %></td>
+</tr>

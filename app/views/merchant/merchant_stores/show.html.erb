@@ -6,35 +6,13 @@
             <div class="panel-body">
                 <%= render partial: 'merchant_show_tab_header', locals: {index: 0} %>
                 <% unless @merchant_store.credit_account.nil? %>
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            可用积分: <%= @merchant_store.credit_account.usable_credit %>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th>历史积分</th>
-                                    <th>冻结积分</th>
-                                    <th>可用积分</th>
-                                    <th>已兑现积分</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <td><%= @merchant_store.credit_account.total_credit %></td>
-                                <td><%= @merchant_store.credit_account.locked_credit %></td>
-                                <td><%= @merchant_store.credit_account.usable_credit %></td>
-                                <td><%= @merchant_store.credit_account.cashed_credit %></td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <%= render partial: 'shared/credit_account_table', locals: {credit_account: @merchant_store.credit_account} %>
                 <% end %>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         基本资料
-                        <% if @merchant_store.may_edit? && can?(:update, Merchant::MerchantStore)%>
-                            <a class="btn btn-warning" href="<%= edit_merchant_merchant_store_path(@merchant_store)%>">修改</a>
+                        <% if @merchant_store.may_edit? && can?(:update, Merchant::MerchantStore) %>
+                            <a class="btn btn-warning" href="<%= edit_merchant_merchant_store_path(@merchant_store) %>">修改</a>
                         <% end %>
                     </div>
                     <div class="panel-body">
@@ -65,7 +43,8 @@
                                     <li class="list-group-item"><label>协议编号:</label> <%= @merchant_store.contract_num %>
                                     </li>
                                     <li class="list-group-item">
-                                        <label>协议生效日期:</label> <%= datetime_text(@merchant_store.contract_active_date) %></li>
+                                        <label>协议生效日期:</label> <%= datetime_text(@merchant_store.contract_active_date) %>
+                                    </li>
                                     <li class="list-group-item"><label>订单所有人:</label> <%= @merchant_store.contractor %>
                                     </li>
                                 </ul>

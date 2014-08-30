@@ -1,0 +1,23 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        可用积分: <%= credit_account.usable_credit %>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>历史积分</th>
+                <th>冻结积分</th>
+                <th>可用积分</th>
+                <th>已兑现积分</th>
+            </tr>
+            </thead>
+            <tbody>
+            <td><%= credit_account.total_credit %></td>
+            <td><%= credit_account.locked_credit %></td>
+            <td><%= credit_account.usable_credit %></td>
+            <td><%= credit_account.cashed_credit %></td>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<% content_for :page_title, "会员信息: #{@member_individual_credit_account.mobile}" %>
+<% index ||= 0 %>
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li class="<%= 'active' if index == 0 %>"><a href="<%= member_individual_credit_account_path(@member_individual_credit_account)%>">基本信息</a></li>
+    <li class="<%= 'active' if index == 1 %>"><a href="<%= member_individual_credit_account_bank_cards_path(@member_individual_credit_account) %>">银行卡</a></li>
+    <li class="<%= 'active' if index == 2 %>"><a href="<%= member_individual_credit_account_vouchers_path(@member_individual_credit_account)%>">红包</a></li>
+    <li class="<%= 'active' if index == 3 %>"><a href="<%= member_individual_credit_account_referees_path(@member_individual_credit_account) %>">推荐的会员</a></li>
+</ul>
+<br>

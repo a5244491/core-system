@@ -84,6 +84,10 @@ Rails.application.routes.draw do
   end
 
   namespace :member do
-    resources :individual_credit_accounts, only: [:index, :show]
+    resources :individual_credit_accounts, only: [:index, :show] do
+      resources :bank_cards, only: [:index]
+      resources :vouchers, only: [:index]
+      resources :referees, only: [:index]
+    end
   end
 end

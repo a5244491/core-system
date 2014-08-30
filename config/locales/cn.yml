@@ -24,6 +24,11 @@ cn:
         one: '条交易'
         few: '条交易'
         other: '条交易'
+      voucher:
+        zero: '个红包'
+        one: '个红包'
+        few: '个红包'
+        other: '个红包'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

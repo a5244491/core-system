@@ -1,0 +1,9 @@
+<%= search_form_for(@q, url: member_individual_credit_account_referees_path(@member_individual_credit_account), class: 'form-inline', role: 'form') do |f| %>
+    <div class="form-group">
+        <%= f.label :mobile_eq, '会员手机号', class: 'control-label' %>
+        <%= f.search_field :mobile_eq, class: 'form-control', placeholder: '手机号'%>
+    </div>
+    <a type="button" class="btn btn-danger" href="<%= member_individual_credit_account_referees_path(@member_individual_credit_account) %>"><i class="fa fa-exclamation-circle"></i>
+        重置查询</a>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-fighter-jet"></i> 执行查询</button>
+<% end %>

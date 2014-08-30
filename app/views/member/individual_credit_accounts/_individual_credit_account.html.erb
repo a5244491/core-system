@@ -1,6 +1,6 @@
 <tr class="odd gradeX">
     <td>
-        <%= link_to('查看', member_individual_credit_account_path(credit_account), class: 'btn btn-xs btn-default') %>
+        <%= link_to('查看', member_individual_credit_account_path(credit_account, return_url: request.original_fullpath), class: 'btn btn-xs btn-default') %>
     </td>
     <td><%= datetime_text(credit_account.created_at) %></td>
     <td><%= credit_account.mobile %></td>

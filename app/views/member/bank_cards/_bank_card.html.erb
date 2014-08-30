@@ -1,0 +1,7 @@
+<tr>
+    <td><%= bank_card.media_num %></td>
+    <td><%= bank_card_type_hash.fetch(bank_card.card_type, '其他') %></td>
+    <td><%= bank_card.bank_name %></td>
+    <td><%= bank_card.credit_earned %></td>
+    <td><%= datetime_text(bank_card.created_at) %></td>
+</tr>

@@ -1,0 +1,13 @@
+<%= search_form_for(@q, url: member_individual_credit_account_vouchers_path(@member_individual_credit_account), class: 'form-inline', role: 'form') do |f| %>
+    <div class="form-group">
+        <%= f.label :voucher_meta_aliases_eq, '红包别名', class: 'control-label' %>
+        <%= f.search_field :voucher_meta_aliases_eq, class: 'form-control', placeholder: '红包别名'%>
+    </div>
+    <div class="form-group">
+        <%= f.label :status_eq, '状态', class: 'control-label' %>
+        <%= f.select(:status_eq, options_for_select({'所有状态' => nil, '已使用' => Member::Voucher::USED, '未使用' => Member::Voucher::NOT_USED}, @q.status_eq.to_s), {},  class: 'form-control')%>
+    </div>
+    <a type="button" class="btn btn-danger" href="<%= member_individual_credit_account_vouchers_path(@member_individual_credit_account) %>"><i class="fa fa-exclamation-circle"></i>
+        重置查询</a>
+    <button type="submit" class="btn btn-primary"><i class="fa fa-fighter-jet"></i> 执行查询</button>
+<% end %>

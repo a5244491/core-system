@@ -17,7 +17,7 @@ module Member
     belongs_to :credit_account
     belongs_to :voucher_meta
 
-    delegate :denomination, :global, :active?, :aliases, :applicable_type, :merchant_group_name, :merchant_store, :sequence, :money_condition, to: :voucher_meta
+    delegate :denomination, :global, :active?, :aliases, :applicable_type, :merchant_group_name, :merchant_store, :sequence, :money_condition, to: :voucher_meta, allow_nil: true
 
     def prepare_voucher_log(attributes)
       transaction_log = Trade::VoucherTransactionLog.new(attributes)
