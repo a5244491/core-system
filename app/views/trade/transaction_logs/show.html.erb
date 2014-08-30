@@ -44,7 +44,7 @@
                                 <label>使用红包:</label> <%= @trade_transaction_log.voucher_used_count %>个
                             </li>
                             <li class="list-group-item">
-                                <label>红包抵扣金额:</label> <%= @trade_transaction_log.voucher_deducted_amount %>
+                                <label>红包抵扣金额:</label> <%= money_in_yuan(@trade_transaction_log.voucher_deducted_amount) %>
                             </li>
                             <li class="list-group-item">
                                 <label>收单机构代码:</label> <%= @trade_transaction_log.acquirer_code %></li>

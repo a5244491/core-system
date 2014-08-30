@@ -1,0 +1,110 @@
+<%= search_form_for(@q, class: 'form', role: 'form') do |f| %>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_datetime_gteq, '交易时间起', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :transaction_datetime_gteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_datetime_lteq, '交易时间止', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :transaction_datetime_lteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :merchant_name_cont, '商户名', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :merchant_name_cont, class: 'form-control', placeholder: '请输入商户名' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :merchant_num_eq, '商户号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :merchant_num_eq, class: 'form-control', placeholder: '请输入商户号' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :matched_bank_eq, '银行名称', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :matched_bank_eq, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :media_num_eq, '银行卡号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :media_num_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :mobile_eq, '用户手机号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :mobile_eq, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_type_eq, '交易类型', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.select(:transaction_type_eq, options_for_select(transaction_type_hash.invert.merge('全部' => nil), @q.transaction_type_eq.to_s), {}, class: 'form-control') %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :sequence_number_eq, '流水号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :sequence_number_eq, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :ref_id_eq, '交易识别码', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :ref_id_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :member_transaction, '是否是会员', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= select_tag(:member_transaction, options_for_select({'全部' => '', '是' => 'true', '否' => 'false'}, params[:member_transaction]), class: 'form-control') %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :used_voucher, '是否使用红包', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= select_tag(:used_voucher, options_for_select({'全部' => '', '是' => 'true', '否' => 'false'}, params[:used_voucher]), class: 'form-control') %>
+            </div>
+        </div>
+    </div>
+<% end %>
