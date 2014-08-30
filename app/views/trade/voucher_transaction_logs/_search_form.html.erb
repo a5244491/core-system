@@ -1,0 +1,75 @@
+<%= search_form_for(@q, class: 'form', role: 'form') do |f| %>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_datetime_gteq, '交易时间起', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :transaction_datetime_gteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_datetime_lteq, '交易时间止', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :transaction_datetime_lteq, class: 'form-control datetimepicker' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :merchant_name_cont, '商户名', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :merchant_name_cont, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :mobile_eq, '用户手机号', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :mobile_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :issuer_type_eq, '发行方类别', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.select(:issuer_type_eq, options_for_select(voucher_type_hash.invert.merge('全部' => nil), @q.issuer_type_eq.to_s), {}, class: 'form-control') %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :issuer_name_eq, '发行方名称', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.search_field :issuer_name_eq, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :transaction_type_eq, '交易类型', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.select(:transaction_type_eq, options_for_select(voucher_transaction_type_hash.invert.merge('全部' => nil), @q.transaction_type_eq.to_s), {}, class: 'form-control') %>
+            </div>
+        </div>
+        <div class="form-group col-xs-6">
+            <div class="col-sm-3">
+                <%= f.label :issue_event_eq, '领取类型', class: 'control-label' %>
+            </div>
+            <div class="col-sm-6">
+                <%= f.select(:issue_event_eq, options_for_select(voucher_issue_event_hash.invert.merge('全部' => nil), @q.issue_event_eq.to_s), {}, class: 'form-control') %>
+            </div>
+        </div>
+    </div>
+<% end %>

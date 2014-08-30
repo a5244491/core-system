@@ -1,0 +1,63 @@
+<% content_for(:page_title, "红包交易明细: #{@trade_voucher_transaction_log.ref_id}") %>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="<%= request.referrer %>" class="btn btn-default">返回</a>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <label>交易类型:</label> <%= voucher_transaction_type_hash[@trade_voucher_transaction_log.transaction_type] %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>领取类别:</label> <%= voucher_issue_event_hash[@trade_voucher_transaction_log.issue_event] %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>交易时间:</label> <%= datetime_text(@trade_voucher_transaction_log.transaction_datetime) %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>商户名称:</label> <%= @trade_voucher_transaction_log.merchant_name %></li>
+                            <li class="list-group-item">
+                                <label>红包面额:</label> <%= money_in_yuan(@trade_voucher_transaction_log.denomination) %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>抵扣金额:</label> <%= money_in_yuan(@trade_voucher_transaction_log.deducted_amount) %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>发行方类别:</label> <%= voucher_type_hash[@trade_voucher_transaction_log.issuer_type] %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>发行方名称:</label> <%= @trade_voucher_transaction_log.issuer_name %>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <label>发行方标示:</label> <%= @trade_voucher_transaction_log.issuer_identifier %></li>
+                            <li class="list-group-item">
+                                <label>结算方类别:</label> <%= voucher_type_hash[@trade_voucher_transaction_log.settler_type] %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>结算方名称:</label> <%= @trade_voucher_transaction_log.settler_name %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>发行方标示:</label> <%= @trade_voucher_transaction_log.settler_identifier %></li>
+                            <li class="list-group-item">
+                                <label>用户手机:</label> <%= @trade_voucher_transaction_log.mobile %></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>
+<!-- /.panel -->
+</div>
+<!-- /.col-lg-12 -->
+</div>
+

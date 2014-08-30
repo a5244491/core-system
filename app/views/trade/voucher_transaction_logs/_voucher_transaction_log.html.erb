@@ -1,0 +1,20 @@
+<tr class="odd gradeX">
+    <td>
+        <%= voucher_transaction_type_hash[transaction_log.transaction_type] %>
+        <% unless transaction_log.issue_event.nil? %>
+            <br>
+            (<%=voucher_issue_event_hash[transaction_log.issue_event] %>)
+        <% end %>
+    </td>
+    <td><%= datetime_text(transaction_log.transaction_datetime) %></td>
+    <td>
+        <%= transaction_log.merchant_name %>
+        <br>(<%= transaction_log.merchant_num %>)
+    </td>
+    <td><%= transaction_log.mobile %></td>
+    <td><%= money_in_yuan(transaction_log.denomination) %></td>
+    <td><%= money_in_yuan(transaction_log.deducted_amount) %></td>
+    <td><%= transaction_log.issuer_name %></td>
+    <td><%= transaction_log.settler_name %></td>
+    <td><%= link_to('查看', trade_voucher_transaction_log_path(transaction_log), class: 'btn btn-xs btn-default') %></td>
+</tr>

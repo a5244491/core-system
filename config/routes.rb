@@ -80,5 +80,6 @@ Rails.application.routes.draw do
     resources :transaction_logs, only: [:index, :show]
     resources :transactions, only: [:index, :show]
     resources :transaction_archives, only: [:index, :show]
+    resources :voucher_transaction_logs, only: [:index, :show]
   end
 end
