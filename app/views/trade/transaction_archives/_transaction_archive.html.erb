@@ -1,0 +1,22 @@
+<tr class="odd gradeX">
+    <td>
+        <%= link_to('查看', trade_transaction_archive_path(transaction), class: 'btn btn-xs btn-default') %>
+    </td>
+    <td><%= ongoing_transaction_status_text(transaction)%></td>
+    <td><%= transaction.matched_bank %><br><%= transaction.media_num %></td>
+    <td>
+        <%= ongoing_transaction_type_hash[transaction.transaction_type] %>
+    </td>
+    <td><%= datetime_text(transaction.created_at) %></td>
+    <td>
+        应付: <%= money_in_yuan(transaction.money_amount) %> <br>
+        实付: <%= money_in_yuan(transaction.actual_money_amount) %>
+        <% unless transaction.consumer_credit.to_i == 0 %>
+            <br>积分: <%= transaction.consumer_credit.to_i %>
+        <% end %>
+    </td>
+    <td>
+        <%= transaction.merchant_name %>
+        <br>(<%= transaction.merchant_num %>)
+    </td>
+</tr>

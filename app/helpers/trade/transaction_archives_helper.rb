@@ -1,0 +1,2 @@
+module Trade::TransactionArchivesHelper
+end
