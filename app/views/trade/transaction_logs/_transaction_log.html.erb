@@ -1,15 +1,24 @@
 <tr class="odd gradeX">
-    <td><%= transaction_status_text(transaction_log) %></td>
+    <td>
+        <%= transaction_status_text(transaction_log) %> <br>
+        <%= link_to('查看', trade_transaction_log_path(transaction_log), class: 'btn btn-xs btn-default') %>
+    </td>
     <td><%= transaction_log.matched_bank %><br><%= transaction_log.media_num %></td>
     <td>
         <%= transaction_type_hash[transaction_log.transaction_type] %> <br>
-        (<%= transaction_log.member_transaction? ? '会员' : '非会员'%>)
+        (<%= transaction_log.member_transaction? ? '会员' : '非会员' %>)
     </td>
     <td><%= datetime_text(transaction_log.transaction_datetime) %></td>
     <td>
         应付: <%= money_in_yuan(transaction_log.money_amount) %> <br>
         实付: <%= money_in_yuan(transaction_log.actual_money_amount) %>
+        <% unless transaction_log.credit_delta.to_i == 0 %>
+            <br>积分: <%= transaction_log.credit_delta.to_i %>
+        <% end %>
     </td>
-    <td><%= transaction_log.merchant_name %></td>
+    <td>
+        <%= transaction_log.merchant_name %>
+        <br>(<%= transaction_log.merchant_num %>)
+    </td>
     <td><%= money_in_yuan(transaction_log.merchant_amount) %><br>(<%= merchant_rate_text(transaction_log) %>)</td>
 </tr>

@@ -1,4 +1,70 @@
-<p id="notice"><%= notice %></p>
+<% content_for(:page_title, "交易明细: #{@trade_transaction_log.ref_id}") %>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="<%= request.referrer %>" class="btn btn-default">返回</a>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-group">
+                            <li class="list-group-item"><label>商户名称:</label> <%= @trade_transaction_log.merchant_name %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>商户号:</label> <%= @trade_transaction_log.merchant_num %></li>
+                            <li class="list-group-item">
+                                <label>流水号:</label> <%= @trade_transaction_log.sequence_number %></li>
+                            <li class="list-group-item">
+                                <label>终端号:</label> <%= @trade_transaction_log.terminal_num %></li>
+                            <li class="list-group-item"><label>银行卡号:</label> <%= @trade_transaction_log.media_num %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>所属银行:</label> <%= @trade_transaction_log.matched_bank %></li>
+                            <li class="list-group-item">
+                                <label>用户手机号:</label> <%= @trade_transaction_log.mobile %></li>
+                            <li class="list-group-item">
+                                <label>应付金额:</label> <%= money_in_yuan(@trade_transaction_log.money_amount) %></li>
+                            <li class="list-group-item">
+                                <label>实付金额:</label> <%= money_in_yuan(@trade_transaction_log.actual_money_amount) %>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <label>积分获得:</label> <%= @trade_transaction_log.credit_delta %></li>
+                            <li class="list-group-item">
+                                <label>商户扣率:</label> <%= merchant_rate_text(@trade_transaction_log) %></li>
 
-<%= link_to 'Edit', edit_trade_transaction_log_path(@trade_transaction_log) %> |
-<%= link_to 'Back', trade_transaction_logs_path %>
+                            <li class="list-group-item">
+                                <label>商户所得:</label> <%= money_in_yuan(@trade_transaction_log.merchant_amount) %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>使用红包:</label> <%= @trade_transaction_log.voucher_used_count %>个
+                            </li>
+                            <li class="list-group-item">
+                                <label>红包抵扣金额:</label> <%= @trade_transaction_log.voucher_deducted_amount %>
+                            </li>
+                            <li class="list-group-item">
+                                <label>收单机构代码:</label> <%= @trade_transaction_log.acquirer_code %></li>
+                            <li class="list-group-item">
+                                <label>支付计划ID:</label> <%= @trade_transaction_log.payment_plan_id %></li>
+                            <li class="list-group-item">
+                                <label>交易识别码:</label> <%= @trade_transaction_log.ref_id %></li>
+                            <li class="list-group-item">
+                                <label>交易时间:</label> <%= datetime_text(@trade_transaction_log.transaction_datetime) %>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.panel-body -->
+</div>
+<!-- /.panel -->
+</div>
+<!-- /.col-lg-12 -->
+</div>
+

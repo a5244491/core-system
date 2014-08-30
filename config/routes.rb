@@ -77,6 +77,6 @@ Rails.application.routes.draw do
   end
 
   namespace :trade do
-    resources :transaction_logs, only: [:index]
+    resources :transaction_logs, only: [:index, :show]
   end
 end
