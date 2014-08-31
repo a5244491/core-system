@@ -90,4 +90,8 @@ Rails.application.routes.draw do
       resources :referees, only: [:index]
     end
   end
+
+  namespace :system do
+    resources :activity_logs, only: [:index]
+  end
 end

@@ -22,7 +22,7 @@ class SessionsController < ActionController::Base
       redirect_to merchant_merchant_stores_path
     else
       flash[:error] = Tips::LOGIN_ERROR
-      redirect_to :root
+      render :new
     end
   end
 

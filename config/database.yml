@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: core-system_production
-  username: core-system
-  password: <%= ENV['CORE-SYSTEM_DATABASE_PASSWORD'] %>
+  database: core_system_production
+  username: core_system
+  password: <%= ENV['CORE_SYSTEM_DATABASE_PASSWORD'] %>

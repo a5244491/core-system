@@ -7,6 +7,7 @@ module SessionManager
         'real_name' => user.real_name,
         'role_name' => user.role_name
     }
+    @current_user = user
   end
 
   def destroy_session

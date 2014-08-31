@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140824130903) do
+ActiveRecord::Schema.define(version: 20140831032232) do
 
   create_table "acquirer_org", force: true do |t|
     t.string   "acquirer_name"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 20140824130903) do
   end
 
   add_index "merchant_stores", ["merchant_number"], name: "index_merchant_stores_on_merchant_number", unique: true, using: :btree
+  add_index "merchant_stores", ["name"], name: "index_merchant_stores_on_name", unique: true, using: :btree
   add_index "merchant_stores", ["tag"], name: "index_merchant_stores_on_tag", using: :btree
 
   create_table "payment_media", force: true do |t|

@@ -1,0 +1,13 @@
+<tr class="odd gradeX">
+    <td>
+        <%= log.id %>
+    </td>
+    <td><%= datetime_text(log.created_at) %></td>
+    <td><%= log.user_name %></td>
+    <td>
+        <%= log.ip_address %>
+    </td>
+    <td><%= log.action %></td>
+    <td><%= log.object %></td>
+    <td><%= log.note %></td>
+</tr>
