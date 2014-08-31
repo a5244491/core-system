@@ -27,7 +27,7 @@ class System::PlatformAccountsController < ApplicationController
       redirect_to system_platform_accounts_path
     else
       flash[:error] = "创建失败: #{@system_platform_account.errors.full_message}"
-      render :edit
+      render :new
     end
   end
 

@@ -1,0 +1,49 @@
+<%= form_for(@bank_card_bin, html: {class: 'form-horizontal', role: 'form', id: 'card_bin_form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :card_code, '银行代码', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :card_code, class: 'form-control', 'data-bv-notempty' => true %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :bank_name, '银行名称', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :bank_name, class: 'form-control', 'data-bv-notempty' => true %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :length, '卡bin长度', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :length, class: 'form-control', 'data-bv-notempty' => true, type: 'number' %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :bank_bin, '卡bin', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.text_field :bank_bin, class: 'form-control', 'data-bv-notempty' => true, type: 'number' %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :organization, '银联卡标识', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.select :organization, options_for_select(organization_type_hash.invert, @bank_card_bin.organization), {}, class: 'form-control'%>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :card_type, '信用卡标识', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.select :card_type, options_for_select(credit_type_hash.invert, @bank_card_bin.card_type), {}, class: 'form-control'%>
+        </div>
+    </div>
+
+    <div class="form_footer">
+        <a class="btn btn-default" href="<%= request.referrer %>">返回</a>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
+    </div>
+<% end %>

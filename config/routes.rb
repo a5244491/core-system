@@ -112,4 +112,9 @@ Rails.application.routes.draw do
   namespace :users do
     resources :system_users, except: [:show]
   end
+
+  namespace :bank do
+    resources :card_bins, except: [:show]
+    get 'card_bins/match', to: 'card_bins#match'
+  end
 end

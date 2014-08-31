@@ -1,0 +1,14 @@
+<%= search_form_for(@q, class: 'form-horizontal', role: 'form') do |f| %>
+    <div class="form-group">
+        <%= f.label :bank_name_cont, '银行名称', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.search_field :bank_name_cont, class: 'form-control'%>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :bank_bin_eq, '卡bin', class: 'col-sm-2 control-label' %>
+        <div class="col-sm-10">
+            <%= f.search_field :bank_bin_eq, class: 'form-control'%>
+        </div>
+    </div>
+<% end %>

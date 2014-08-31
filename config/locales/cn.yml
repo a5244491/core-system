@@ -39,6 +39,11 @@ cn:
         one: '个运维用户'
         few: '个运维用户'
         other: '个运维用户'
+      card_bin:
+        zero: '个卡bin'
+        one: '个卡bin'
+        few: '个卡bin'
+        other: '个卡bin'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

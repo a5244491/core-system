@@ -1,0 +1,18 @@
+<tr>
+    <td><%= card_bin.card_code %></td>
+    <td><%= card_bin.bank_name %></td>
+    <td><%= card_bin.length %></td>
+    <td><%= card_bin.bank_bin %></td>
+    <td><%= organization_type_hash[card_bin.organization] %></td>
+    <td><%= credit_type_hash[card_bin.card_type] %></td>
+    <td>
+        <% if can?(:update, Bank::CardBin) %>
+            <%= link_to('修改', edit_bank_card_bin_path(card_bin), class: 'btn btn-default btn-warning') %>
+        <% end %>
+        <% if can?(:destroy, Bank::CardBin) %>
+            <%= link_to('删除', bank_card_bin_path(card_bin), class: 'btn btn-default btn-danger', method: :delete, data: {
+                    confirm: "确认删除 #{card_bin.card_code} 吗?"
+            }) %>
+        <% end %>
+    </td>
+</tr>
