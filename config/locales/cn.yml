@@ -29,6 +29,16 @@ cn:
         one: '个红包'
         few: '个红包'
         other: '个红包'
+      activity_log:
+        zero: '条日志'
+        one: '条日志'
+        few: '条日志'
+        other: '条日志'
+      system_user:
+        zero: '个运维用户'
+        one: '个运维用户'
+        few: '个运维用户'
+        other: '个运维用户'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

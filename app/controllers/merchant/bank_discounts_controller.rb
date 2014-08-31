@@ -44,11 +44,11 @@ class Merchant::BankDiscountsController < Merchant::MerchantStoreResourcesBasicC
         record_activities('修改', '支付计划', "#{@merchant_store.name} - #{@form.model.id}")
         redirect_to merchant_merchant_store_payment_plans_path
       else
-        flash[:error] = "创建失败: #{@form.model.errors.full_messages}"
+        flash[:error] = "修改失败: #{@form.model.errors.full_messages}"
         render :edit
       end
     else
-      flash[:error] = "创建失败: #{@form.errors.full_messages}"
+      flash[:error] = "修改失败: #{@form.errors.full_messages}"
       render :edit
     end
   end

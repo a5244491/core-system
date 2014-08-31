@@ -1,0 +1,16 @@
+<tr>
+    <td><%= system_user.name %></td>
+    <td><%= system_user.real_name %></td>
+    <td><%= role_name_text(system_user.role_name) %></td>
+    <td>
+        <% if system_user.may_edit? && can?(:update, Users::SystemUser) %>
+            <%= link_to('修改', edit_users_system_user_path(system_user), class: 'btn btn-warning btn-xs') %>
+        <% end %>
+        <% if  system_user.may_destroy? && can?(:destroy, Users::SystemUser) %>
+            <%= link_to('删除', users_system_user_path(system_user), class: 'btn btn-danger btn-xs', method: :delete,
+                data: {
+                        confirm: "你确认要删除#{system_user.name} - #{system_user.real_name}吗"
+                }) %>
+        <% end %>
+    </td>
+</tr>

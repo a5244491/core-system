@@ -107,4 +107,8 @@ Rails.application.routes.draw do
     resources :activity_logs, only: [:index]
     resources :configurations, only: [:index, :edit, :update]
   end
+
+  namespace :users do
+    resources :system_users, except: [:show]
+  end
 end
