@@ -1,16 +1,4 @@
 Rails.application.routes.draw do
-  namespace :system do
-  get 'configuration/index'
-  end
-
-  namespace :system do
-  get 'configuration/update'
-  end
-
-  namespace :system do
-  get 'configuration/edit'
-  end
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -68,6 +56,8 @@ Rails.application.routes.draw do
   captcha_route
   root to: 'sessions#new'
   resources :sessions, only: [:new, :create]
+  put 'sessions/update_password', to: 'sessions#update_password'
+  get 'sessions/edit_password', to: 'sessions#edit_password'
   get '/logout', to: 'sessions#destroy'
   namespace :merchant do
     resources :merchant_stores do

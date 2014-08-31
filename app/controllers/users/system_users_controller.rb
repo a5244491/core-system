@@ -45,7 +45,7 @@ class Users::SystemUsersController < ApplicationController
       flash[:error] = '当前用户不可修改'
       render :edit and return
     end
-    @form =  Users::SystemUserForm.new(@users_system_users)
+    @form = Users::SystemUserForm.new(@users_system_users)
     if @form.validate(system_system_user_params)
       if @form.save
         flash[:success] = '修改成功'
@@ -68,7 +68,7 @@ class Users::SystemUsersController < ApplicationController
       flash[:error] = '无法删除'
     else
       if @users_system_users.destroy
-        record_activities('删除', '运维用户',  "#{@users_system_users.name}")
+        record_activities('删除', '运维用户', "#{@users_system_users.name}")
         flash[:success] = Tips::DELETE_SUCCESS
       else
         flash[:error] = Tips::DELETE_ERROR
