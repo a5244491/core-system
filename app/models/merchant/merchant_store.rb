@@ -27,7 +27,7 @@ module Merchant
     belongs_to :credit_account, class_name: 'Member::MerchantCreditAccount', :dependent => :destroy
     has_many :payment_plans, :dependent => :destroy, class_name: 'Pay::PaymentPlan'
     validates_presence_of :name, :merchant_number, :standard_rate
-    validates_uniqueness_of :merchant_number, :merchant_name
+    validates_uniqueness_of :merchant_number, :name
     belongs_to :acquire_org, class_name: 'Merchant::AcquirerOrg', foreign_key: :accquire_org_id
     has_many :merchant_group_ships, dependent: :destroy
     has_many :merchant_groups, through: :merchant_group_ships

@@ -16,7 +16,7 @@ class Ability
     define_merchant_group_abilities(user, params)
     define_acquirer_abilities(user, params)
     define_transaction_abilities(user, params)
-    define_credit_account_abilities(user, params)
+    define_individual_credit_account_abilities(user, params)
     define_voucher_meta_abilities(user, params)
     define_statistic_abilities(user, params)
     define_activity_abilities(user, params)
@@ -127,8 +127,9 @@ class Ability
     can :read, :statistic
   end
 
-  def define_credit_account_abilities(user, params)
-    can [:index, :merchant, :payment_media, :referer_account, :referee_accounts, :vouchers], Member::CreditAccount
+  def define_individual_credit_account_abilities(user, params)
+    can :read, Member::IndividualCreditAccount
+    can :read, Member::BankCard
   end
 
   def define_vouchers_abilities(user, params)

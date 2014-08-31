@@ -1,4 +1,5 @@
 class Merchant::MembersController < Merchant::MerchantStoreResourcesBasicController
+  authorize_resource class: 'Member::IndividualCreditAccount'
   before_action :set_merchant_store
 
   def index

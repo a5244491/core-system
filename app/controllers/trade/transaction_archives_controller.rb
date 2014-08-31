@@ -1,4 +1,5 @@
 class Trade::TransactionArchivesController < ApplicationController
+  authorize_resource class: 'Trade::TransactionArchive'
   before_action :set_trade_transaction_archive, only: [:show]
 
   def index

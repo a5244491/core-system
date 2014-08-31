@@ -64,18 +64,20 @@ describe Merchant::MerchantStoresController do
   end
 
   describe 'update action' do
+    before :each do
+      @merchant_store = create(:merchant_store)
+    end
     it 'should edit merchant store' do
-      merchant_store = create(:merchant_store)
       update = {
           :name => 'new name',
           :merchant_number => '222',
           :standard_rate => 2.2
       }
-      put :update, :id => merchant_store.id, :merchant_merchant_store => update
+      put :update, :id => @merchant_store.id, :merchant_merchant_store => update
       response.code.should eq('302')
       flash[:error].should be_nil
       flash[:success].should_not be_nil
-      ms = Merchant::MerchantStore.find(merchant_store.id)
+      ms = Merchant::MerchantStore.find(@merchant_store.id)
       ms.name.should be == update[:name]
       ms.merchant_number.should be == update[:merchant_number]
       ms.standard_rate.should be == update[:standard_rate]
@@ -83,30 +85,28 @@ describe Merchant::MerchantStoresController do
     end
 
     it 'should not edit merchant store when required field is blank' do
-      merchant_store = create(:merchant_store)
       update = {
           :name => 'new name',
           :standard_rate => 2.2
       }
-      expect { put :update, :id => merchant_store.id, :merchant_merchant_store => update }.to raise_error ActionController::ParameterMissing
+      expect { put :update, :id => @merchant_store.id, :merchant_merchant_store => update }.to raise_error ActionController::ParameterMissing
     end
 
     it 'should not edit merchant store when merchant status is not editing' do
-      merchant_store = create(:merchant_store)
-      merchant_store.submit_audit!
+      @merchant_store.submit_audit!
       update = {
           :name => 'new name',
           :standard_rate => 2.2,
           :merchant_number => 123
       }
-      put :update, :id => merchant_store.id, :merchant_merchant_store => update
+      put :update, :id => @merchant_store.id, :merchant_merchant_store => update
       response.code.should eq('200')
       response.should render_template('edit')
       flash[:error].should_not be_nil
       flash[:success].should be_nil
-      ms = Merchant::MerchantStore.find(merchant_store.id)
-      ms.name.should be == merchant_store.name
-      ms.standard_rate.should be == merchant_store.standard_rate
+      ms = Merchant::MerchantStore.find(@merchant_store.id)
+      ms.name.should be == @merchant_store.name
+      ms.standard_rate.should be == @merchant_store.standard_rate
     end
   end
 

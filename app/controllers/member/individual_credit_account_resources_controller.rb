@@ -1,4 +1,5 @@
 class Member::IndividualCreditAccountResourcesController < ApplicationController
+  authorize_resource class: 'Member::BankCard'
   before_action :set_individual_credt_account
 
   protected

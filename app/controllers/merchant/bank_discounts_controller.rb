@@ -1,4 +1,5 @@
 class Merchant::BankDiscountsController < Merchant::MerchantStoreResourcesBasicController
+  authorize_resource class: 'Pay::PaymentPlan'
   before_action :set_merchant_bank_discount, only: [:edit, :update]
 
   # GET /merchant/bank_discounts/new

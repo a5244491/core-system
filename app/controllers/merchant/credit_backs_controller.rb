@@ -1,4 +1,5 @@
 class Merchant::CreditBacksController < Merchant::MerchantStoreResourcesBasicController
+  authorize_resource class: 'Pay::PaymentPlan'
   before_action :set_merchant_credit_back
 
   # GET /merchant/credit_backs/new

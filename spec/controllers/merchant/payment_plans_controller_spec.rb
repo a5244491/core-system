@@ -47,7 +47,7 @@ describe Merchant::PaymentPlansController do
 
   describe 'destroy action' do
     before :each do
-      @payment_plan = create(:bank_discount_rate, :invalid, merchant_store: @merchant_store)
+      @payment_plan = create(:bank_discount, :invalid, merchant_store: @merchant_store)
     end
     it 'should payment plan' do
       delete :destroy, :merchant_store_id => @merchant_store.id, :id => @payment_plan.id

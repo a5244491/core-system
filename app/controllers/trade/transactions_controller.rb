@@ -1,4 +1,6 @@
 class Trade::TransactionsController < ApplicationController
+  authorize_resource class: 'Trade::Transaction'
+
   before_action :set_trade_transaction, only: [:show]
 
   def index

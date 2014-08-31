@@ -1,4 +1,6 @@
 class Merchant::AcquirerOrgsController < ApplicationController
+  authorize_resource class: 'Merchant::AcquirerOrg'
+
   before_action :set_merchant_acquirer_org, only: [:edit, :update, :destroy]
 
   # GET /merchant/acquirer_orgs

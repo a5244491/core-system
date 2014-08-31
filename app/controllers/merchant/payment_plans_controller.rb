@@ -1,4 +1,5 @@
 class Merchant::PaymentPlansController < Merchant::MerchantStoreResourcesBasicController
+  authorize_resource class: 'Pay::PaymentPlan'
   before_action :set_payment_plan, only: [:disable, :enable, :destroy]
   authorize_resource class: 'Pay::PaymentPlan'
 

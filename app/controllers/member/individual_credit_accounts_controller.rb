@@ -1,4 +1,5 @@
 class Member::IndividualCreditAccountsController < ApplicationController
+  authorize_resource class: 'Member::IndividualCreditAccount'
   before_action :set_member_individual_credit_account, only: [:show]
 
   def index

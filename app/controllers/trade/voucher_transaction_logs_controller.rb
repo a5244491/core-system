@@ -1,4 +1,5 @@
 class Trade::VoucherTransactionLogsController < ApplicationController
+  authorize_resource class: 'Trade::VoucherTransactionLog'
   before_action :set_trade_voucher_transaction_log, only: [:show]
 
   def index

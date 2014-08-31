@@ -1,4 +1,6 @@
 class Trade::TransactionLogsController < ApplicationController
+  authorize_resource class: 'Trade::TransactionLog'
+
   before_action :set_trade_transaction_log, only: [:show]
 
   # GET /trade/transaction_logs

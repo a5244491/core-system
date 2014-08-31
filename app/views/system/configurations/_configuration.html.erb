@@ -1,0 +1,9 @@
+<tr>
+    <td><%= configuration_description(configuration) %></td>
+    <td><%= configuration.value %></td>
+    <td>
+        <% if can?(:update, System::Configuration) %>
+            <%= link_to('修改', edit_system_configuration_path(configuration), class: 'btn btn-default') %>
+        <% end %>
+    </td>
+</tr>

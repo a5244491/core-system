@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  namespace :system do
+  get 'configuration/index'
+  end
+
+  namespace :system do
+  get 'configuration/update'
+  end
+
+  namespace :system do
+  get 'configuration/edit'
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -93,5 +105,6 @@ Rails.application.routes.draw do
 
   namespace :system do
     resources :activity_logs, only: [:index]
+    resources :configurations, only: [:index, :edit, :update]
   end
 end
