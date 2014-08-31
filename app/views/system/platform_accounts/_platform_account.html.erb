@@ -1,0 +1,17 @@
+<tr>
+    <td><%= account.account_name %></td>
+    <td><%= target_text(account.access_target) %></td>
+    <td><%= account.access_key %></td>
+    <td><%= status_text(account.status) %></td>
+    <td><%= account.remark %></td>
+    <td>
+        <% if can?(:update, System::PlatformAccount) %>
+            <%= link_to('修改', edit_system_platform_account_path(account), class: 'btn btn-default btn-warning') %>
+        <% end %>
+        <% if can?(:destroy, System::PlatformAccount) %>
+            <%= link_to('删除', system_platform_account_path(account), class: 'btn btn-default btn-danger', method: :delete, data: {
+                    confirm: "确认删除 #{account.account_name} 吗?"
+            }) %>
+        <% end %>
+    </td>
+</tr>
