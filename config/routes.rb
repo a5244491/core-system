@@ -76,7 +76,10 @@ Rails.application.routes.draw do
       resources :credit_backs, only: [:new, :create, :edit, :update], as: :merchant_credit_backs
     end
     resources :acquirer_orgs, except: [:show]
-    resources :merchant_groups
+    resources :merchant_groups, except: [:show] do
+      resources :merchant_stores, controller: 'merchant_group_merchant_stores', except: [:destroy, :show]
+      delete 'merchant_stores', to: 'merchant_group_merchant_stores#batch_destroy'
+    end
   end
 
   namespace :trade do

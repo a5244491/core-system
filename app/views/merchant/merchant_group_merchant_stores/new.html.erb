@@ -1,18 +1,17 @@
-<% content_for(:page_title, "#{@merchant_merchant_group.name} 的当前商户") %>
+<% content_for(:page_title, "添加商户到: #{@merchant_merchant_group.name}") %>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <% if can? :update, Merchant::MerchantGroup %>
-                    <a type="button" class="btn btn-success" href="<%= new_merchant_merchant_group_path %>"><i class="fa fa-plus"></i>
-                        新增商户</a>
-                    <a type="button" class="btn btn-danger" href="<%= new_merchant_merchant_group_path %>">
-                        删除选中商户</a>
+                    <a type="button" class="btn btn-success store_selector_submit"><i class="fa fa-plus"></i>
+                        <%= "将选中的商户添加到#{@merchant_merchant_group.name}" %></a>
                 <% end %>
+                <a type="button" class="btn btn-default store_selector_submit" href="<%= merchant_merchant_group_merchant_stores_path(@merchant_merchant_group)%>">返回</a>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <%= search_form_for(@q, url: merchant_merchant_group_path(@merchant_merchant_group), class: 'form-inline', role: 'form') do |f| %>
+                <%= search_form_for(@q, url: new_merchant_merchant_group_merchant_store_path(@merchant_merchant_group), class: 'form-inline', role: 'form') do |f| %>
                     <div class="form-group">
                         <%= f.search_field :name_cont, class: 'form-control', placeholder: '商户名' %>
                     </div>
@@ -21,7 +20,7 @@
                 <br>
 
                 <div class="row">
-                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'merchant_store'} %>
+                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'available_merchant_store'} %>
                 </div>
                 <br>
 
@@ -35,7 +34,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <%= form_tag('', method: :delete) do %>
+                        <%= form_tag(merchant_merchant_group_merchant_stores_path, id: 'store_selector') do %>
                             <%= render partial: 'merchant_store', collection: @merchant_stores, as: :merchant_store %>
                         <% end %>
                         </tbody>
@@ -43,7 +42,7 @@
                 </div>
                 <!-- /.table-responsive -->
                 <div class="row">
-                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'merchant_store'} %>
+                    <%= render partial: 'shared/index_table_entries_info', locals: {collection: @merchant_stores, model: 'available_merchant_store'} %>
                 </div>
             </div>
             <!-- /.panel-body -->

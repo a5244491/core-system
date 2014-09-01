@@ -4,15 +4,16 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <% if can? :update, Merchant::MerchantGroup %>
-                    <a type="button" class="btn btn-success" href="<%= new_merchant_merchant_group_path %>"><i class="fa fa-plus"></i>
+                    <a type="button" class="btn btn-success" href="<%= new_merchant_merchant_group_merchant_store_path %>"><i class="fa fa-plus"></i>
                         新增商户</a>
-                    <a type="button" class="btn btn-danger" href="<%= new_merchant_merchant_group_path %>">
+                    <a type="button" class="btn btn-danger store_selector_submit" id="delete_stores">
                         删除选中商户</a>
                 <% end %>
+                <a type="button" class="btn btn-default store_selector_submit" href="<%= merchant_merchant_groups_path%>">返回</a>
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
-                <%= search_form_for(@q, url: merchant_merchant_group_path(@merchant_merchant_group), class: 'form-inline', role: 'form') do |f| %>
+                <%= search_form_for(@q, url: merchant_merchant_group_merchant_stores_path(@merchant_merchant_group), class: 'form-inline', role: 'form') do |f| %>
                     <div class="form-group">
                         <%= f.search_field :name_cont, class: 'form-control', placeholder: '商户名' %>
                     </div>
@@ -35,7 +36,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <%= form_tag('', method: :delete) do %>
+                        <%= form_tag("/merchant/merchant_groups/#{@merchant_merchant_group.id}/merchant_stores", method: :delete, id: 'store_selector') do %>
                             <%= render partial: 'merchant_store', collection: @merchant_stores, as: :merchant_store %>
                         <% end %>
                         </tbody>

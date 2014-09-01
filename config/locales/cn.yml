@@ -49,6 +49,11 @@ cn:
         one: '个商户群组'
         few: '个商户群组'
         other: '个商户群组'
+      available_merchant_store:
+        zero: '家可添加商户'
+        one: '家可添加商户'
+        few: '家可添加商户'
+        other: '家可添加商户'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

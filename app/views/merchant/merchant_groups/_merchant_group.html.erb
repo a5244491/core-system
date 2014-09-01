@@ -5,6 +5,7 @@
     <td>
        <% if can?(:update, Merchant::MerchantGroup) %>
           <%= link_to '修改', edit_merchant_merchant_group_path(merchant_group), class: 'btn btn-xs btn-warning' %>
+          <%= link_to '管理商户', merchant_merchant_group_merchant_stores_path(merchant_group), class: 'btn btn-xs btn-primary' %>
        <% end %>
        <% if can?(:destroy, Merchant::MerchantGroup) %>
           <%= link_to '删除', merchant_merchant_group_path(merchant_group), class: 'btn btn-xs btn-danger', method: :delete, data: {

@@ -8,10 +8,6 @@ class Merchant::MerchantGroupsController < ApplicationController
     @merchant_merchant_groups = @q.result.order(created_at: :desc).paginate(page: @page, per_page: @limit)
   end
 
-  # GET /merchant/merchant_groups/1
-  # GET /merchant/merchant_groups/1.json
-  def show
-  end
 
   # GET /merchant/merchant_groups/new
   def new
