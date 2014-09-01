@@ -76,6 +76,7 @@ Rails.application.routes.draw do
       resources :credit_backs, only: [:new, :create, :edit, :update], as: :merchant_credit_backs
     end
     resources :acquirer_orgs, except: [:show]
+    resources :merchant_groups
   end
 
   namespace :trade do

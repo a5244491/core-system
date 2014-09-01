@@ -45,18 +45,16 @@
                                     <li class="list-group-item">
                                         <label>协议生效日期:</label> <%= datetime_text(@merchant_store.contract_active_date) %>
                                     </li>
-                                    <li class="list-group-item"><label>订单所有人:</label> <%= @merchant_store.contractor %>
-                                    </li>
                                 </ul>
                             </div>
                             <div class="col-lg-6">
                                 <ul class="list-group">
+                                    <li class="list-group-item"><label>订单所有人:</label> <%= @merchant_store.contractor %>
+                                    </li>
                                     <li class="list-group-item">
                                         <label>财务联系人:</label> <%= @merchant_store.finance_contact_name %></li>
                                     <li class="list-group-item">
                                         <label>财务联系电话:</label> <%= @merchant_store.finance_contact_phone %></li>
-                                    <li class="list-group-item">
-                                        <label>营业执照号码:</label> <%= @merchant_store.license_num %></li>
                                     <li class="list-group-item">
                                         <label>收单帐户名:</label> <%= @merchant_store.public_account_name %></li>
                                     <li class="list-group-item">

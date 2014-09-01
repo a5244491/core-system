@@ -44,6 +44,11 @@ cn:
         one: '个卡bin'
         few: '个卡bin'
         other: '个卡bin'
+      merchant_group:
+        zero: '个商户群组'
+        one: '个商户群组'
+        few: '个商户群组'
+        other: '个商户群组'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

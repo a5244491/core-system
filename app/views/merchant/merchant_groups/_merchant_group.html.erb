@@ -1,0 +1,15 @@
+<tr class="odd gradeX">
+    <td><%= merchant_group.id %></td>
+    <td><%= merchant_group.display_name %></td>
+    <td> <%= merchant_group.name %></td>
+    <td>
+       <% if can?(:update, Merchant::MerchantGroup) %>
+          <%= link_to '修改', edit_merchant_merchant_group_path(merchant_group), class: 'btn btn-xs btn-warning' %>
+       <% end %>
+       <% if can?(:destroy, Merchant::MerchantGroup) %>
+          <%= link_to '删除', merchant_merchant_group_path(merchant_group), class: 'btn btn-xs btn-danger', method: :delete, data: {
+                  confirm: "确认删除 #{merchant_group.name} 吗"
+          } %>
+       <% end %>
+    </td>
+</tr>
