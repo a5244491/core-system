@@ -23,4 +23,20 @@ module Rule
   def disabled?
     self.status == INACTIVE
   end
+
+  def may_disable?
+    self.status == ACTIVE
+  end
+
+  def may_enable?
+    self.status == INACTIVE
+  end
+
+  def may_edit?
+    !active?
+  end
+
+  def may_destroy?
+    !active?
+  end
 end

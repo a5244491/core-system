@@ -54,6 +54,11 @@ cn:
         one: '家可添加商户'
         few: '家可添加商户'
         other: '家可添加商户'
+      voucher_meta:
+        zero: '个红包定义'
+        one: '个红包定义'
+        few: '个红包定义'
+        other: '个红包定义'
     page_entries_info:
       single_page:
         zero:  "无符合条件的记录"

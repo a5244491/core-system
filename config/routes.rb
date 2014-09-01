@@ -95,6 +95,11 @@ Rails.application.routes.draw do
       resources :vouchers, only: [:index]
       resources :referees, only: [:index]
     end
+
+    resources :voucher_meta, except: [:show] do
+      put 'active', to: 'voucher_meta#active'
+      put 'inactive', to: 'voucher_meta#inactive'
+    end
   end
 
   namespace :system do

@@ -3,6 +3,10 @@ require 'digest'
 module Member
   class VoucherMeta < ActiveRecord::Base
     include Rule
+    DEFAULT_INITIAL_AMOUNT = -1
+    DEFAULT_LIMIT_PER_ACCOUNT = -1
+    DEFAULT_GLOBAL = true
+
     class VoucherException < StandardError;
     end
     class VoucherAmountExceeded < VoucherException;
