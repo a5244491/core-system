@@ -36,6 +36,7 @@ gem 'cancancan', '~> 1.8'
 gem 'ransack'
 gem 'reform'
 gem 'virtus'
+gem 'to_bool'
 
 group :development do
   gem 'spring'
