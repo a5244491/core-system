@@ -41,11 +41,11 @@ class Merchant::RegisterRulesController < Merchant::MerchantStoreResourcesBasicC
         redirect_to merchant_merchant_store_marketing_rules_path(@merchant_store)
       else
         flash[:error] = "修改失败: #{@form.model.errors.full_messages}"
-        render :new
+        render :edit
       end
     else
       flash[:error] = "修改失败: #{@form.errors.full_messages}"
-      render :new
+      render :edit
     end
   end
 

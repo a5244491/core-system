@@ -81,6 +81,7 @@ Rails.application.routes.draw do
         resources :voucher_actions, only: [:create]
       end
       resources :register_rules, only: [:new, :edit, :update, :create], as: :merchant_register_rules
+      resources :bind_card_rules, only: [:new, :edit, :update, :create], as: :merchant_bind_card_rules
     end
     resources :acquirer_orgs, except: [:show]
     resources :merchant_groups, except: [:show] do

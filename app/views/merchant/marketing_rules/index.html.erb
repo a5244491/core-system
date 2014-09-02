@@ -19,10 +19,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <b>绑卡时触发的规则</b>
-                        <%= link_to('创建新规则', new_merchant_merchant_store_merchant_credit_back_path(@merchant_store), class: 'btn btn-success') %>
+                        <%= link_to('创建新规则', new_merchant_merchant_store_merchant_bind_card_rule_path(@merchant_store), class: 'btn btn-success') %>
                     </div>
                     <!-- .panel-heading -->
                     <div class="panel-body">
+                        <%= render partial: 'bind_card_rule', collection: @bind_card_rules, as: :rule %>
                     </div>
                     <!-- .panel-body -->
                 </div>
