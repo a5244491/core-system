@@ -9,7 +9,7 @@ module Member::VoucherMetaHelper
   end
 
   def money_condition_text(voucher_meta)
-    voucher_meta.money_condition == 0 ? '不限制消费金额' : "消费满#{voucher_meta.money_condition/100.0}元可以使用"
+    voucher_meta.money_condition.to_i == 0 ? '不限制消费金额' : "消费满#{voucher_meta.money_condition/100.0}元可以使用"
   end
 
   def voucher_meta_status_text(voucher_meta)
@@ -49,5 +49,9 @@ module Member::VoucherMetaHelper
 
   def voucher_meta_type_text(voucher_type)
     hash_voucher_type[voucher_type]
+  end
+
+  def voucher_applicable_type_hash
+    {Member::VoucherMeta::ALL_STORE => '全局红包', Member::VoucherMeta::SINGLE_STORE => '单店红包',Member::VoucherMeta::STORE_GROUP => '群组红包'}
   end
 end

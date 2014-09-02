@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <a type="button" class="btn btn-danger" href="<%= member_voucher_meta_path %>"><i class="fa fa-exclamation-circle"></i>
+                <a type="button" class="btn btn-danger" href="<%= member_voucher_meta_index_path %>"><i class="fa fa-exclamation-circle"></i>
                     重置查询</a>
                 <button type="submit" class="btn btn-primary"><i class="fa fa-fighter-jet"></i> 执行查询</button>
             </div>
@@ -25,7 +25,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <% if can? :create, Member::VoucherMeta %>
-                    <a type="button" class="btn btn-success" href="<%= new_member_voucher_metum_path %>"><i class="fa fa-plus"></i>
+                    <a type="button" class="btn btn-success" href="<%= new_member_voucher_meta_path %>"><i class="fa fa-plus"></i>
                         新增红包</a>
                 <% end %>
                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#search_form_modal">

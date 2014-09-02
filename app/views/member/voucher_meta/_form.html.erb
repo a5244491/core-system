@@ -1,17 +1,94 @@
-<%= form_for(@member_voucher_metum) do |f| %>
-  <% if @member_voucher_metum.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@member_voucher_metum.errors.count, "error") %> prohibited this member_voucher_metum from being saved:</h2>
-
-      <ul>
-      <% @member_voucher_metum.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_for(@form, html: {class: 'form-horizontal', role: 'form', id: 'voucher_meta_form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :aliases, '别名', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:aliases, class: 'form-control', 'data-bv-notempty' => true) %>
+        </div>
     </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="form-group">
+        <%= f.label :valid_from, '有效期起', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_from, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :valid_till, '有效期至', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:valid_till, class: 'form-control datetimepicker', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :denomination, '面额', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:denomination, class: 'form-control', 'data-bv-notempty' => true, 'data-bv-numeric' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :limit_per_account, '每账户限额', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= f.check_box(:limit_per_account_on, {id: :limit_per_account_on}, false, true) %>
+                不限制
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:limit_per_account, class: 'form-control', placeholder: '每账户最多领取张数', id: :limit_per_account) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :money_condition, '最低消费金额', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:money_condition, class: 'form-control', 'data-bv-notempty' => true, 'data-bv-numeric' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :initial_amount, '初始数量', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4 checkbox">
+                <%= f.check_box(:initial_amount_on, {id: :initial_amount_on}, false, true) %>
+                不限制
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:initial_amount, class: 'form-control', placeholder: '初始数量', id: :initial_amount) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :applicable_target_name, '红包可用店面', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4">
+                <%= f.select(:applicable_type, voucher_applicable_type_hash.invert, {}, class: 'form-control', id: :applicable_type) %>
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:applicable_target_name, class: 'form-control', id: :applicable_target_name) %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :issuer, '发行方', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4">
+                <%= f.select(:issuer_type, hash_voucher_type.invert, {}, class: 'form-control') %>
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:issuer_name, class: 'form-control', placeholder: '发行方名称') %>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= f.label :settler, '结算方', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-8">
+            <div class="col-xs-4">
+                <%= f.select(:settler_type, hash_voucher_type.invert, {}, class: 'form-control') %>
+            </div>
+            <div class="col-xs-5">
+                <%= f.text_field(:settler_name, class: 'form-control', placeholder: '发行方名称') %>
+            </div>
+        </div>
+    </div>
+    <div class="form_footer">
+        <a class="btn btn-default" href="<%= member_voucher_meta_index_path %>">返回</a>
+        <button type="reset" class="btn btn-danger">重置</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
+    </div>
 <% end %>

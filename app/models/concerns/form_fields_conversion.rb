@@ -27,7 +27,7 @@ module FormFieldsConversion
     def utc_to_local_fields(*names)
       names.each do |name|
         define_method(name) do
-          super().localtime.strftime(DATE_TIME_FORMAT)
+          super().localtime.strftime(DATE_TIME_FORMAT) unless super().blank?
         end
 
         define_method("#{name}=") do |value|

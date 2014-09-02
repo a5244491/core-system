@@ -26,14 +26,43 @@ class Member::VoucherMetaForm < Reform::Form
   cent_to_yuan_fields :money_condition, :denomination
   utc_to_local_fields :valid_from, :valid_till
 
-  alias_method :real_limit_per_account_on, :limit_per_account_on
   def limit_per_account_on
-    self.limit_per_account == Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT
+    if super.nil?
+      self.limit_per_account != Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT && !self.limit_per_account.nil?
+    else
+      super
+    end
   end
 
   alias_method :real_initial_amount_on, :initial_amount_on
+
   def initial_amount_on
-    self.initial_amount == Member::VoucherMeta::DEFAULT_INITIAL_AMOUNT
+    if super.nil?
+      self.initial_amount != Member::VoucherMeta::DEFAULT_INITIAL_AMOUNT && !self.initial_amount.nil?
+    else
+      super
+    end
+  end
+
+  def initial_amount
+    super == Member::VoucherMeta::DEFAULT_INITIAL_AMOUNT ? nil : super
+  end
+
+  def limit_per_account
+    super == Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT ? nil : super
+  end
+
+  def applicable_target_name
+    if super.blank?
+      case self.applicable_type
+        when Member::VoucherMeta::SINGLE_STORE
+          self.merchant_store.try(:name)
+        when Member::VoucherMeta::STORE_GROUP
+          self.merchant_group.try(:name)
+      end
+    else
+      super
+    end
   end
 
   def validate(params)
@@ -43,10 +72,11 @@ class Member::VoucherMetaForm < Reform::Form
 
   private
   def normalize_params
-    if self.real_limit_per_account_on.to_bool
+    unless self.limit_per_account_on.to_bool
       self.limit_per_account = Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT
     end
-    if self.real_initial_amount_on.to_bool
+
+    unless self.initial_amount_on.to_bool
       self.initial_amount = Member::VoucherMeta::DEFAULT_INITIAL_AMOUNT
     end
 
@@ -57,7 +87,7 @@ class Member::VoucherMetaForm < Reform::Form
         self.merchant_store = merchant
       when Member::VoucherMeta::STORE_GROUP
         group = Merchant::MerchantGroup.where(name: self.applicable_target_name).first unless self.applicable_target_name.blank?
-        self.errors[:merchant_group] << "商户群组#{self.applicable_target_name}不存在" if group.nil?
+        self.errors['适用对象'] << "商户群组#{self.applicable_target_name}不存在" if group.nil?
         self.merchant_group = group
     end
 
@@ -74,6 +104,8 @@ class Member::VoucherMetaForm < Reform::Form
         merchant = Merchant::MerchantStore.where(name: name).first unless name.blank?
         self.errors[error_tag] << "商户#{name}不存在" if merchant.nil?
         merchant.try(:merchant_number)
+      when Member::VoucherMeta::SELF
+        'platform'
     end
   end
 end

@@ -7,34 +7,34 @@ describe Member::VoucherMetaForm do
     end
     it 'should do limit per account conversion' do
       @form.validate({
-          limit_per_account_on: 'true',
-          limit_per_account: '100'
-                     }).should be_true
-      @form.limit_per_account.should be == Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT
-      @form.limit_per_account_on.should be == true
-
-      @form.validate({
-                         limit_per_account_on: 'false',
+                         limit_per_account_on: true,
                          limit_per_account: '100'
                      }).should be_true
       @form.limit_per_account.should be == 100
+      @form.limit_per_account_on.should be == true
+
+      @form.validate({
+                         limit_per_account_on: false,
+                         limit_per_account: '100'
+                     }).should be_true
+      @form.limit_per_account.should be_nil
       @form.limit_per_account_on.should be == false
     end
 
     it 'should do initial amount conversion' do
       @form.validate({
-                         initial_amount_on: 'true',
+                         initial_amount_on: false,
                          initial_amount: '100'
                      }).should be_true
-      @form.initial_amount.should be == Member::VoucherMeta::DEFAULT_LIMIT_PER_ACCOUNT
-      @form.initial_amount_on.should be == true
+      @form.initial_amount.should be_nil
+      @form.initial_amount_on.should be == false
 
       @form.validate({
-                         initial_amount_on: 'false',
+                         initial_amount_on: true,
                          initial_amount: '100'
                      }).should be_true
       @form.initial_amount.should be == 100
-      @form.initial_amount_on.should be == false
+      @form.initial_amount_on.should be == true
     end
 
     describe 'applicable target conversion' do

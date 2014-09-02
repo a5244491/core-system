@@ -24,20 +24,20 @@
     </td>
     <td>
         <% if voucher_meta.may_enable? && can?(:enable, Member::VoucherMeta) %>
-            <%= link_to '生效', member_voucher_metum_active_path(voucher_meta), class: 'btn btn-primary btn-xs', method: :put, data: {
+            <%= link_to '生效', member_voucher_meta_active_path(voucher_meta), class: 'btn btn-primary btn-xs', method: :put, data: {
                     confirm: "确认要生效 #{voucher_meta.aliases} 吗"
             } %><br>
         <% end %>
         <% if voucher_meta.may_disable? && can?(:disable, Member::VoucherMeta) %>
-            <%= link_to '失效', member_voucher_metum_inactive_path(voucher_meta), class: 'btn btn-primary btn-xs', method: :put, data: {
+            <%= link_to '失效', member_voucher_meta_inactive_path(voucher_meta), class: 'btn btn-primary btn-xs', method: :put, data: {
                     confirm: "确认要失效 #{voucher_meta.aliases} 吗"
             } %><br>
         <% end %>
         <% if voucher_meta.may_edit? && can?(:update, Member::VoucherMeta) %>
-            <%= link_to '编辑', edit_member_voucher_metum_path(voucher_meta), class: 'btn btn-warning btn-xs'%><br>
+            <%= link_to '编辑', edit_member_voucher_meta_path(voucher_meta), class: 'btn btn-warning btn-xs'%><br>
         <% end %>
         <% if voucher_meta.may_destroy? && can?(:destroy, Member::VoucherMeta) %>
-            <%= link_to '删除', member_voucher_metum_path(voucher_meta), class: 'btn btn-danger btn-xs', method: :delete, data: {
+            <%= link_to '删除', member_voucher_meta_path(voucher_meta), class: 'btn btn-danger btn-xs', method: :delete, data: {
                     confirm: "确认要删除 #{voucher_meta.aliases} 吗"
             } %>
         <% end %>
@@ -46,8 +46,8 @@
         <td colspan="8" >
             <span>红包代码:</span><span><%= voucher_meta.code %></span>
             <span>有效期:</span>
-                    <span><%= voucher_meta.valid_from.localtime.strftime('%F %H:%M ') %>
-                        至 <%= voucher_meta.valid_till.localtime.strftime('%F %H:%M') %></span>
+                    <span><%= datetime_text(voucher_meta.valid_from) %>
+                        至 <%= datetime_text(voucher_meta.valid_till) %></span>
             <span>备注:</span> <span class="s6"><%= voucher_meta.remark %></span>
         <td>
     </tr>

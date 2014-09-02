@@ -34,6 +34,8 @@ module Member
       if self.initial_amount_changed?
         self.amount_left += self.initial_amount - self.initial_amount_was
       end
+      self.initial_amount ||= DEFAULT_INITIAL_AMOUNT
+      self.limit_per_account ||= DEFAULT_LIMIT_PER_ACCOUNT
     end
 
     before_validation do
