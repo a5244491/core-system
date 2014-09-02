@@ -1,16 +1,13 @@
 <div class="panel panel-default">
-    <div class="panel-body">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-               <%= render partial: 'marketing_rule_panel_header', locals: {rule: rule, edit_path: edit_merchant_merchant_store_merchant_register_rule_path(@merchant_store, rule)} %>
-            </div>
-            <!-- .panel-heading -->
-            <div class="panel-body">
-                <ul class="list-group">
-                        <%= render partial: 'post_action', collection: rule.post_actions, as: :post_action, locals: {rule: rule} %>
-                </ul>
-            </div>
-            <!-- .panel-body -->
-        </div>
+    <div class="panel-heading">
+        <%= render partial: 'marketing_rule_panel_header', locals: {rule: rule, edit_path: edit_merchant_merchant_store_merchant_register_rule_path(@merchant_store, rule)} %>
     </div>
+    <!-- .panel-heading -->
+    <div class="panel-body">
+        当用户在POS机上注册时，将获得
+        <ul class="list-group">
+            <%= render partial: 'post_action', collection: rule.post_actions, as: :post_action, locals: {rule: rule} %>
+        </ul>
+    </div>
+    <!-- .panel-body -->
 </div>

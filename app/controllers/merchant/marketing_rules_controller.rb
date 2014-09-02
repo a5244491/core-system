@@ -8,7 +8,7 @@ class Merchant::MarketingRulesController < Merchant::MerchantStoreResourcesBasic
   def index
     @register_rules = Merchant::RegisterRule.where(merchant_store: @merchant_store).order(created_at: :desc).includes(:post_actions)
     @bind_card_rules = Merchant::BindCardRule.where(merchant_store: @merchant_store).order(created_at: :desc).includes(:post_actions)
-    @transaction_rules = Merchant::BindCardRule.where(merchant_store: @merchant_store).order(created_at: :desc).includes(:post_actions)
+    @transaction_rules = Merchant::TransactionRule.where(merchant_store: @merchant_store).order(created_at: :desc).includes(:post_actions)
     @available_voucher_meta = Member::VoucherMeta.active
   end
 

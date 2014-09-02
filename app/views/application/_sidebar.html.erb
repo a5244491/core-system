@@ -3,80 +3,123 @@
         <ul class="nav">
             <li>
                 <a href="#"><i class="fa fa-dashboard fa-fw"></i>商户管理</a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= merchant_merchant_stores_path %>">商户列表</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= merchant_merchant_groups_path %>">商户群组管理</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= merchant_acquirer_orgs_path %>">收单机构管理</a>
-                    </li>
-                </ul>
+                <% if can?(:read, Merchant::MerchantStore) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= merchant_merchant_stores_path %>">商户列表</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, Merchant::MerchantGroup) %>
+
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= merchant_merchant_groups_path %>">商户群组管理</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, Merchant::AcquirerOrg) %>
+
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= merchant_acquirer_orgs_path %>">收单机构管理</a>
+                        </li>
+                    </ul>
+                <% end %>
+
                 <!-- /.nav-second-level -->
             </li>
+            <% if can?(:read, Member::IndividualCreditAccount) %>
+
+                <li>
+                    <a href="<%= member_individual_credit_accounts_path %>"><i class="fa fa-dashboard fa-fw"></i>会员管理</a>
+                </li>
+            <% end %>
+
             <li>
-                <a href="<%= member_individual_credit_accounts_path %>"><i class="fa fa-dashboard fa-fw"></i>会员管理</a>
-            </li>
-            <li>
-                <a href="#"><i class="fa fa-dashboard fa-fw"></i>交易明细管理</a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= trade_transaction_logs_path %>">交易明细</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= trade_transactions_path %>">在途交易</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= trade_transaction_archives_path %>">未决交易存档</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= trade_voucher_transaction_logs_path %>">红包交易明细</a>
-                    </li>
-                </ul>
+                <a><i class="fa fa-dashboard fa-fw"></i>交易明细管理</a>
+                <% if can?(:read, Trade::TransactionLog) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= trade_transaction_logs_path %>">交易明细</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, Trade::Transaction) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= trade_transactions_path %>">在途交易</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, Trade::TransactionArchive) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= trade_transaction_archives_path %>">未决交易存档</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, Trade::VoucherTransactionLog) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+
+                            <a href="<%= trade_voucher_transaction_logs_path %>">红包交易明细</a>
+                        </li>
+                    </ul>
+                <% end %>
+
                 <!-- /.nav-second-level -->
             </li>
-            <li>
-                <a href="<%= member_voucher_meta_index_path %>"><i class="fa fa-dashboard fa-fw"></i>红包管理</a>
-            </li>
+            <% if can?(:read, Member::VoucherMeta) %>
+                <li>
+                    <a href="<%= member_voucher_meta_index_path %>"><i class="fa fa-dashboard fa-fw"></i>红包管理</a>
+                </li>
+            <% end %>
+
             <li>
                 <a><i class="fa fa-dashboard fa-fw"></i>系统功能</a>
+                <% if can?(:read, System::ActivityLog) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= system_activity_logs_path %>">系统日志</a>
+                        </li>
+                    </ul>
+                <% end %>
+
+                <% if can?(:read, System::Configuration) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= system_configurations_path %>">系统参数配置</a>
+                        </li>
+                    </ul>
+                <% end %>
+
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="<%= system_activity_logs_path %>">系统日志</a>
+                        <% if can?(:read, Users::SystemUser) %>
+                            <a href="<%= users_system_users_path %>">运维用户管理</a>
+                        <% end %>
                     </li>
                 </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= system_configurations_path %>">系统参数配置</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= users_system_users_path %>">运维用户管理</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= system_platform_accounts_path %>">交易接入系统帐号管理</a>
-                    </li>
-                </ul>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<%= bank_card_bins_path %>">卡bin管理</a>
-                    </li>
-                </ul>
+                <% if can?(:read, System::PlatformAccount) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= system_platform_accounts_path %>">交易接入系统帐号管理</a>
+                        </li>
+                    </ul>
+                <% end %>
+                <% if can?(:read, Bank::CardBin) %>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="<%= bank_card_bins_path %>">卡bin管理</a>
+                        </li>
+                    </ul>
+                <% end %>
                 <!-- /.nav-second-level -->
             </li>
         </ul>

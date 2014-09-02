@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <%= render partial: 'marketing_rule_panel_header', locals: {rule: rule, edit_path: edit_merchant_merchant_store_merchant_transaction_rule_path(@merchant_store, rule)} %>
+    </div>
+    <!-- .panel-heading -->
+    <div class="panel-body">
+        当用户进行如下的交易时
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>支付计划ID</th>
+                    <th>类型</th>
+                    <th>适用银行</th>
+                    <th>适用用户</th>
+                </tr>
+                <% rule.payment_plans.each do |plan| %>
+                    <tr class="odd gradeX">
+                        <td><%= plan.id %></td>
+                        <td><%= plan_type_text(plan)%></td>
+                        <td><%= plan_bank_name(plan)%></td>
+                        <td><%= plan_user_type_text(plan)%></td>
+                <% end %>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        将获得
+        <ul class="list-group">
+            <%= render partial: 'post_action', collection: rule.post_actions, as: :post_action, locals: {rule: rule} %>
+        </ul>
+    </div>
+    <!-- .panel-body -->
+</div>
