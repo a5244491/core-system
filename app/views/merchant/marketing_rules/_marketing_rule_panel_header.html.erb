@@ -1,0 +1,43 @@
+<%= edit_path ||= '' %>
+规则#<%= rule.try(:id) %>(<%= rule_status_text(rule) %>) - 有效期: <%= datetime_text(rule.valid_from) %> 至 <%= datetime_text(rule.valid_till) %>
+<span class="panel_header_buttons">
+    <% if rule.may_edit? && can?(:update,  Merchant::MarketingRule) %>
+        <button type="button" class="btn btn-xs btn-success" data-toggle="modal" data-target="#voucher_action_of_rule_<%=rule.id%>">
+            赠送红包
+        </button>
+  <% end %>
+  <% if rule.may_enable? && can?(:enable, Merchant::MarketingRule) %>
+        <%= link_to('生效', merchant_merchant_store_marketing_rule_enable_path(@merchant_store, rule), class: 'btn btn-xs btn-primary', method: :patch) %>
+  <% end %>
+  <% if rule.may_disable? && can?(:disable,  Merchant::MarketingRule) %>
+        <%= link_to('失效', merchant_merchant_store_marketing_rule_disable_path(@merchant_store, rule), class: 'btn btn-xs btn-primary', method: :patch) %>
+  <% end %>
+  <% if rule.may_edit? && can?(:update,  Merchant::MarketingRule) %>
+        <%= link_to('修改', edit_path, class: 'btn btn-xs btn-warning') %>
+  <% end %>
+  <% if rule.may_destroy? && can?(:destroy,  Merchant::MarketingRule) %>
+        <%= link_to('删除', merchant_merchant_store_marketing_rule_path(@merchant_store, rule), class: 'btn btn-xs btn-danger', method: :delete, data: {
+                confirm: '确认要删除该条营销规则吗'
+        }) %>
+  <% end %>
+</span>
+
+<div class="modal" id="voucher_action_of_rule_<%=rule.id%>" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">选择红包</h4>
+            </div>
+            <div class="modal-body">
+                <%= render partial: 'merchant/voucher_actions/form', locals: {object: Merchant::VoucherAction.new(marketing_rule: rule), vouchers: @available_voucher_meta,
+                                                                              url: merchant_merchant_store_marketing_rule_voucher_actions_path(@merchant_store, rule)} %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>

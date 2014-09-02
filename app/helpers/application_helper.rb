@@ -19,4 +19,14 @@ module ApplicationHelper
   def money_in_yuan(money_in_cent)
     money_in_cent.to_i/100.0
   end
+
+  def rule_status_text(rule)
+    if rule.active? == Rule::ACTIVE
+      '生效'
+    elsif rule.expired?
+      '已过有效期'
+    else
+      '失效'
+    end
+  end
 end

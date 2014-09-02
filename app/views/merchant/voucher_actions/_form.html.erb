@@ -1,0 +1,15 @@
+<%= form_for(object, url: url, html: {class: 'form-horizontal', role: 'form'}) do |f| %>
+    <div class="form-group">
+        <%= f.label :voucher_meta_id, '赠送红包', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.collection_select(:voucher_meta_id, vouchers, :id, :aliases, {}, class: 'form-control') %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :voucher_count, '数量', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= f.text_field(:voucher_count, class: 'form-control', type: 'number', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+<% end %>

@@ -2,7 +2,7 @@
 <ul class="nav nav-tabs nav-justified" role="tablist">
     <li class="<%= 'active' if index == 0 %>"><a href="<%= merchant_merchant_store_path(@merchant_store)%>">商户基本信息</a></li>
     <li class="<%= 'active' if index == 1 %>"><a href="<%= merchant_merchant_store_payment_plans_path(@merchant_store)%>">支付计划</a></li>
-    <li class="<%= 'active' if index == 2 %>"><a href="#">营销规则</a></li>
+    <li class="<%= 'active' if index == 2 %>"><a href="<%= merchant_merchant_store_marketing_rules_path(@merchant_store) %>">营销规则</a></li>
     <li class="<%= 'active' if index == 3 %>"><a href="<%= merchant_merchant_store_members_path(@merchant_store) %>">会员信息</a></li>
 </ul>
 <br>

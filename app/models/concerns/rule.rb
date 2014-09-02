@@ -39,4 +39,12 @@ module Rule
   def may_destroy?
     !active?
   end
+
+  def enable
+    self.update(status: ACTIVE)
+  end
+
+  def disable
+    self.update(status: INACTIVE)
+  end
 end

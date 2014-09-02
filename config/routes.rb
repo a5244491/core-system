@@ -74,6 +74,13 @@ Rails.application.routes.draw do
       resources :bank_discounts, only: [:new, :create, :edit, :update], as: :merchant_bank_discounts
       resources :none_payment_plans, only: [:edit, :update], as: :merchant_none_payment_plans
       resources :credit_backs, only: [:new, :create, :edit, :update], as: :merchant_credit_backs
+      resources :marketing_rules, only: [:index, :destroy] do
+        patch 'disable', to: 'marketing_rules#disable'
+        patch 'enable', to: 'marketing_rules#enable'
+        resources :post_actions, only: [:destroy]
+        resources :voucher_actions, only: [:create]
+      end
+      resources :register_rules, only: [:new, :edit, :update, :create], as: :merchant_register_rules
     end
     resources :acquirer_orgs, except: [:show]
     resources :merchant_groups, except: [:show] do

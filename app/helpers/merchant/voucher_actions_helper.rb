@@ -1,0 +1,2 @@
+module Merchant::VoucherActionsHelper
+end

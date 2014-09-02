@@ -1,0 +1,12 @@
+<li class="list-group-item">
+    <% if post_action.instance_of?(Merchant::VoucherAction) %>
+        获得红包: <%= post_action.voucher_meta.try(:aliases) %> <%= post_action.voucher_count %> 张
+    <% end %>
+    <span style="float: right">
+    <% if rule.may_edit? && can?(:update, Merchant::MarketingRule) %>
+        <%= link_to('删除', merchant_merchant_store_marketing_rule_post_action_path(@merchant_store, rule, post_action), class: 'btn btn-xs btn-danger', method: :delete, data: {
+                confirm: '确认要删除吗'
+        }) %>
+    <% end %>
+    </span>
+</li>
