@@ -1,4 +1,4 @@
-<%= form_for([@merchant_store, @merchant_register_rule], html: {class: 'form-horizontal bootstrap-validate', role: 'form'}) do |f| %>
+<%= form_for([@merchant_store, @form], html: {class: 'form-horizontal bootstrap-validate', role: 'form'}) do |f| %>
     <div class="form-group">
         <%= f.label :valid_from, '有效期起', class: 'col-sm-2 control-label' %>
         <div class="col-xs-6">
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="form_footer">
-        <a class="btn btn-default" href="<%= merchant_merchant_store_merchant_register_rules_path(@merchant_store) %>">返回</a>
+        <a class="btn btn-default" href="<%= merchant_merchant_store_marketing_rules_path(@merchant_store) %>">返回</a>
         <button type="reset" class="btn btn-danger">重置</button>
         <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> 提交</button>
     </div>

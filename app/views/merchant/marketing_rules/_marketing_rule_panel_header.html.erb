@@ -1,4 +1,4 @@
-<%= edit_path ||= '' %>
+<% edit_path ||= '' %>
 规则#<%= rule.try(:id) %>(<%= rule_status_text(rule) %>) - 有效期: <%= datetime_text(rule.valid_from) %> 至 <%= datetime_text(rule.valid_till) %>
 <span class="panel_header_buttons">
     <% if rule.may_edit? && can?(:update,  Merchant::MarketingRule) %>
