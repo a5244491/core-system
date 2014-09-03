@@ -41,6 +41,10 @@ RSpec.configure do |config|
   config.order = 'random'
   config.include FactoryGirl::Syntax::Methods
   config.include LoginHelper, type: :controller
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, example_group: {
+      file_path: /spec\/apis/
+  }
+  config.include EngineHelper, type: :request
 end
 
 require 'sidekiq/testing'

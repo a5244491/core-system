@@ -10,7 +10,9 @@ FactoryGirl.define do
     clearance_account_bank 'test bank'
     clearance_account_name 'test name'
     standard_rate 0.01
-    # status 'active'
+    trait :active do
+      status 'active'
+    end
     after :create do |store, evaluator|
       store.credit_account.update(usable_credit: evaluator.usable_credit)
       unless evaluator.acquirer.nil?

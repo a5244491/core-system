@@ -11,19 +11,14 @@ module Member
         Member::CreditAccount::INDIVIDUAL
       end
 
-      class << self
-        def find_sti_class(type_name)
-          super(TYPE_MAP[type_name.to_s])
-        end
 
-        def create_account(mobile, bank_card, referer_account_id)
-          self.transaction do
-            account = Member::IndividualCreditAccount.new(mobile: mobile, status: Member::CreditAccount::INACTIVATED)
-            account.referer_account_id = referer_account_id
-            account.save!
-            account.bind_bank_card(bank_card)
-            account
-          end
+      def create_account(mobile, bank_card, referer_account_id)
+        self.transaction do
+          account = Member::IndividualCreditAccount.new(mobile: mobile, status: Member::CreditAccount::INACTIVATED)
+          account.referer_account_id = referer_account_id
+          account.save!
+          account.bind_bank_card(bank_card)
+          account
         end
       end
     end

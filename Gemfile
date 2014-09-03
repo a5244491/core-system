@@ -44,6 +44,7 @@ gem 'sidekiq-unique-jobs'
 gem 'grape'
 gem 'connection_pool'
 gem 'naught'
+gem 'grape-jbuilder'
 
 group :development do
   gem 'spring'

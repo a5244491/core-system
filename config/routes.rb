@@ -125,4 +125,6 @@ Rails.application.routes.draw do
     resources :card_bins, except: [:show]
     get 'card_bins/match', to: 'card_bins#match'
   end
+
+  mount Engine::API , at: '/engine'
 end
