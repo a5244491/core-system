@@ -7,6 +7,10 @@ module Pay
       end
     end
 
+    def plan_name
+      '普通消费'
+    end
+
     def actual_referer_rate
       return 0
     end
@@ -19,6 +23,13 @@ module Pay
 
     def may_destroy?
       false
+    end
+
+    protected
+    def new_transaction(money_amount, credit_account = nil)
+      transaction = Trade::NonePaymentPlanTransaction.new
+      transaction.actual_money_amount = money_amount
+      transaction
     end
   end
 end

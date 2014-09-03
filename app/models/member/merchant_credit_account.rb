@@ -4,7 +4,7 @@ module Member
 
     class << self
       def sti_name
-        CreditAccount::MERCHANT
+        Member::CreditAccount::MERCHANT
       end
     end
 

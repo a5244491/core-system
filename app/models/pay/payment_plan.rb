@@ -1,5 +1,6 @@
 module Pay
   class PaymentPlan < ActiveRecord::Base
+    include PaymentPlanEngineConcern
     STATUSES = [VALID = 1, INVALID = 0]
     PLAN_TYPES = [CREDIT_BACK = 'credit_back', NONE = 'none', BANK_DISCOUNT = 'bank_discount']
     VOUCHER_STATUS = [ACCEPT_NONE = 0, ACCEPT_SELF = 1, ACCEPT_GLOBAL = 2, ACCEPT_ALL = 3]
@@ -16,7 +17,7 @@ module Pay
     USER_TYPES = [ALL_USERS = 0, MEMBERS = 1, REFEREE = 2]
 
     self.inheritance_column = 'plan_type'
-    belongs_to :merchant_store, class_name: Merchant::MerchantStore
+    belongs_to :merchant_store, class_name: 'Merchant::MerchantStore'
     validates_inclusion_of :plan_type, in: PLAN_TYPES
     validates_inclusion_of :status, in: STATUSES
     validates_inclusion_of :voucher_status, in: VOUCHER_STATUS

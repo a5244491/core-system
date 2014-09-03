@@ -1,0 +1,6 @@
+development: &default
+  rabbit_uri: amqp://127.0.0.1:5672
+  send_sms: false
+
+test:
+  send_sms: true

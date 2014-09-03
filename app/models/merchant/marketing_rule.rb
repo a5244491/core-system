@@ -20,5 +20,22 @@ module Merchant
         super(TYPE_MAP[type_name.to_s])
       end
     end
+
+    def precondition_matches?(credit_account, current_transaction_log)
+      true
+    end
+
+    def perform_post_actions(credit_account, current_transaction_log = nil)
+      if precondition_matches?(credit_account, current_transaction_log)
+        post_actions.each do |post_action|
+          begin
+            post_action.perform_action(credit_account: credit_account, merchant_store: self.merchant_store,
+                                       trigger_event: self.rule_type, master_log: current_transaction_log)
+          rescue StandardError => e
+            logger.error("can not execute post action due to #{e.message}")
+          end
+        end
+      end
+    end
   end
 end

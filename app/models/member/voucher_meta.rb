@@ -52,12 +52,12 @@ module Member
 
     def issue_voucher
       unless self.initial_amount < 0
-        raise VoucherAmountExceeded if self.amount_left <= 0
+        raise Member::VoucherAmountExceeded if self.amount_left <= 0
         self.amount_left -= 1
       end
       self.issued_count += 1
       self.save!
-      Voucher.create!(voucher_meta: self)
+      Member::Voucher.create!(voucher_meta: self)
     end
 
     def applicable_store_name

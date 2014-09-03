@@ -2,6 +2,8 @@ FactoryGirl.define do
   factory :voucher_meta, class: Member::VoucherMeta do
     factory :active_voucher_meta do
       status Member::VoucherMeta::ACTIVE
+      valid_till 10.years.from_now
+      valid_from 10.years.ago
     end
     applicable_type Member::VoucherMeta::ALL_STORE
     ignore do

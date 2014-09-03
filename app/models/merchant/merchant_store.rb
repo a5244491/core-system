@@ -1,8 +1,8 @@
 require 'aasm'
 module Merchant
   class MerchantStore < ActiveRecord::Base
+    include Merchant::MerchantStoreEngineConcern
     include AASM
-    # include Merchant::MerchantStoreEngineConcern
     aasm column: :status, requires_new_transaction:false do
        state :editing, initial: true
        state :auditing

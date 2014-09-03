@@ -37,6 +37,13 @@ gem 'ransack'
 gem 'reform'
 gem 'virtus'
 gem 'to_bool'
+gem 'drones', git: 'git@github.com:sufish/drones.git'
+gem 'sidekiq'
+gem 'clockwork'
+gem 'sidekiq-unique-jobs'
+gem 'grape'
+gem 'connection_pool'
+gem 'naught'
 
 group :development do
   gem 'spring'

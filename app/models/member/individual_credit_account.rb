@@ -8,16 +8,32 @@ module Member
 
     class << self
       def sti_name
-        CreditAccount::INDIVIDUAL
+        Member::CreditAccount::INDIVIDUAL
+      end
+
+      class << self
+        def find_sti_class(type_name)
+          super(TYPE_MAP[type_name.to_s])
+        end
+
+        def create_account(mobile, bank_card, referer_account_id)
+          self.transaction do
+            account = Member::IndividualCreditAccount.new(mobile: mobile, status: Member::CreditAccount::INACTIVATED)
+            account.referer_account_id = referer_account_id
+            account.save!
+            account.bind_bank_card(bank_card)
+            account
+          end
+        end
       end
     end
 
     def issue_voucher(voucher_meta, issue_event: Trade::VoucherTransactionLog::SYSTEM, merchant_store: nil, master_log: nil)
-      voucher_meta = VoucherMeta.where(code: voucher_meta).first if voucher_meta.is_a?(String)
-      raise VoucherMeta::VoucherNotAvailable if voucher_meta.nil? || !voucher_meta.active?
+      voucher_meta = Member::VoucherMeta.where(code: voucher_meta).first if voucher_meta.is_a?(String)
+      raise Member::VoucherMeta::VoucherNotAvailable if voucher_meta.nil? || !voucher_meta.active?
       issued_voucher = voucher_meta.with_lock do
         if voucher_meta.limit_per_account >= 0 && self.vouchers.where(voucher_meta_id: voucher_meta.id).count >= voucher_meta.limit_per_account
-          raise VoucherMeta::VoucherLimitPerAccountExceeded
+          raise Member::VoucherMeta::VoucherLimitPerAccountExceeded
         end
         voucher = voucher_meta.issue_voucher
         self.vouchers << voucher

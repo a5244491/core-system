@@ -2,6 +2,7 @@ require 'securerandom'
 require 'digest'
 module Member
   class CreditAccount < ActiveRecord::Base
+    include Member::CreditAccountEngineConcern
     ACCOUNT_TYPES = [INDIVIDUAL = 'individual', MERCHANT = 'merchant']
     ACCOUNT_STATUS = [ACTIVATED = 1, INACTIVATED = 0]
     TYPE_MAP = {
@@ -12,6 +13,11 @@ module Member
     has_many :credit_cashing_applications
     has_many :vouchers, ->{includes(:voucher_meta)}
 
+    class << self
+      def find_sti_class(type_name)
+        super(TYPE_MAP[type_name.to_s])
+      end
+    end
     self.inheritance_column = 'account_type'
 
     before_create :generate_external_id
@@ -19,6 +25,7 @@ module Member
     has_many :member_ships
     has_many :merchant_stores, through: :member_ships, source: :member_group, source_type: 'Merchant::MerchantStore'
     has_many :merchant_groups, through: :member_ships, source: :member_group, source_type: 'Merchant::MerchantGroup'
+
 
 
     def apply_credit_cashing!(amount)
@@ -63,12 +70,6 @@ module Member
     private
     def generate_external_id
       self.external_id = Digest::MD5.hexdigest("#{Time.now.to_s}:#{SecureRandom.uuid}")
-    end
-
-    class << self
-      def find_sti_class(type_name)
-        super(TYPE_MAP[type_name.to_s])
-      end
     end
   end
 end

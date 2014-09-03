@@ -12,5 +12,8 @@ module Merchant
         super(TYPE_MAP[type_name.to_s])
       end
     end
+
+    def perform_action(params = {})
+    end
   end
 end

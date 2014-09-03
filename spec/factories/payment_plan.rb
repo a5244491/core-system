@@ -18,7 +18,7 @@ FactoryGirl.define do
       user_type Pay::PaymentPlan::MEMBERS
     end
     factory :bank_discount, class: Pay::BankDiscount do
-      discount_rate 0.1
+      discount_rate 0
     end
     factory :credit_back, class: Pay::CreditBack, traits: [:only_members] do
       customer_rate 0.01

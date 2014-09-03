@@ -12,7 +12,7 @@ FactoryGirl.define do
     standard_rate 0.01
     # status 'active'
     after :create do |store, evaluator|
-      create(:merchant_credit_account, usable_credit: evaluator.usable_credit, merchant_store: store)
+      store.credit_account.update(usable_credit: evaluator.usable_credit)
       unless evaluator.acquirer.nil?
         store.acquire_org = Merchant::AcquirerOrg.where(acquirer_code: evaluator.acquirer[:code]).first ||
             Merchant::AcquirerOrg.create!(acquirer_code: evaluator.acquirer[:code], acquirer_name: evaluator.acquirer[:name])

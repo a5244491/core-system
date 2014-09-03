@@ -42,3 +42,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include LoginHelper, type: :controller
 end
+
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
+Sidekiq::Testing.inline!

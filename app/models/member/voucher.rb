@@ -36,11 +36,22 @@ module Member
       transaction_log
     end
 
+    def use!(deducted_amount, transaction_attrs = {})
+      deducted_amount ||= self.denomination
+      self.class.transaction do
+        self.status = USED
+        self.used_datetime = transaction_attrs[:transaction_datetime] || Time.now
+        voucher_log = prepare_voucher_log(transaction_attrs.merge!(deducted_amount: deducted_amount, transaction_type: Member::VoucherTransactionLog::USE))
+        voucher_log.save!
+        save!
+      end
+    end
+
     private
     def generate_sequence_number
       unless sequence.nil? || !self.sequence_number.nil?
         sequence_number = sequence.allocate_sequence_number
-        raise VoucherMeta::VoucherAmountExceeded if sequence_number.nil?
+        raise Member::VoucherMeta::VoucherAmountExceeded if sequence_number.nil?
         self.sequence_number = sequence_number
       end
     end
