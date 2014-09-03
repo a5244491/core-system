@@ -5,7 +5,7 @@ class TransactionFinishWorker
   def perform(trans_id)
     begin
       transaction = _finish_transaction(trans_id)
-      Merchant::MarketingRule.perform_async(Merchant::MarketingRule::TRANSACTION, transaction.credit_account_id,
+      MarketingRuleWorker.perform_async(Merchant::MarketingRule::TRANSACTION, transaction.credit_account_id,
                                   transaction.merchant_store_id, transaction.ref_id
       )
     rescue Trade::TransactionNotFinishedError

@@ -17,7 +17,7 @@ FactoryGirl.define do
       store.credit_account.update(usable_credit: evaluator.usable_credit)
       unless evaluator.acquirer.nil?
         store.acquire_org = Merchant::AcquirerOrg.where(acquirer_code: evaluator.acquirer[:code]).first ||
-            Merchant::AcquirerOrg.create!(acquirer_code: evaluator.acquirer[:code], acquirer_name: evaluator.acquirer[:name])
+            Merchant::AcquirerOrg.create!(acquirer_code: evaluator.acquirer[:acquirer_code], acquirer_name: evaluator.acquirer[:acquirer_name])
         store.save!
       end
     end

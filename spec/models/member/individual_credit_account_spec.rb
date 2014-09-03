@@ -9,7 +9,7 @@ describe Member::IndividualCreditAccount do
       end
 
       it 'should not apply credit cashing if no cashing card is specified' do
-        @account =create(:individual_credit_account_with_bank_card, usable_credit: 8000)
+        @account =create(:individual_credit_account, usable_credit: 8000, bank_card: '123445111111111111')
         expect { @account.submit_credit_cashing_application!(400) }.to raise_error Member::CreditCashingApplication::NoCashingAccountError
       end
     end

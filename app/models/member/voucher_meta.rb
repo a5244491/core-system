@@ -52,7 +52,7 @@ module Member
 
     def issue_voucher
       unless self.initial_amount < 0
-        raise Member::VoucherAmountExceeded if self.amount_left <= 0
+        raise Member::VoucherMeta::VoucherAmountExceeded if self.amount_left <= 0
         self.amount_left -= 1
       end
       self.issued_count += 1

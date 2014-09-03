@@ -41,7 +41,7 @@ module Member
       self.class.transaction do
         self.status = USED
         self.used_datetime = transaction_attrs[:transaction_datetime] || Time.now
-        voucher_log = prepare_voucher_log(transaction_attrs.merge!(deducted_amount: deducted_amount, transaction_type: Member::VoucherTransactionLog::USE))
+        voucher_log = prepare_voucher_log(transaction_attrs.merge!(deducted_amount: deducted_amount, transaction_type: Trade::VoucherTransactionLog::USE))
         voucher_log.save!
         save!
       end
