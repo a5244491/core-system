@@ -2,7 +2,7 @@ module Engine
   module POS
     class MembersAPI < Grape::API
       helpers CoreEngineHelper
-      helpers PosUtils
+      helpers Engine::POS::PosUtils
       before do
         check_merchant!
       end

@@ -2,7 +2,7 @@ module Engine
   module POS
     class TransactionsAPI < Grape::API
       helpers CoreEngineHelper
-      helpers PosUtils
+      helpers Engine::POS::PosUtils
       before do
         check_merchant! unless (request.request_method == 'PUT' || request.request_method == 'DELETE')
       end
@@ -13,20 +13,20 @@ module Engine
           requires :plan_type, type: String
           requires :bank_card, type: String
         end
-        post '/', rabl: '/pos/transactions/create' do
+        post '/', jbuilder: 'engine/pos/transactions/create' do
           begin
             @transaction = current_merchant.new_transaction(
                 money_amount: params[:money_amount].to_i,
                 plan_type: params[:plan_type],
                 media_num: params[:bank_card],
-                media_type: CoreLib::PaymentMedia::BANK_CARD
+                media_type: Member::PaymentMedia::BANK_CARD
             )
             logger.info("transaction created with ref_id: #{@transaction.ref_id}")
             status 200
-          rescue NoPlanSelectedError => e
+          rescue Pay::NoPlanSelectedError => e
             logger.info("transaction failed: #{e}")
             print_pos_error(MessageProperties::MERCHANT_NOT_SUPPORTED)
-          rescue PaymentPlanError => e
+          rescue Pay::PaymentPlanError => e
             logger.info("transaction failed: #{e}")
             print_pos_error(e.message)
           end
@@ -40,8 +40,8 @@ module Engine
           status = params[:status].to_i
           trans_id = params[:trans_id]
           #wrapped in transaction, ready for read/write separation
-          transaction = CoreLib::Transaction.transaction do
-            CoreLib::Transaction.where(ref_id: trans_id).first
+          transaction = Trade::Transaction.transaction do
+            Trade::Transaction.where(ref_id: trans_id).first
           end
           if transaction.nil?
             logger.error("can not find transaction with id #{trans_id}")
@@ -70,15 +70,15 @@ module Engine
         end
         delete '/:trans_id' do
           trans_id = params[:trans_id]
-          if (CoreLib::Transaction.exists?(ref_id: trans_id) || CoreLib::TransactionLog.recent.exists?(ref_id: trans_id))
-            roll_back_transaction = CoreLib::RollBackTransaction.new
+          if (Trade::Transaction.exists?(ref_id: trans_id) || Trade::TransactionLog.recent.exists?(ref_id: trans_id))
+            roll_back_transaction = Trade::RollBackTransaction.new
             roll_back_transaction.confirmed = true
-            roll_back_transaction.status = CoreLib::Transaction::SUCCESS
+            roll_back_transaction.status = Trade::Transaction::SUCCESS
             roll_back_transaction.roll_back_ref = trans_id
             roll_back_transaction.save!
             begin
               finish_transaction(roll_back_transaction.ref_id)
-            rescue TransactionAlreadyRevertedError
+            rescue Trade::TransactionAlreadyRevertedError
               #do nothing here
             end
           else
