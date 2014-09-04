@@ -45,10 +45,11 @@ gem 'grape'
 gem 'connection_pool'
 gem 'naught'
 gem 'grape-jbuilder'
+gem 'foreman', git: 'https://github.com/sufish/foreman.git'
+gem 'thin'
 
 group :development do
   gem 'spring'
-  gem 'thin'
 end
 
 group :test do

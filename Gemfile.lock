@@ -7,6 +7,14 @@ GIT
       bunny (>= 0.9.0)
       oj
 
+GIT
+  remote: https://github.com/sufish/foreman.git
+  revision: aca367992ef6b59860a3b4932c73dc89976c2328
+  specs:
+    foreman (0.63.0)
+      dotenv (>= 0.7)
+      thor (>= 0.13.6)
+
 GEM
   remote: http://ruby.taobao.org/
   specs:
@@ -75,6 +83,9 @@ GEM
       representable (~> 2.0.3)
       uber
     docile (1.1.5)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
     easy_captcha (0.6.4)
       bundler (>= 1.1.0)
       rails (>= 3.0.0)
@@ -280,6 +291,7 @@ DEPENDENCIES
   easy_captcha
   factory_girl_rails
   foreigner
+  foreman!
   foundation-rails
   grape
   grape-jbuilder
