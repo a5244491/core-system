@@ -8,7 +8,7 @@ module Merchant
       end
     end
 
-    def perform_action(credit_account:, merchant_store: nil, trigger_event:nil, master_log: nil)
+    def perform_action(credit_account:, merchant_store: nil, trigger_event: nil, master_log: nil)
       unless credit_account.nil?
         issue_event = case trigger_event
                         when Merchant::MarketingRule::BIND_CARD, Merchant::MarketingRule::REGISTER
@@ -32,7 +32,11 @@ module Merchant
           end
         end
         if issued > 0
-          SmsWorker.perform_async(credit_account.mobile, sms_text(issued))
+          begin
+            SmsWorker.perform_async(credit_account.mobile, sms_text(issued))
+          rescue StandardError => e
+            logger.error "error sending sms #{e.message}"
+          end
         end
       end
     end
