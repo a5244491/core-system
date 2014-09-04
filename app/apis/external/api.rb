@@ -1,3 +1,4 @@
+require 'action_controller/metal/strong_parameters'
 module External
   class API < Grape::API
     format :json
@@ -7,11 +8,12 @@ module External
         Rails.logger
       end
 
-      def paging_order_info
-        {
-            page: params[:page] || 1,
-            limit: params[:limit] || 20
-        }
+      def current_page
+        params[:page] || 1
+      end
+
+      def records_per_page
+        params[:limit] || 20
       end
 
       def valid_mobile?(mobile)
@@ -24,13 +26,11 @@ module External
       end
 
       def render_success
-        status 200
-        {success: 'success'}
+        error!({success: 'success'}, 200)
       end
 
       def render_error(status_code = 419, error_msg)
-        status status_code
-        {error: error_msg}
+        error!({error: error_msg}, status_code)
       end
     end
 
@@ -56,7 +56,7 @@ module External
     end
 
     mount External::Member::BankCardsAPI
-    mount External::CreditAccountsAPI
+    mount External::Member::MembersAPI
     mount External::Merchant::MerchantStoresAPI
     mount External::TransactionLogsAPI
     mount External::VoucherTransactionLogsAPI

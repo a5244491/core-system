@@ -25,8 +25,7 @@ module Member
     has_many :member_ships
     has_many :merchant_stores, through: :member_ships, source: :member_group, source_type: 'Merchant::MerchantStore'
     has_many :merchant_groups, through: :member_ships, source: :member_group, source_type: 'Merchant::MerchantGroup'
-
-
+    has_one :merchant_store, foreign_key: 'credit_account_id', class_name: 'Merchant::MerchantStore'
 
     def apply_credit_cashing!(amount)
       self.usable_credit = self.usable_credit - amount

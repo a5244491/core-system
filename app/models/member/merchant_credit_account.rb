@@ -1,7 +1,5 @@
 module Member
   class MerchantCreditAccount < CreditAccount
-    has_one :merchant_store, foreign_key: 'credit_account_id', class_name: 'Merchant::MerchantStore'
-
     class << self
       def sti_name
         Member::CreditAccount::MERCHANT

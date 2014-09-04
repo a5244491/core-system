@@ -8,7 +8,7 @@ module Engine
       end
 
 
-      resources :members do
+      resources :member do
         params do
           requires :bank_card, type: String
         end
@@ -66,7 +66,7 @@ module Engine
           else
             begin
               Member::IndividualCreditAccount.transaction do
-                account = Member::IndividualCreditAccount.create_account(mobile, bank_card, current_merchant.credit_account_id)
+                account = Member::IndividualCreditAccount.create_account(mobile: mobile, bank_card: bank_card, referer_account: current_merchant.credit_account)
                 account.becomes_member_of(current_merchant)
               end
               @receipt = Trade::Receipt.new(MessageProperties::TRAN_TYPE_NEW_MEMBER)

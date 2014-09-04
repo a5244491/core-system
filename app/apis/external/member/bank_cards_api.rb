@@ -10,7 +10,7 @@ module External
             @credit_account = ::Member::IndividualCreditAccount.where(external_id: params[:credit_account_external_id]).first!
           end
 
-          get 'bank_cards', jbuilder: 'interface/bank_cards/index' do
+          get 'bank_cards', jbuilder: 'external/member/bank_cards/index' do
             @bank_cards = @credit_account.bank_cards
             @total = @bank_cards.size
           end

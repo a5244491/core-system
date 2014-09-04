@@ -12,12 +12,10 @@ module Member
       end
 
 
-      def create_account(mobile, bank_card, referer_account_id)
+      def create_account(mobile:, bank_card: nil, referer_account: nil, status: Member::CreditAccount::INACTIVATED)
         self.transaction do
-          account = Member::IndividualCreditAccount.new(mobile: mobile, status: Member::CreditAccount::INACTIVATED)
-          account.referer_account_id = referer_account_id
-          account.save!
-          account.bind_bank_card(bank_card)
+          account = Member::IndividualCreditAccount.create!(mobile: mobile, status: status, referer_account: referer_account)
+          account.bind_bank_card(bank_card) unless bank_card.blank?
           account
         end
       end
