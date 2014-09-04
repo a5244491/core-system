@@ -36,36 +36,4 @@ describe External::Transaction::TransactionLogsAPI do
     end
   end
 
-  describe 'check transaction' do
-    before :each do
-      @credit_account = CoreLib::MerchantCreditAccount.create!
-      @store = CoreLib::MerchantStore.create!(merchant_number: '12345', name: 'test', standard_rate: 0.1)
-      @credit_account.merchant_store = @store
-      @credit_account.save!
-      @tl = CoreLib::TransactionLog.new
-      @tl.log_type = CoreLib::TransactionLog::PRIMARY
-      @tl.transaction_type = CoreLib::TransactionLog::CREDIT_BACK
-      @tl.transaction_datetime = Time.now
-      @tl.media_num = '123456'
-      @tl.status = CoreLib::TransactionLog::NORMAL
-      @tl.merchant_store_id = @store.id
-      @tl.save!
-      @tl = CoreLib::TransactionLog.first!
-    end
-
-    it 'should check transaction' do
-      @tl.checked.should == CoreLib::TransactionLog::NOT_CHECKED
-      put '/transaction_logs', merchant_credit_account_external_id: @credit_account.external_id, id: @tl.id[0], checked: CoreLib::TransactionLog::CHECKED
-      last_response.status.should eq (200)
-      body = JSON.parse last_response.body
-      body['msg'].should == 'success'
-      @tl.reload.checked.should == CoreLib::TransactionLog::CHECKED
-      put '/transaction_logs', merchant_credit_account_external_id: @credit_account.external_id, id: @tl.id[0], checked: CoreLib::TransactionLog::NOT_CHECKED
-      last_response.status.should eq (200)
-      body = JSON.parse last_response.body
-      body['msg'].should == 'success'
-      @tl.reload.checked.should == CoreLib::TransactionLog::NOT_CHECKED
-    end
-  end
-
 end

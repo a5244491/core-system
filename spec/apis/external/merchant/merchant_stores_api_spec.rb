@@ -57,4 +57,46 @@ describe External::Merchant::MerchantStoresAPI do
     end
   end
 
+  describe 'check voucher transaction log' do
+    before :each do
+      @log = Trade::VoucherTransactionLog.new
+      @log.transaction_type = Trade::VoucherTransactionLog::ISSUE
+      @log.transaction_datetime = Time.now
+      @log.issuer_type = Member::VoucherMeta::SELF
+      @log.issuer_name='1'
+      @log.issuer_identifier = 1
+      @log.settler_type = Member::VoucherMeta::SELF
+      @log.settler_name = '1'
+      @log.settler_identifier = 1
+
+      @log.denomination = 100
+      @log.deducted_amount = 50
+      @log.voucher_meta_code = 1
+      @log.voucher_unique_id = 1
+      @log.ref_id = 1
+      @log.primary_transaction_ref_id = 1
+      @log.issue_event = Trade::VoucherTransactionLog::SYSTEM
+      @log.merchant_name = @store.name
+      @log.merchant_store_id = @store.id
+      @log.merchant_num = @store.merchant_number
+      @log.save!
+      @log = Trade::VoucherTransactionLog.first!
+    end
+
+    it 'should check transaction' do
+      expect {
+        put "/external/merchant_stores/#{@store.id}/voucher_transaction_logs/#{@log.id[0]}", data: {checked: Trade::VoucherTransactionLog::CHECKED}
+        response.status.should eq (200)
+        body = JSON.parse response.body
+        body['success'].should be == 'success'
+      }.to change{Trade::VoucherTransactionLog.first.checked}.from(Trade::TransactionLog::NOT_CHECKED).to(Trade::TransactionLog::CHECKED)
+      expect {
+        put "/external/merchant_stores/#{@store.id}/voucher_transaction_logs/#{@log.id[0]}", data: {checked: Trade::VoucherTransactionLog::NOT_CHECKED}
+        response.status.should eq (200)
+        body = JSON.parse response.body
+        body['success'].should be == 'success'
+      }.to change{Trade::VoucherTransactionLog.first.checked}.from(Trade::VoucherTransactionLog::CHECKED).to(Trade::VoucherTransactionLog::NOT_CHECKED)
+      end
+    end
+
 end

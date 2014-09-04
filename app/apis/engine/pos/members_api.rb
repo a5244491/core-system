@@ -8,7 +8,7 @@ module Engine
       end
 
 
-      resources :member do
+      resources :members do
         params do
           requires :bank_card, type: String
         end
