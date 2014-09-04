@@ -101,7 +101,7 @@ Rails.application.routes.draw do
   namespace :member do
     resources :individual_credit_accounts, only: [:index, :show] do
       resources :bank_cards, only: [:index]
-      resources :vouchers, only: [:index]
+      resources :vouchers, only: [:index, :create]
       resources :referees, only: [:index]
     end
 

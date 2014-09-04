@@ -1,7 +1,7 @@
 module Member::VoucherMetaHelper
   def applicable_store_text(voucher_meta)
     applicable_store_name = voucher_meta.try(:applicable_store_name)
-    if voucher_meta.applicable_type == Member::VoucherMeta::STORE_GROUP
+    if voucher_meta.try(:applicable_type) == Member::VoucherMeta::STORE_GROUP
       "#{applicable_store_name}(群组)"
     else
       applicable_store_name

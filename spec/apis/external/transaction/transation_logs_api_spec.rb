@@ -20,18 +20,18 @@ describe External::Transaction::TransactionLogsAPI do
       get '/external/transaction_logs', query: {credit_account_external_id_eq: @account.external_id, media_num_end_with: '3456'}
       response.status.should eq (200)
       body = JSON.parse response.body
-      body['total'].should == 1
+      body['total'].should be == 1
       transaction_log = body['records'].first
-      transaction_log['media_num'].should == @tl.media_num.to_s
+      transaction_log['media_num'].should be == @tl.media_num.to_s
     end
 
     it 'should query transaction log by voucher used' do
       get '/external/transaction_logs', query: {credit_account_external_id_eq: @account.external_id, voucher_used_count_gt: 0}
       response.status.should eq (200)
       body = JSON.parse response.body
-      body['total'].should == 1
+      body['total'].should be == 1
       transaction_log = body['records'].first
-      transaction_log['media_num'].should == @tl.media_num
+      transaction_log['media_num'].should be == @tl.media_num
 
     end
   end

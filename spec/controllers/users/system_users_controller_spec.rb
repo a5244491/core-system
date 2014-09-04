@@ -29,9 +29,9 @@ describe Users::SystemUsersController do
       response.code.should eq('302')
       flash[:success].should_not be_nil
       user = Users::SystemUser.where('name = ?', 'bbb').first
-      user.name.should == 'bbb'
-      user.real_name.should == 'bbb'
-      user.role_name.should == Users::SystemUser::SALES_ASSIST
+      user.name.should be == 'bbb'
+      user.real_name.should be == 'bbb'
+      user.role_name.should be == Users::SystemUser::SALES_ASSIST
     end
 
     it 'should not create system user if name is taken' do
@@ -39,7 +39,7 @@ describe Users::SystemUsersController do
       response.code.should eq('200')
       response.should render_template('new')
       flash[:error].should_not be_nil
-      Users::SystemUser.where(name: @system_user.name).count.should == 1
+      Users::SystemUser.where(name: @system_user.name).count.should be == 1
     end
 
     it 'should not create admin user' do
@@ -47,7 +47,7 @@ describe Users::SystemUsersController do
       response.code.should eq('200')
       response.should render_template('new')
       flash[:error].should_not be_nil
-      Users::SystemUser.where(name: @system_user.name).count.should == 1
+      Users::SystemUser.where(name: @system_user.name).count.should be == 1
     end
   end
 
@@ -65,10 +65,10 @@ describe Users::SystemUsersController do
       response.code.should eq('302')
       flash[:success].should_not be_nil
       user = Users::SystemUser.where('id = ?', @system_user.id).first
-      user.id.should == @system_user.id
-      user.name.should == 'ccc'
-      user.real_name.should == 'ccc'
-      user.role_name.should == Users::SystemUser::SALES_ASSIST
+      user.id.should be == @system_user.id
+      user.name.should be == 'ccc'
+      user.real_name.should be == 'ccc'
+      user.role_name.should be == Users::SystemUser::SALES_ASSIST
     end
 
     it 'should not update admin user' do
@@ -76,7 +76,7 @@ describe Users::SystemUsersController do
       response.code.should eq('200')
       response.should render_template('edit')
       flash[:error].should_not be_nil
-      @admin.reload.role_name.should == Users::SystemUser::ADMIN
+      @admin.reload.role_name.should be == Users::SystemUser::ADMIN
     end
   end
 

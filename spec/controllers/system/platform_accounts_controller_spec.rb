@@ -46,7 +46,7 @@ describe System::PlatformAccountsController do
       response.code.should eq('302')
       flash[:success].should_not be_nil
       account = System::PlatformAccount.find(@platform_account.id)
-      account.id.should == @platform_account.id
+      account.id.should be == @platform_account.id
       account.account_name.should be == 'ccc'
       account.remark.should be == 'ccc'
       account.status.should be == System::PlatformAccount::INACTIVE

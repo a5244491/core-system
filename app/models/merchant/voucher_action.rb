@@ -8,13 +8,15 @@ module Merchant
       end
     end
 
-    def perform_action(credit_account:, merchant_store: nil, trigger_event:, master_log: nil)
+    def perform_action(credit_account:, merchant_store: nil, trigger_event:nil, master_log: nil)
       unless credit_account.nil?
         issue_event = case trigger_event
                         when Merchant::MarketingRule::BIND_CARD, Merchant::MarketingRule::REGISTER
                           Trade::VoucherTransactionLog::SYSTEM
                         when Merchant::MarketingRule::TRANSACTION
                           Trade::VoucherTransactionLog::CONSUMPTION
+                        else
+                          Trade::VoucherTransactionLog::SYSTEM
                       end
         issued = 0
         self.voucher_count.to_i.times do

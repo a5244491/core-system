@@ -1,0 +1,14 @@
+<%= form_tag(member_individual_credit_account_vouchers_path(@member_individual_credit_account), class: 'form-horizontal', role: 'form', id: 'voucher_form') do |f| %>
+    <div class="form-group">
+        <%= label_tag :voucher_meta_id, '选择红包', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%= select_tag(:voucher_meta_id, options_from_collection_for_select(@voucher_meta, :id, :aliases), class: 'form-control', 'data-bv-notempty' => true) %>
+        </div>
+    </div>
+    <div class="form-group">
+        <%= label_tag :voucher_count, '个数', class: 'col-sm-2 control-label' %>
+        <div class="col-xs-6">
+            <%=text_field_tag(:voucher_count, nil, class: 'form-control', 'data-bv-notempty' => true, type: 'number') %>
+        </div>
+    </div>
+<% end %>
