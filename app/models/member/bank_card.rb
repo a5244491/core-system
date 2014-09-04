@@ -15,8 +15,16 @@ module Member
       end
     end
 
-    def diff_card_number
-      "****#{self.media_num.to_s[-4..-1]}"
+    def set_cashing_card(cashing)
+      if cashing
+        Member::BankCard.transaction do
+          old_cashing_card = self.credit_account.bank_cards.where(cashing_card: true).first
+          old_cashing_card.update_attribute :cashing_card, false unless old_cashing_card.nil?
+          self.update(cashing_card: true)
+        end
+      else
+        self.update(cashing_card: false)
+      end
     end
   end
 end

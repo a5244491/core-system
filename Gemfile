@@ -58,6 +58,7 @@ group :test do
   gem 'simplecov-rcov', :require => false
   gem 'simplecov', require: false
   gem 'factory_girl_rails'
+  gem 'json_expressions'
 end
 
 # Use ActiveModel has_secure_password

@@ -10,4 +10,6 @@ class MessageProperties
   IS_NOT_MEMBER_CARD ='该卡不是会员卡'
   WRONG_BANK_CARD_NUM = '银行卡格式错误'
   INVALID_MOBILE = '手机号码不正确'
+  MOBILE_HAS_BEEN_TAKEN = '手机号已被注册'
+  ACCOUNT_NOT_EXIST = '帐号不存在'
 end

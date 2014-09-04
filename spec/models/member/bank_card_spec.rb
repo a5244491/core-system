@@ -23,11 +23,4 @@ describe Member::BankCard do
     expect {bank_card1.save!}.to raise_error ActiveRecord::StaleObjectError
     Member::BankCard.first.credit_earned.should be ==50
   end
-
-
-  it 'should diff card number' do
-    bank_card = Member::BankCard.new
-    bank_card.media_num = '12345678901234567890'
-    bank_card.diff_card_number.should  ==  '****7890'
-  end
 end

@@ -127,4 +127,5 @@ Rails.application.routes.draw do
   end
 
   mount Engine::API , at: '/engine'
+  mount External::API, at: '/external'
 end
