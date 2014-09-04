@@ -58,7 +58,7 @@ module External
     mount External::Member::BankCardsAPI
     mount External::Member::MembersAPI
     mount External::Merchant::MerchantStoresAPI
-    mount External::TransactionLogsAPI
+    mount External::Transaction::TransactionLogsAPI
     mount External::VoucherTransactionLogsAPI
     mount External::VouchersAPI
 
