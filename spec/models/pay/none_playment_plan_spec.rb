@@ -4,6 +4,7 @@ require 'ostruct'
 describe Pay::NonePaymentPlan do
   before :each do
     @payment_plan = create(:none_payment_plan)
+    @credit_account = create(:individual_credit_account)
   end
 
   describe 'create transaction' do

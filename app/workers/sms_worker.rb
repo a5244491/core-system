@@ -18,6 +18,6 @@ class SmsWorker
 
   private
   def send_sms?
-    DronePool.send_sms
+    Settings.send_sms
   end
 end

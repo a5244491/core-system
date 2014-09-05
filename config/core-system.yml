@@ -1,0 +1,8 @@
+---
+address: 0.0.0.0
+timeout: 30
+log: log/engine.log
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
