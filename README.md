@@ -20,13 +20,13 @@ this platform providing valuable addons to the paying system(like POS) that conn
 
 * Up and runing for production
    
-oh that's another story ;-)
+   oh that's another story ;-)
 
 * Components
    
-Admin panel:  Admin UI to manage the System
+   Admin panel:  Admin UI to manage the System
    
-   Engine API: the entry point for paying system to connect and implements specification, restful API and Swagger compliant, you can use Swagger UI to view and play with it, via http://domain-name/engine/api-docs
+   Engine API: the entry point for paying system to connect and implements specification, restful API and [Swagger](http://swagger.io/) compliant, you can use [Swagger UI](https://github.com/wordnik/swagger-ui) to view and play with it, via http://domain-name/engine/api-docs
 
    Interface API: expose data of the platform to external system, like a website for content showing and user interface. restful API
 
