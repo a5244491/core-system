@@ -10,7 +10,7 @@ describe Engine::POS::TransactionsAPI do
 
   describe 'create transaction' do
     it 'should create transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 1000
@@ -40,7 +40,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should not create transaction for non member card' do
-      post '/engine/pos/transactions', {bank_card: 'non-member-card', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back', status: Pay::PaymentPlan::VALID}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: 'non-member-card', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back', status: Pay::PaymentPlan::VALID}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == Pay::PaymentPlanError::NOT_MEMBER_CARD
@@ -48,7 +48,7 @@ describe Engine::POS::TransactionsAPI do
   end
   describe 'finish transaction' do
     it 'should finish transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       put "/engine/pos/transactions/#{body['trans_id']}", {status: 1,
@@ -56,7 +56,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       @credit_account.bank_cards.first.credit_earned.should be == 100
       Trade::TransactionLog.count.should be == 1
@@ -95,7 +95,7 @@ describe Engine::POS::TransactionsAPI do
 
   describe 'revert transaction' do
     it 'should revert transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       now = Time.now.localtime.strftime('%Y-%m-%d %H:%M:%S')
@@ -104,9 +104,9 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       @credit_account.bank_cards.first.credit_earned.should be == 0
       Trade::TransactionLog.count.should be == 2
@@ -121,7 +121,7 @@ describe Engine::POS::TransactionsAPI do
       @credit_account.consumption_credit.should be == 0
       @credit_account.consumption_times.should be == 0
 
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
     end
@@ -129,10 +129,10 @@ describe Engine::POS::TransactionsAPI do
 
   describe 'cancel transaction' do
     it 'should cancel transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
-      put "/engine/pos/transactions/#{body['trans_id']}", {status: 0, merchant_num: @store.merchant_number}, platform_account_header
+      put "/engine/pos/transactions/#{body['trans_id']}", {status: 0, merchant_num: @store.merchant_number}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::Transaction.count.should be == 0
       Trade::TransactionLog.count.should be == 0
@@ -147,7 +147,7 @@ describe Engine::POS::TransactionsAPI do
       System::Configuration.set(System::Configuration::REFERER_RATE, '0.01')
     end
     it 'should finish transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       put "/engine/pos/transactions/#{body['trans_id']}", {status: 1,
@@ -155,7 +155,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       @credit_account.bank_cards.first.credit_earned.should be == 100
       Trade::TransactionLog.count.should be == 2
@@ -212,7 +212,7 @@ describe Engine::POS::TransactionsAPI do
       Trade::Transaction.count.should be == 0
     end
     it 'should revert transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       now = Time.now.localtime.strftime('%Y-%m-%d %H:%M:%S')
@@ -221,9 +221,9 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       @credit_account.bank_cards.first.credit_earned.should be == 0
       Trade::TransactionLog.count.should be == 4
@@ -249,7 +249,7 @@ describe Engine::POS::TransactionsAPI do
       @referer_account.consumption_credit.should be == 0
       @referer_account.consumption_times.should be == 0
 
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 4
     end
@@ -262,7 +262,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should use voucher' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 12000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 12000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       put "/engine/pos/transactions/#{body['trans_id']}", {status: 1,
@@ -270,7 +270,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first

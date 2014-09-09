@@ -15,7 +15,7 @@ describe Engine::POS::TransactionsAPI do
 
 
   it 'should perform transaction for member card' do
-    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}, platform_account_header
+    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}.merge(platform_account_key_secret)
     response.status.should be == 200
     body = JSON.parse(response.body)
     body['actual_money_amount'].should be == 1000
@@ -47,7 +47,7 @@ describe Engine::POS::TransactionsAPI do
                                                   sequence_num: '111',
                                                   terminal_num: '222',
                                                   merchant_amount: 850
-    }, platform_account_header
+    }.merge(platform_account_key_secret)
     response.status.should be == 200
     #sleep(3)
 
@@ -87,7 +87,7 @@ describe Engine::POS::TransactionsAPI do
   end
 
   it 'should perform transaction for member card, wrong transaction date' do
-    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}, platform_account_header
+    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}.merge(platform_account_key_secret)
     response.status.should be == 200
     body = JSON.parse(response.body)
     body['trans_id'].should_not be_nil
@@ -96,7 +96,7 @@ describe Engine::POS::TransactionsAPI do
                                                   sequence_num: '111',
                                                   terminal_num: '222',
                                                   merchant_amount: 850
-    }, platform_account_header
+    }.merge(platform_account_key_secret)
     response.status.should be == 200
 
     Trade::TransactionLog.count.should be == 1
@@ -105,7 +105,7 @@ describe Engine::POS::TransactionsAPI do
   end
 
   it 'should perform transaction for member card, blank transaction date' do
-    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}, platform_account_header
+    post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}.merge(platform_account_key_secret)
     response.status.should be == 200
     body = JSON.parse(response.body)
     body['trans_id'].should_not be_nil
@@ -114,7 +114,7 @@ describe Engine::POS::TransactionsAPI do
                                                   sequence_num: '111',
                                                   terminal_num: '222',
                                                   merchant_amount: 850
-    }, platform_account_header
+    }.merge(platform_account_key_secret)
     response.status.should be == 200
     Trade::TransactionLog.count.should be == 1
     master_log = Trade::TransactionLog.primary_log.first
@@ -123,7 +123,7 @@ describe Engine::POS::TransactionsAPI do
 
   describe 'revert transaction' do
     it 'should revert transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       trans_id = body['trans_id']
@@ -133,9 +133,9 @@ describe Engine::POS::TransactionsAPI do
                                             sequence_num: '111',
                                             terminal_num: '222',
                                             merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
-      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
       reverted_log = Trade::TransactionLog.where(status: Trade::TransactionLog::REVERTED).first
@@ -145,13 +145,13 @@ describe Engine::POS::TransactionsAPI do
       reverted_log.money_amount.should be == -1000
       reverted_log.transaction_datetime.localtime.strftime('%Y-%m-%d %H:%M:%S').should be == now
 
-      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
     end
 
     it 'should not revert non-existing transaction' do
-      delete '/engine/pos/transactions/not-existing', {reason: 'test'}, platform_account_header
+      delete '/engine/pos/transactions/not-existing', {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::Transaction.count.should be == 0
       Trade::TransactionLog.count.should be == 0
@@ -166,7 +166,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should not use voucher' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'none'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['trans_id'].should_not be_nil
@@ -176,7 +176,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first

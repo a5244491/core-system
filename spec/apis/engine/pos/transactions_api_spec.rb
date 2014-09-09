@@ -12,7 +12,7 @@ describe Engine::POS::TransactionsAPI do
       @payment_plan = create(:credit_back, customer_rate: 0.1, merchant_rate: 0.15, referer_rate: 0.03, merchant_store: @store)
     end
     it 'should not create transaction if store is not valid' do
-      post '/engine/pos/transactions', {merchant_num: 'none_existing_one', money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {merchant_num: 'none_existing_one', money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == MessageProperties::MERCHANT_NOT_SUPPORTED
@@ -25,13 +25,13 @@ describe Engine::POS::TransactionsAPI do
                                          sequence_num: '111',
                                          terminal_num: '222',
                                          merchant_amount: 850
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 419
     end
 
     it 'should not create transaction if no payment plan is available' do
       Pay::PaymentPlan.destroy_all
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == MessageProperties::MERCHANT_NOT_SUPPORTED
@@ -39,7 +39,7 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should not create transaction if no payment plan is valid' do
       @payment_plan.disable
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == MessageProperties::MERCHANT_NOT_SUPPORTED
@@ -47,7 +47,7 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should not create transaction if no payment plan is in valid time span' do
       @payment_plan.update_attributes(valid_till: 1.minute.ago)
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'credit_back'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == MessageProperties::MERCHANT_NOT_SUPPORTED

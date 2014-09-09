@@ -18,8 +18,8 @@ module Engine
     end
 
     before do
-      account_name = request.env['HTTP_X_ACCOUNT_NAME']
-      access_key = request.env['HTTP_X_ACCESS_KEY']
+      account_name = params[:api_key]
+      access_key = params[:api_secret]
       current_client = System::PlatformAccount.validate(account_name, access_key, System::PlatformAccount::CORE_ENGINE)
       if current_client.nil?
         logger.error "illegal access from #{account_name}"

@@ -19,7 +19,7 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should apply payment plan ccb for member card' do
       SmsWorker.should_not_receive(:perform_async)
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 1000
@@ -36,7 +36,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 970
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -65,7 +65,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should apply payment plan icbc for none member card' do
-      post '/engine/pos/transactions', {bank_card: '544210111111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '544210111111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 500
@@ -82,7 +82,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 485
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -113,7 +113,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should apply payment plan all for non-member card' do
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 1100
@@ -130,7 +130,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -162,7 +162,7 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should create correct transaction if money_amount < discount_amount' do
       @payment_plan_all.update_attribute(:minimal_money_amount, 0)
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 300, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 300, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 1
@@ -172,7 +172,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -183,14 +183,14 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should not create transaction for non matched card' do
       @payment_plan_all.destroy
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1500, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == Pay::PaymentPlanError::BANK_CARD_NOT_MATCH
     end
 
     it 'should not create transaction if minimal money account does not match' do
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 100, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 100, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == '金额满4.0元才能享受此优惠'
@@ -204,14 +204,14 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should not create transaction if minimal money account does not match' do
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 100, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 100, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 419
       body = JSON.parse(response.body)
       body['screen_msg'].should be == '金额满4.0元才能享受此优惠'
     end
 
     it 'should apply payment plan all for none member card' do
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 900
@@ -228,7 +228,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -267,7 +267,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should apply referer credit' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 900
@@ -284,7 +284,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
       master_log = Trade::TransactionLog.primary_log.first
@@ -348,7 +348,7 @@ describe Engine::POS::TransactionsAPI do
       System::Configuration.set(System::Configuration::REFERER_RATE, 0)
       @payment_plan_all.referer_rate = nil
       @payment_plan_all.save!
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 900
@@ -365,7 +365,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -400,7 +400,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should revert transaction' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       now = Time.now.localtime.strftime('%Y-%m-%d %H:%M:%S')
@@ -409,9 +409,9 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 4
       reverted_master_log = Trade::TransactionLog.where(status: Trade::TransactionLog::REVERTED).primary_log.first
@@ -429,13 +429,13 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should not revert non-exists transaction' do
-      delete '/engine/pos/transactions/not-existing', {reason: 'test'}, platform_account_header
+      delete '/engine/pos/transactions/not-existing', {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 0
     end
 
     it 'should revert transaction' do
-      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: '111111', merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       trans_id = body['trans_id']
@@ -445,9 +445,9 @@ describe Engine::POS::TransactionsAPI do
                                             sequence_num: '111',
                                             terminal_num: '222',
                                             merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
-      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
       reverted_log = Trade::TransactionLog.where(status: Trade::TransactionLog::REVERTED).first
@@ -455,7 +455,7 @@ describe Engine::POS::TransactionsAPI do
       reverted_log.actual_money_amount.should be == -900
       reverted_log.merchant_amount.should be == -997
 
-      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{trans_id}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
     end
@@ -469,7 +469,7 @@ describe Engine::POS::TransactionsAPI do
     end
     it 'should use voucher' do
       SmsWorker.should_receive(:perform_async).with(@credit_account.mobile, anything)
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 3500
@@ -479,7 +479,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -525,7 +525,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should use voucher and revert it' do
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'} , platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'} .merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 3500
@@ -536,7 +536,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -579,7 +579,7 @@ describe Engine::POS::TransactionsAPI do
       voucher_log.merchant_name.should be == master_log.merchant_name
       voucher_log.merchant_store_id.should be == master_log.merchant_store_id
 
-      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}, platform_account_header
+      delete "/engine/pos/transactions/#{body['trans_id']}", {reason: 'test'}.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 2
       @credit_account.vouchers.size.should be ==1
@@ -592,7 +592,7 @@ describe Engine::POS::TransactionsAPI do
     it 'should not use voucher if voucher is set as inactive' do
       @voucher_meta.status = Member::VoucherMeta::INACTIVE
       @voucher_meta.save!
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 13500
@@ -601,7 +601,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -638,7 +638,7 @@ describe Engine::POS::TransactionsAPI do
     it 'should not use voucher if voucher expires' do
       @voucher_meta.valid_till = 1.hour.ago
       @voucher_meta.save!
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 13500
@@ -647,7 +647,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -684,7 +684,7 @@ describe Engine::POS::TransactionsAPI do
     it 'should not use voucher if payment plan does not accept global voucher' do
       @payment_plan_all.voucher_status = Pay::PaymentPlan::ACCEPT_NONE
       @payment_plan_all.save!
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 13500
@@ -693,7 +693,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -738,7 +738,7 @@ describe Engine::POS::TransactionsAPI do
 
     it 'should issue voucher' do
       SmsWorker.should_receive(:perform_async).with(@credit_account.mobile, anything)
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 13500
@@ -748,7 +748,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -793,7 +793,7 @@ describe Engine::POS::TransactionsAPI do
     it 'should not issue voucher if post action is inactive' do
       @marketing_rule.update(status: Rule::INACTIVE)
       SmsWorker.should_not_receive(:perform_async).with(@credit_account.mobile, anything)
-      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @bank_card.card_num, merchant_num: @store.merchant_number, money_amount: 15000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       body['actual_money_amount'].should be == 13500
@@ -803,7 +803,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.count.should be == 1
       Trade::Transaction.count.should be == 0
@@ -821,7 +821,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should select payment plan that does not matches referee rule' do
-      post '/engine/pos/transactions', {bank_card: @credit_account_with_referer.bank_cards.first.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @credit_account_with_referer.bank_cards.first.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       put "/engine/pos/transactions/#{body['trans_id']}", {status: 1,
@@ -829,7 +829,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.primary_log.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
@@ -857,7 +857,7 @@ describe Engine::POS::TransactionsAPI do
     end
 
     it 'should select payment plan that matches referee rule' do
-      post '/engine/pos/transactions', {bank_card: @credit_account_with_store_referer.bank_cards.first.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}, platform_account_header
+      post '/engine/pos/transactions', {bank_card: @credit_account_with_store_referer.bank_cards.first.card_num, merchant_num: @store.merchant_number, money_amount: 1000, plan_type: 'bank_discount'}.merge(platform_account_key_secret)
       response.status.should be == 200
       body = JSON.parse(response.body)
       put "/engine/pos/transactions/#{body['trans_id']}", {status: 1,
@@ -865,7 +865,7 @@ describe Engine::POS::TransactionsAPI do
                                                     sequence_num: '111',
                                                     terminal_num: '222',
                                                     merchant_amount: 997
-      }, platform_account_header
+      }.merge(platform_account_key_secret)
       response.status.should be == 200
       Trade::TransactionLog.primary_log.count.should be == 1
       master_log = Trade::TransactionLog.primary_log.first
