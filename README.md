@@ -1,26 +1,32 @@
-== Coupon validation, Marketing campaign/User mangement/CRM addons to any Online/Offline Pay system
+Coupon validation, Marketing campaign/User mangement/CRM addons to any Online/Offline Pay system
+=========
 
-this platform providing valuable addons to the paying system(like POS) that connections to and implement the client api of the platform
+this platform providing valuable addons to the paying system(like POS) that connects to and implement the client specification of the platform
 
 * Successful Stories
-    www.aishua.cn, providing closed coupon validation via smart POS terminal 
 
-* System dependencies
+  
+  www.aishua.cn, providing closed coupon validation via smart POS terminal 
 
-* Configuration
+* Up and runing for development
+  
+  ```
+   bundle install
+   rake db:mirgate
+   rake db:seed
+   bundle exec foreman start
+  
+  ```
 
-* Database creation
+* Up and runing for production
+   
+oh that's another story ;-)
 
-* Database initialization
+* Components
+   
+Admin panel:  Admin UI to manage the System
+   
+   Engine API: the entry point for paying system to connect and implements specification, restful API and Swagger compliant, you can use Swagger UI to view and play with it, via http://domain-name/engine/api-docs
 
-* How to run the test suite
+   Interface API: expose data of the platform to external system, like a website for content showing and user interface. restful API
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
