@@ -45,12 +45,12 @@ gem 'grape'
 gem 'connection_pool'
 gem 'naught'
 gem 'foreman', git: 'https://github.com/sufish/foreman.git'
-gem 'thin'
 gem 'settingslogic'
 gem 'grape-entity'
 gem 'kramdown'
 gem 'grape-swagger', '~> 0.8.0'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'puma'
 group :development do
   gem 'spring'
 end
