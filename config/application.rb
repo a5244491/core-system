@@ -34,5 +34,12 @@ module CoreSystem
     config.middleware.use(Rack::Config) do |env|
       env['api.tilt.root'] = Rails.root.join 'app', 'views', 'apis'
     end
+
+    config.middleware.insert_before 'ActionDispatch::Static', 'Rack::Cors' do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options, :put, :delete]
+      end
+    end
   end
 end

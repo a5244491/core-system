@@ -3,6 +3,7 @@ module External
   class API < Grape::API
     format :json
     content_type :json, 'application/json;charset=UTF-8'
+    prefix :external
     helpers do
       def logger
         Rails.logger

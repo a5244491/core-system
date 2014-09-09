@@ -49,6 +49,7 @@ gem 'thin'
 gem 'settingslogic'
 gem 'grape-entity'
 gem 'grape-swagger'
+gem 'rack-cors', :require => 'rack/cors'
 group :development do
   gem 'spring'
 end

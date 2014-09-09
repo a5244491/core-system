@@ -13,6 +13,7 @@ module Engine
           requires :money_amount, type: Integer
           requires :plan_type, type: String
           requires :bank_card, type: String
+          requires :merchant_num
         end
         post '/' do
           begin

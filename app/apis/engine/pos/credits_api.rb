@@ -8,6 +8,9 @@ module Engine
         check_merchant!
       end
 
+      params do
+        requires :merchant_num
+      end
       namespace :credits do
         params do
           requires :bank_card, type: String

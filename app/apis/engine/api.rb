@@ -3,6 +3,13 @@ module Engine
     CURRENT_CLIENT = 'core.current_client'
     content_type :json, 'application/json;charset=UTF-8'
     format :json
+    prefix 'engine'
+
+    before do
+      header['Access-Control-Allow-Origin'] = '*'
+      header['Access-Control-Request-Method'] = '*'
+    end
+
     helpers do
       def logger
         Rails.logger
@@ -17,7 +24,7 @@ module Engine
       end
 
       def authenticate!
-        current_client = System::PlatformAccount.validate(params[:api_token], System::PlatformAccount::CORE_ENGINE)
+        current_client = System::PlatformAccount.validate(params[:api_key], System::PlatformAccount::CORE_ENGINE)
         if current_client.nil?
           logger.error "illegal access from #{request.env['REMOTE_ADDR']}"
           error! 'Access Denied', 403
@@ -27,6 +34,8 @@ module Engine
       end
     end
 
+
     mount Engine::POS::PosAPI
+    add_swagger_documentation mount_path: '/api-docs', hide_format: true
   end
 end
