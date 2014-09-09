@@ -1,10 +1,12 @@
 #encoding:utf-8
 class External::Member::MembersAPI < Grape::API
   namespace :members do
-    get '/', jbuilder: 'external/member/members/index' do
+    get '/' do
       @credit_accounts = ::Member::CreditAccount.search(params[:query]).result
       @total = @credit_accounts.size
       @credit_accounts = @credit_accounts.paginate(page: current_page, per_page: records_per_page)
+      present :total, @total
+      present :records, @credit_accounts, with: External::Entities::CreditAccount
     end
 
     params do
@@ -12,7 +14,7 @@ class External::Member::MembersAPI < Grape::API
         requires :mobile
       end
     end
-    post '/', jbuilder: 'external/member/members/create' do
+    post '/' do
       if !valid_mobile?(params[:data][:mobile])
         render_error('INVALID_MOBILE')
       else
@@ -26,6 +28,7 @@ class External::Member::MembersAPI < Grape::API
               @credit_account.becomes_member_of(referer_account.merchant_store)
             end
             status 200
+            present @credit_account, with: External::Entities::CreditAccount
           end
         rescue ActiveRecord::RecordInvalid => e
           logger.error "failed to create credit account, error: #{e.message}"

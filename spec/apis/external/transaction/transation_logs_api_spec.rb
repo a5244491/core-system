@@ -32,7 +32,6 @@ describe External::Transaction::TransactionLogsAPI do
       body['total'].should be == 1
       transaction_log = body['records'].first
       transaction_log['media_num'].should be == @tl.media_num
-
     end
   end
 

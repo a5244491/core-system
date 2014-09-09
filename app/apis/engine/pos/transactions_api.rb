@@ -13,7 +13,7 @@ module Engine
           requires :plan_type, type: String
           requires :bank_card, type: String
         end
-        post '/', jbuilder: 'engine/pos/transactions/create' do
+        post '/' do
           begin
             @transaction = current_merchant.new_transaction(
                 money_amount: params[:money_amount].to_i,
@@ -22,6 +22,7 @@ module Engine
                 media_type: Member::PaymentMedia::BANK_CARD
             )
             logger.info("transaction created with ref_id: #{@transaction.ref_id}")
+            present @transaction, with: Engine::POS::Entities::Transaction
             status 200
           rescue Pay::NoPlanSelectedError => e
             logger.info("transaction failed: #{e}")

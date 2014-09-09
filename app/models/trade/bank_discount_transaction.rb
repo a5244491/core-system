@@ -12,7 +12,7 @@ module Trade
       end
     end
 
-    def to_receipt
+    def receipt
       pos_receipt = Receipt.new(self.plan_name)
       discount_amount = self.money_amount - self.actual_money_amount
       pos_receipt.extra_rows << "本次消费共获得优惠#{(discount_amount)/100.0}元" unless discount_amount == 0

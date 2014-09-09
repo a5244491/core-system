@@ -3,7 +3,6 @@ module Engine
     CURRENT_CLIENT = 'core.current_client'
     content_type :json, 'application/json;charset=UTF-8'
     format :json
-    formatter :json, Grape::Formatter::Jbuilder
     helpers do
       def logger
         Rails.logger

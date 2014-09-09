@@ -11,7 +11,7 @@ module Trade
       end
     end
 
-    def to_receipt
+    def receipt
       pos_receipt = Receipt.new(self.plan_name)
       pos_receipt.extra_rows << "本次消费获得积分#{self.consumer_credit}"
       pos_receipt.extra_rows << '请登录爱刷平台管理及使用您的积分'

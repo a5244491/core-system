@@ -11,7 +11,7 @@ module Trade
       end
     end
 
-    def to_receipt
+    def receipt
       pos_receipt = Receipt.new(self.plan_name)
       if self.credit_account_id.nil?
         pos_receipt.extra_rows << '注册成为爱刷会员可享受更多优惠'

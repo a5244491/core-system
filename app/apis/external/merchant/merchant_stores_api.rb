@@ -1,10 +1,12 @@
 module External::Merchant
   class MerchantStoresAPI < Grape::API
     namespace :merchant_stores do
-      get '/', jbuilder: 'external/merchant/merchant_stores/index' do
+      get '/' do
         @merchant_stores = ::Merchant::MerchantStore.search(params[:query]).result
         @total = @merchant_stores.size
         @merchant_stores = @merchant_stores.paginate(page: current_page, per_page: records_per_page)
+        present :total, @total
+        present :records, @merchant_stores, with: External::Entities::MerchantStore
       end
 
       params do

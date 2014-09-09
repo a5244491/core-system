@@ -10,9 +10,11 @@ module External
             @credit_account = ::Member::IndividualCreditAccount.where(external_id: params[:credit_account_external_id]).first!
           end
 
-          get 'bank_cards', jbuilder: 'external/member/bank_cards/index' do
+          get 'bank_cards' do
             @bank_cards = @credit_account.bank_cards
             @total = @bank_cards.size
+            present :total, @total
+            present :records, @bank_cards, with: External::Entities::BankCard
           end
 
           post '/bank_cards' do

@@ -2,7 +2,7 @@ require 'action_controller/metal/strong_parameters'
 module External
   class API < Grape::API
     format :json
-    formatter :json, Grape::Formatter::Jbuilder
+    content_type :json, 'application/json;charset=UTF-8'
     helpers do
       def logger
         Rails.logger

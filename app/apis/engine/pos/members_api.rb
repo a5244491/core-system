@@ -24,7 +24,7 @@ module Engine
           requires :bank_card, type: String
           requires :mobile, type: String
         end
-        put '/', jbuilder: 'engine/pos/members/update' do
+        put '/' do
           mobile = params[:mobile]
           bank_card = params[:bank_card]
           print_pos_error(MessageProperties::INVALID_MOBILE) unless valid_mobile?(mobile)
@@ -41,6 +41,7 @@ module Engine
               @receipt.extra_rows << '新卡绑定成功，请登录爱刷平台管理及使用您的积分'
               send_sms(mobile, %Q{尊敬的爱刷会员，您已成功绑定尾号为#{bank_card.to_s[-4..-1]}的银行卡, 您可以使用该银行卡立享爱刷超值服务。www.aishua.cn【爱刷】})
               MarketingRuleWorker.perform_async(Merchant::MarketingRule::BIND_CARD, account.id, current_merchant.id)
+              present :receipt, @receipt, with: Engine::POS::Entities::Receipt
             rescue Member::BankCardTakenError
               print_pos_error(MessageProperties::BANK_CARD_EXISTS)
             rescue Member::ExceedsBankCardLimitsError
@@ -55,7 +56,7 @@ module Engine
           requires :bank_card, type: String
           requires :mobile, type: String
         end
-        post '/', jbuilder: 'engine/pos/members/create' do
+        post '/' do
           mobile = params[:mobile]
           bank_card = params[:bank_card]
           account = Member::IndividualCreditAccount.where(mobile: mobile).first
@@ -73,13 +74,14 @@ module Engine
               @receipt.extra_rows << '已成功开通爱刷会员并绑定1张银行卡，请访问爱刷优惠官网注册帐号自动激活爱刷会员资格(注册时请使用注册手机号)'
               send_sms(mobile, %Q{您已成功绑定尾号为#{bank_card.to_s[-4..-1]}的银行卡，可使用该卡立享爱刷超值服务。请访问www.aishua.cn注册账号管理和使用积分【爱刷】})
               MarketingRuleWorker.perform_async(Merchant::MarketingRule::REGISTER, account.id, current_merchant.id)
+              status 200
+              present :receipt, @receipt, with: Engine::POS::Entities::Receipt
             rescue Member::BankCardTakenError
               print_pos_error(MessageProperties::BANK_CARD_EXISTS)
             rescue ActiveRecord::RecordInvalid
               print_pos_error(MessageProperties::WRONG_BANK_CARD_NUM)
             end
           end
-          status 200
         end
       end
     end
