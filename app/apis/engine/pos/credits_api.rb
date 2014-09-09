@@ -9,11 +9,35 @@ module Engine
       end
 
       params do
-        requires :merchant_num
+        requires :merchant_num, type: String, desc: 'the merchant number of the merchant that performs the operation'
       end
       namespace :credits do
+        desc 'return usable credits of the user based on bank number', {
+            notes: <<-NOTE
+                queries the user's credit
+
+                * on success, response body should be
+
+                   {
+                      "msg_screen": "string"
+                   }
+                   the POS system should indicate POS terminal to print value of 'msg_screen' on POS screen
+
+                * on failure
+
+
+                 1. http 419, response body should be
+                   {
+                      "msg_screen": "string"
+                   }
+                   the POS system should indicate POS terminal to print value of 'msg_screen' on POS screen
+
+                 2. none 419/200 http code, means there were system errors, the pos terminal should indicate POS terminal to print
+                   something like 'operation failed' on POS stream
+            NOTE
+        }
         params do
-          requires :bank_card, type: String
+          requires :bank_card, type: String, desc: 'the bank card number of the user'
         end
         get do
           bank_card = Member::BankCard.where(media_num: params[:bank_card]).first

@@ -1,3 +1,4 @@
+require 'grape-swagger'
 module Engine
   class API < Grape::API
     CURRENT_CLIENT = 'core.current_client'
@@ -36,6 +37,6 @@ module Engine
 
 
     mount Engine::POS::PosAPI
-    add_swagger_documentation mount_path: '/api-docs', hide_format: true
+    add_swagger_documentation mount_path: '/api-docs', hide_format: true, markdown: GrapeSwagger::Markdown::KramdownAdapter
   end
 end
