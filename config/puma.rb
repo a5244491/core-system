@@ -110,6 +110,9 @@ workers 4
 # This can be called multiple times to add hooks.
 #
  on_worker_boot do
+   ActiveSupport.on_load(:active_record) do
+     ActiveRecord::Base.establish_connection
+   end
  end
 
 # Code to run when a worker boots to setup the process after booting
@@ -118,6 +121,8 @@ workers 4
 # This can be called multiple times to add hooks.
 #
 after_worker_boot do
+  Rails.logger.info('re init drone connections')
+  DronePool.re_init_connection
 end
 
 # Allow workers to reload bundler context when master process is issued
@@ -130,7 +135,7 @@ end
 # Preload the application before starting the workers; this conflicts with
 # phased restart feature. (off by default)
 
-# preload_app!
+preload_app!
 
 # Additional text to display in process listing
 #
