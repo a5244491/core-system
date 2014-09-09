@@ -4,6 +4,7 @@ module Engine
       helpers CoreEngineHelper
       helpers Engine::POS::PosUtils
       before do
+        authenticate!
         check_merchant! unless (request.request_method == 'PUT' || request.request_method == 'DELETE')
       end
 

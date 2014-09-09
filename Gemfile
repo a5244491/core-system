@@ -48,6 +48,7 @@ gem 'foreman', git: 'https://github.com/sufish/foreman.git'
 gem 'thin'
 gem 'settingslogic'
 gem 'grape-entity'
+gem 'grape-swagger'
 group :development do
   gem 'spring'
 end

@@ -15,18 +15,16 @@ module Engine
       def valid_mobile?(mobile)
         mobile.to_s.strip.length == 11
       end
-    end
 
-    before do
-      account_name = params[:api_key]
-      access_key = params[:api_secret]
-      current_client = System::PlatformAccount.validate(account_name, access_key, System::PlatformAccount::CORE_ENGINE)
-      if current_client.nil?
-        logger.error "illegal access from #{account_name}"
-        error! 'Access Denied', 403
+      def authenticate!
+        current_client = System::PlatformAccount.validate(params[:api_token], System::PlatformAccount::CORE_ENGINE)
+        if current_client.nil?
+          logger.error "illegal access from #{request.env['REMOTE_ADDR']}"
+          error! 'Access Denied', 403
+        end
+        logger.info "incoming #{request.request_method} request from #{current_client.account_name}, url:#{request.env['rack.mount.prefix']}#{request.path_info}, params:#{params}"
+        request.env[CURRENT_CLIENT] = current_client
       end
-      logger.info "incoming #{request.request_method} request from #{current_client.account_name}, url:#{request.env['rack.mount.prefix']}#{request.path_info}, params:#{params}"
-      request.env[CURRENT_CLIENT] = current_client
     end
 
     mount Engine::POS::PosAPI

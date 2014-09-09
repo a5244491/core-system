@@ -9,9 +9,8 @@ module System
     validates_inclusion_of :status, in: STATUSES
     before_create :generate_access_key
     class << self
-      def validate(account_name, access_key, access_target)
-        self.where("account_name = ? and access_key = ? and access_target = ? and status =#{ACTIVE}", account_name, access_key, access_target)
-        .select('account_name').first
+      def validate(access_token, access_target)
+        self.where(access_key: access_token, access_target: access_target, status: ACTIVE).select('account_name').first
       end
     end
 
